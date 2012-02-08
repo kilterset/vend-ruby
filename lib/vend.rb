@@ -1,4 +1,4 @@
-require "vend-ruby/version"
+require "vend/version"
 
 module Vend
   module Ruby
