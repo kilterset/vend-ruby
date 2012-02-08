@@ -1,0 +1,5 @@
+= Vend API Gem
+
+This gem provides access to Vend's REST API.
+
+
