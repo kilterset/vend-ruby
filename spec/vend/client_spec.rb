@@ -21,7 +21,14 @@ describe Vend::Client do
       with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
       to_return(:status => 200, :body => "", :headers => {})
 
-    response = subject.request('foo')
+    stub_request(:post, "https://trish:sand@intergalactic.vendhq.com/api/foo").
+      with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
+      to_return(:status => 200, :body => "", :headers => {})
+
+    response = subject.request('foo', :post)
+    response.should be_instance_of(Net::HTTPOK)
+
+    response = subject.request('foo', :get)
     response.should be_instance_of(Net::HTTPOK)
   end
 

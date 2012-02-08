@@ -10,7 +10,7 @@ module Vend
   #
   class Client
 
-    # The store url and username for this client
+    # The store url for this client
     attr_accessor :store
 
     def initialize(store, username, password)
@@ -19,17 +19,22 @@ module Vend
       @password = password;
     end
 
-    def request(path)
+    # Makes a request to the specified path within the Vend API
+    # E.g. request('foo') will make a request
+    def request(path, method = 'get')
       url = URI.parse(base_url + path)
       http = Net::HTTP.new(url.host, url.port)
       http.use_ssl = true
+      method = ("Net::HTTP::" + method.to_s.classify).constantize
 
-      request = Net::HTTP::Get.new(url.path)
+      request = method.new(url.path)
       request.basic_auth @username, @password
 
       http.request(request)
     end
 
+    # Returns the base API url for the client.
+    # E.g. for the store 'foo', it returns https://foo.vendhq.com/api/
     def base_url
       "https://#{@store}.vendhq.com/api/"
     end
