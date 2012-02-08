@@ -4,7 +4,7 @@ require "vend/version"
 
 Gem::Specification.new do |s|
   s.name        = "vend-ruby"
-  s.version     = Vend::Ruby::VERSION
+  s.version     = Vend::VERSION
   s.authors     = ["Trineo Ltd"]
   s.email       = ["greg.signal@trineo.co.nz"]
   s.homepage    = "http://trineo.co.nz"

@@ -1,3 +1,3 @@
-require "vend/version"
+$: << File.expand_path(File.dirname(__FILE__))
 
 require 'vend/client'
