@@ -1,4 +1,5 @@
 require 'net/http'
+require 'cgi'
 
 module Vend
 
@@ -20,16 +21,36 @@ module Vend
     end
 
     # Makes a request to the specified path within the Vend API
-    # E.g. request('foo') will make a request
-    def request(path, method = 'get')
+    # E.g. request('foo') will make a GET request to
+    #      http://storeurl.vendhq.com/api/foo
+    #
+    # The HTTP method may be specified, by default it is GET.
+    #
+    # An optional hash of arguments may be specified. Possible options include:
+    #   :method - The HTTP method
+    #     E.g. request('foo', :method => :post) will perform a POST request for
+    #          http://storeurl.vendhq.com/api/foo
+    #
+    #   :url_params - The URL parameters for GET requests.
+    #     E.g. request('foo', :url_params => {:bar => "baz"}) will request
+    #          http://storeurl.vendhq.com/api/foo?bar=baz
+    #
+    #   :body - The request body
+    #     E.g. For submitting a POST to http://storeurl.vendhq.com/api/foo
+    #          with the JSON data {"baz":"baloo"} we would call
+    #          request('foo', :method => :post, :body => '{\"baz\":\"baloo\"}'
+    #
+    def request(path, options = {})
+      options = {:method => :get}.merge options
       url = URI.parse(base_url + path)
       http = Net::HTTP.new(url.host, url.port)
       http.use_ssl = true
-      method = ("Net::HTTP::" + method.to_s.classify).constantize
 
-      request = method.new(url.path)
+      method = ("Net::HTTP::" + options[:method].to_s.classify).constantize
+      request = method.new(url.path + url_params_for(options[:url_params]))
       request.basic_auth @username, @password
 
+      request.body = options[:body] if options[:body]
       http.request(request)
     end
 
@@ -37,6 +58,17 @@ module Vend
     # E.g. for the store 'foo', it returns https://foo.vendhq.com/api/
     def base_url
       "https://#{@store}.vendhq.com/api/"
+    end
+
+  protected
+
+    # Internal method to parse URL parameters.
+    # Returns an empty string from a nil argument
+    #
+    # E.g. url_params_for({:field => "value"}) will return ?field=value
+    def url_params_for(options)
+      return "?".concat(options.collect { |k,v| "#{k}=#{CGI::escape(v.to_s)}" }.join('&')) if not options.nil?
+      return ''
     end
 
   end

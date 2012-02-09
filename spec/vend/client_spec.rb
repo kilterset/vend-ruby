@@ -16,20 +16,32 @@ describe Vend::Client do
     subject.base_url.should == "https://intergalactic.vendhq.com/api/"
   end
 
-  it "makes arbitrary requests to the API" do
-    stub_request(:get, "https://trish:sand@intergalactic.vendhq.com/api/foo").
-      with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
-      to_return(:status => 200, :body => "", :headers => {})
+  describe "makes arbitrary requests to the API" do
 
-    stub_request(:post, "https://trish:sand@intergalactic.vendhq.com/api/foo").
-      with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Ruby'}).
-      to_return(:status => 200, :body => "", :headers => {})
+    it "allows us to specify HTTP method" do
+      stub_request(:post, "https://trish:sand@intergalactic.vendhq.com/api/foo").
+        to_return(:status => 200, :body => "", :headers => {})
 
-    response = subject.request('foo', :post)
-    response.should be_instance_of(Net::HTTPOK)
+      response = subject.request('foo', :method => :post)
+      response.should be_instance_of(Net::HTTPOK)
+    end
 
-    response = subject.request('foo', :get)
-    response.should be_instance_of(Net::HTTPOK)
+    it "allows us to set a request body" do
+      stub_request(:post, "https://trish:sand@intergalactic.vendhq.com/api/foo").
+        with(:body => "{\"post\":\"data\"}").
+        to_return(:status => 200, :body => "", :headers => {})
+
+      response = subject.request('foo', :method => :post, :body => '{"post":"data"}')
+      response.should be_instance_of(Net::HTTPOK)
+    end
+
+    it "allows us to specify url parameters" do
+      stub_request(:get, "https://trish:sand@intergalactic.vendhq.com/api/foo?foo=bar&baz=baloo").
+        to_return(:status => 200, :body => "", :headers => {})
+
+      response = subject.request('foo', :url_params => {:foo => "bar", :baz => "baloo"})
+      response.should be_instance_of(Net::HTTPOK)
+    end
+
   end
-
 end
