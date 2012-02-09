@@ -1,9 +1,10 @@
 require 'net/http'
 require 'cgi'
 
-module Vend
+module Vend #:nodoc:
 
-  # Main access point for all resources within the Vend API
+  # Main access point which allows resources within the Vend gem to
+  # make HTTP requests to the Vend API.
   #
   # Client must be initialized with:
   #   * a store url (e.g. the storeurl portion of http://storeurl.vendhq.com/),
@@ -14,7 +15,7 @@ module Vend
     # The store url for this client
     attr_accessor :store
 
-    def initialize(store, username, password)
+    def initialize(store, username, password) #:nodoc:
       @store = store;
       @username = username;
       @password = password;
