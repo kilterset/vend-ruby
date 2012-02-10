@@ -1,4 +1,5 @@
 require 'net/http'
+require 'json'
 require 'cgi'
 
 module Vend #:nodoc:
