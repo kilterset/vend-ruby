@@ -21,4 +21,8 @@ describe Vend::BaseFactory do
     subject.all
   end
 
+  it "returns the target class" do
+    subject.target_class.should == Vend::Resource::Foo
+  end
+
 end
