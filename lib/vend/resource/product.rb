@@ -1,8 +1,10 @@
 module Vend
   module Resource
 
-    class Product < Vend::Base #empty to define Vend::Resource
+    class ProductFactory < Vend::BaseFactory #:nodoc:
     end
+
+    class Product < Vend::Base; end
 
   end
 end

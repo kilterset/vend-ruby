@@ -19,6 +19,8 @@ module Vend
       end
     end
 
+    # Proxies a set of methods to the target class, prepending the client to
+    # the argument list
     def self.delegate_to_target_class(*method_names)
       method_names.each do |method_name|
         define_method method_name do |*args|

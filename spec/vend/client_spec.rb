@@ -44,4 +44,11 @@ describe Vend::Client do
     end
 
   end
+
+  describe "resource factories" do
+    it "gets all products" do
+      Vend::Resource::Product.should_receive(:all).and_return([])
+      subject.Product.all.should == []
+    end
+  end
 end

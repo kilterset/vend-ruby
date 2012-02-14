@@ -56,6 +56,7 @@ describe Vend::Base do
       subject.one.should == "foo"
       subject.two.should == "bar"
       subject.object_id.should_not == "fail"
+      subject.attrs['object_id'].should == "fail"
     end
   end
 

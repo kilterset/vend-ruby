@@ -22,6 +22,10 @@ module Vend #:nodoc:
       @password = password;
     end
 
+    def Product #:nodoc:
+      Vend::Resource::ProductFactory.new(self)
+    end
+
     # Makes a request to the specified path within the Vend API
     # E.g. request('foo') will make a GET request to
     #      http://storeurl.vendhq.com/api/foo
