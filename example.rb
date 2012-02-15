@@ -1,16 +1,19 @@
 require './lib/vend'
-STORE = 'gregdeveloper'
+STORE = 'trineodev'
 USERNAME = 'greg.signal@trineo.co.nz'
 PASSWORD = 'this is a very strong password'
 client = Vend::Client.new(STORE, USERNAME, PASSWORD)
 
-class Vend::Resource::Product < Vend::Base
+puts "###### Products ######"
+client.Product.all.each do |product|
+  puts product.name
 end
 
-response = client.request('products')
+puts "###### Customers ######"
+client.Customer.all.each do |customer|
+  puts "#{customer.name} (#{customer.customer_code})"
+end
+
+puts "###### Creating a Customer ######"
+response = client.request('customers', :method => :post, :body => '{"customer_code":"foo"}')
 puts response
-
-Vend::Resource::Product.all(client).each do |product|
-  puts "Product Name: #{product.name}"
-  puts "Inventory: #{product.inventory}"
-end
