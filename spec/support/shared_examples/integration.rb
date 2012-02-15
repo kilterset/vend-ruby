@@ -18,7 +18,7 @@ end
 
 shared_examples "a resource with a collection GET endpoint" do
   it "gets the collection" do
-    stub_request(:get, "https://#{username}:#{password}@#{store}.vendhq.com/api/#{class_basename.to_s.downcase.pluralize}").
+    stub_request(:get, "https://#{username}:#{password}@#{store}.vendhq.com/api/#{class_basename.to_s.underscore.pluralize}").
     to_return(:status => 200, :body => get_mock_from_path(:get))
 
     collection = build_receiver.all

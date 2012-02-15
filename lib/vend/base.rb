@@ -23,7 +23,7 @@ module Vend
     # Returns the endpoint name for the resource, used in API urls when making
     # requests.
     def self.endpoint_name
-      self.name.split('::').last.downcase
+      self.name.split('::').last.underscore
     end
 
     # Returns a collection containing all of the specified resource objects.

@@ -7,5 +7,6 @@ require 'vend/base'
 require 'vend/resource/outlet'
 require 'vend/resource/product'
 require 'vend/resource/customer'
+require 'vend/resource/payment_type'
 
 require 'vend/client'

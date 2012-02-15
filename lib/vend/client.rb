@@ -34,6 +34,10 @@ module Vend #:nodoc:
       Vend::Resource::CustomerFactory.new(self)
     end
 
+    def PaymentType #:nodoc:
+      Vend::Resource::PaymentTypeFactory.new(self)
+    end
+
     # Makes a request to the specified path within the Vend API
     # E.g. request('foo') will make a GET request to
     #      http://storeurl.vendhq.com/api/foo

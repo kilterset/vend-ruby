@@ -18,7 +18,12 @@ client = Vend::Client.new(STORE, USERNAME, PASSWORD)
 # response = client.request('customers', :method => :post, :body => '{"customer_code":"foo"}')
 # puts response
 #
-puts "###### Outlets ######"
-client.Outlet.all.each do |outlet|
-  puts outlet.name
-end
+# puts "###### Outlets ######"
+# client.Outlet.all.each do |outlet|
+#   puts outlet.name
+# end
+#
+# puts "###### Payment Types ######"
+# client.PaymentType.all.each do |payment_type|
+#   puts payment_type.name
+# end
