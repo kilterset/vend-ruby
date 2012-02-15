@@ -5,5 +5,6 @@ require 'vend/base_factory'
 require 'vend/base'
 
 require 'vend/resource/product'
+require 'vend/resource/customer'
 
 require 'vend/client'

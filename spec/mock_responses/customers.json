@@ -1,0 +1,20 @@
+{
+        "customers"    :   [        {
+        "id":               "6cbfbc20-3d5f-11e0-8697-4040f540b50a",
+        "name":             "",
+        "customer_code":    "WALKIN",
+        "customer_group_id":         "6cbee822-3d5f-11e0-8697-4040f540b50a",
+        "customer_group_name":       "All Customers",
+                "updated_at":               "2011-02-21 02:08:07",
+        "deleted_at":               "",
+        "balance":                  "0.000",
+        "year_to_date":             "0.00000",
+        "points":                   "0",
+        "custom_field_1":           "",
+        "custom_field_2":           "",
+        "custom_field_3":           "",
+        "custom_field_4":           "",
+        "contact":  {
+                        }
+        }        ]
+}
