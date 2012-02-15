@@ -1,0 +1,32 @@
+{
+    "registers"    :   [        {
+        "id":      "6cbe2342-3d5f-11e0-8697-4040f540b50a",
+        "name":             "Main Register",
+        "outlet_id":      "6cb5c88c-3d5f-11e0-8697-4040f540b50a",
+        "print_receipt" : "1",
+        "email_receipt" : "0",
+        "ask_for_note_on_save"  : "1",
+        "print_note_on_receipt"  : "0",
+        "ask_for_user_on_sale"  : "0",
+                "receipt_header":   "<h1>Trineo Dev Account<h1>",
+                "receipt_footer":   "<h1>Thanks for stopping by<h1>",
+        "receipt_style_sheet":   "\/css\/receipt\/receipt_80.css?v=2.30.03",
+        "invoice_prefix":   "",
+        "invoice_suffix":   "",
+        "invoice_sequence":   1,
+        "register_open_count_sequence":   "2",
+        "register_open_time":   "2012-02-08 06:22:36",
+        "register_close_time":   "",
+        "quick_keys":           [            { "page_label" : "",
+              "keys" : [
+                                                            {
+                                                 "position"              : "1",
+                                                 "label"                 : "T-shirt (Demo)",
+                                                 "sku"                   : "tshirt-white"},                                                                                                {
+                                                 "position"              : "2",
+                                                 "label"                 : "Coffee (Demo)",
+                                                 "sku"                   : "coffee-hot"}                                                ]
+            }
+],
+        "quick_keys_template":  {"quick_keys":{"groups":[{"name":"Default","position":0,"pages":[{"page":1,"keys":[{"position":0,"label":"T-shirt (Demo)","sku":"tshirt-white","product_id":"6cc53042-3d5f-11e0-8697-4040f540b50a","color":"white","parent":false},{"position":1,"label":"Coffee (Demo)","sku":"coffee-hot","product_id":"6cd62cbc-3d5f-11e0-8697-4040f540b50a","color":"white","parent":false}]}]}]}}        }        ]
+}
