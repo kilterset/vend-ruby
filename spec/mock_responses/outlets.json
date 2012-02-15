@@ -1,0 +1,14 @@
+{
+    "outlets"    :   [        {
+        "id":      "6cb5c88c-3d5f-11e0-8697-4040f540b50a",
+        "name":    "Main Outlet",
+        "email":    "",
+        "physical_address1": "",
+        "physical_address2": "",
+        "physical_suburb": "",
+        "physical_city": "",
+        "physical_postcode": "",
+        "physical_state": "",
+        "physical_country_id" : ""
+        }        ]
+}

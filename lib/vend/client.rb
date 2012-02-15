@@ -26,6 +26,10 @@ module Vend #:nodoc:
       Vend::Resource::ProductFactory.new(self)
     end
 
+    def Outlet #:nodoc:
+      Vend::Resource::OutletFactory.new(self)
+    end
+
     def Customer #:nodoc:
       Vend::Resource::CustomerFactory.new(self)
     end
