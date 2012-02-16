@@ -26,19 +26,35 @@ module Vend
       self.name.split('::').last.underscore
     end
 
+    def self.collection_name
+      endpoint_name.pluralize
+    end
+
     # Returns a collection containing all of the specified resource objects.
     # Will paginate.
     def self.all(client)
-      collection_name = self.endpoint_name.pluralize
       response = client.request(collection_name)
-      json = parse_json(response.body)
-      json[collection_name].map do |attrs|
-        self.new(client, :attrs => attrs)
-      end
+      initialize_collection(client, response.body)
     end
 
     def self.parse_json(string) #:nodoc:
       JSON.parse(string)
+    end
+
+    # Will initialize a collection of Resources from the APIs JSON Response.
+    def self.initialize_collection(client, json)
+      results = parse_json(json)
+      results[collection_name].map do |attrs|
+        self.new(client, :attrs => attrs)
+      end
+    end
+
+    # Sends a search request to the API and initializes a collection of Resources
+    # from the response.
+    # This method is only used internally by find_by_field methods.
+    def self.search(client, field, query)
+      response = client.request(collection_name, :url_params => { field.to_sym => query.to_s } )
+      initialize_collection(client, response.body)
     end
 
     # Overrides respond_to? to query the attrs hash for the key before

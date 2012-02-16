@@ -18,6 +18,14 @@ client = Vend::Client.new(STORE, USERNAME, PASSWORD)
 # response = client.request('customers', :method => :post, :body => '{"customer_code":"foo"}')
 # puts response
 #
+# puts "###### Finding a Customer by name ######"
+# response = client.Customer.find_by_name('Foo')
+# puts response.inspect
+#
+# puts "###### Finding a Customer by email ######"
+# response = client.Customer.find_by_email('foo@example.com')
+# puts response.inspect
+#
 # puts "###### Outlets ######"
 # client.Outlet.all.each do |outlet|
 #   puts outlet.name

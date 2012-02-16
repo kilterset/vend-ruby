@@ -31,7 +31,15 @@ module Vend
 
     # The main point of this factory class is to proxy methods to the target
     # class and prepend client to the argument list.
-    delegate_to_target_class :all
+    delegate_to_target_class :all, :search
+
+    # Generates find_by_field methods which call a search on the target class
+    def self.findable_by(field, options = {})
+      url_param = options[:as] || field
+      define_method "find_by_#{field.to_s}" do |*args|
+        target_class.send(:search, @client, url_param, *args)
+      end
+    end
 
   end
 
