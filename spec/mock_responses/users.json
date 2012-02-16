@@ -1,0 +1,17 @@
+{
+    "users"    :   [        {
+        "id":      "6ce4286c-3d5f-11e0-8697-4040f540b50a",
+        "username":    "user@example.com",
+        "name":    "A cashier",
+        "outlet_id":    "",
+        "outlet_name":    "",
+        "account_type": "admin"
+        },                {
+        "id":      "85b7853a-52cd-11e1-8cd4-4040dde94e2e",
+        "username":    "greg.signal@trineo.co.nz",
+        "name":    "A cashier",
+        "outlet_id":    "6cb5c88c-3d5f-11e0-8697-4040f540b50a",
+        "outlet_name":    "Main Outlet",
+        "account_type": "admin"
+        }        ]
+}
