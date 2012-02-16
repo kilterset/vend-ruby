@@ -1,0 +1,7 @@
+{
+    "taxes"    :   [        {
+        "id":      "53b3501c-887c-102d-8a4b-a9cf13f17faa",
+        "default":   1,
+        "name":    "NZ GST",
+        "rate":    0.15        }        ]
+}
