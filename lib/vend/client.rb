@@ -42,6 +42,10 @@ module Vend #:nodoc:
       Vend::Resource::RegisterFactory.new(self)
     end
 
+    def RegisterSale #:nodoc:
+      Vend::Resource::RegisterSaleFactory.new(self)
+    end
+
     # Makes a request to the specified path within the Vend API
     # E.g. request('foo') will make a GET request to
     #      http://storeurl.vendhq.com/api/foo

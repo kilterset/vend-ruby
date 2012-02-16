@@ -9,5 +9,6 @@ require 'vend/resource/product'
 require 'vend/resource/customer'
 require 'vend/resource/payment_type'
 require 'vend/resource/register'
+require 'vend/resource/register_sale'
 
 require 'vend/client'
