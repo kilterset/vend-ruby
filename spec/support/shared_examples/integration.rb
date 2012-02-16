@@ -17,6 +17,15 @@ def build_receiver
 end
 
 shared_examples "a resource with a collection GET endpoint" do
+
+  let(:username)  {"foo"}
+  let(:password)  {"bar"}
+  let(:store)     {"baz"}
+
+  let(:client) do
+    Vend::Client.new(store, username, password)
+  end
+
   it "gets the collection" do
     stub_request(:get, "https://#{username}:#{password}@#{store}.vendhq.com/api/#{class_basename.to_s.underscore.pluralize}").
     to_return(:status => 200, :body => get_mock_from_path(:get))
