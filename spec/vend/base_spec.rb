@@ -25,6 +25,12 @@ describe Vend::Base do
     described_class.parse_json('{"baz":"baloo"}').should == {"baz" => "baloo"}
   end
 
+  it "raises an exception with invalid JSON" do
+    expect {
+      described_class.parse_json('foo')
+    }.to raise_error(Vend::Resource::InvalidResponse)
+  end
+
   it "initializes a collection from JSON results" do
     collection = Vend::Resource::Foo.initialize_collection(client, '{"foos":[{"id":1,"foo":"bar"}]}')
     a_foo = collection.first

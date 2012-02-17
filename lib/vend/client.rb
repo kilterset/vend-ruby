@@ -91,7 +91,9 @@ module Vend #:nodoc:
       request.basic_auth @username, @password
 
       request.body = options[:body] if options[:body]
-      http.request(request)
+      response = http.request(request)
+      raise HTTPError.new(response) unless response.kind_of?(Net::HTTPSuccess)
+      response
     end
 
     # Returns the base API url for the client.

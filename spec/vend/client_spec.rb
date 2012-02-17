@@ -18,6 +18,18 @@ describe Vend::Client do
 
   describe "makes arbitrary requests to the API" do
 
+    it "throws an error on non-JSON responses" do
+    end
+
+    it "throws an error" do
+      stub_request(:get, "https://trish:sand@intergalactic.vendhq.com/api/invalid").
+        to_return(:status => 404, :body => '', :headers => {})
+
+      expect {
+        subject.request('invalid')
+      }.to raise_error(Vend::HTTPError)
+    end
+
     it "allows us to specify HTTP method" do
       stub_request(:post, "https://trish:sand@intergalactic.vendhq.com/api/foo").
         to_return(:status => 200, :body => "", :headers => {})

@@ -39,6 +39,8 @@ module Vend
 
     def self.parse_json(string) #:nodoc:
       JSON.parse(string)
+    rescue JSON::ParserError
+      raise Vend::Resource::InvalidResponse, "JSON Parse Error: #{string}"
     end
 
     # Will initialize a collection of Resources from the APIs JSON Response.
