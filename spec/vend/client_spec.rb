@@ -43,6 +43,14 @@ describe Vend::Client do
       response.should be_instance_of(Net::HTTPOK)
     end
 
+    it "allows us to specify an id" do
+      stub_request(:get, "https://trish:sand@intergalactic.vendhq.com/api/foos/1").
+        to_return(:status => 200, :body => "", :headers => {})
+
+      response = subject.request('foos', :id => 1)
+      response.should be_instance_of(Net::HTTPOK)
+    end
+
   end
 
   describe "resource factories" do

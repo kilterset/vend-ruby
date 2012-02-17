@@ -89,4 +89,22 @@ describe Vend::Base do
       foos.first.should be_a Vend::Resource::Foo
     end
   end
+
+  describe "delete!" do
+    it "deletes an object" do
+      objekt = Vend::Resource::Foo.new(client, :attrs => {:id => 1} )
+      client.should_receive(:request).with('foos', :method => :delete, :id => 1)
+
+      objekt.delete!
+    end
+
+    it "fails to when no id is present" do
+      objekt = Vend::Resource::Foo.new(client, :attrs => {:foo => 'bar'})
+      client.should_not_receive(:request)
+
+      expect {
+        objekt.delete!
+      }.to raise_error(Vend::Resource::IllegalAction, "Vend::Resource::Foo has no unique ID")
+    end
+  end
 end

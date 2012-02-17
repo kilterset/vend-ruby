@@ -76,5 +76,12 @@ module Vend
         super(method_name)
       end
     end
+
+    def delete!
+      raise(Vend::Resource::IllegalAction,
+            "#{self.class.name} has no unique ID") unless attrs[:id]
+      response = client.request(self.class.collection_name,
+                                :method => :delete, :id => attrs[:id])
+    end
   end
 end

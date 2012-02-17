@@ -69,6 +69,11 @@ module Vend #:nodoc:
     #     E.g. request('foo', :url_params => {:bar => "baz"}) will request
     #          http://storeurl.vendhq.com/api/foo?bar=baz
     #
+    #   :id - The ID required for performing actions on specific resources
+    #         (e.g. delete).
+    #     E.g. request('foos', :method => :delete, :id => 1) will request
+    #          DELETE http://storeurl.vendhq.com/api/foos/1
+    #
     #   :body - The request body
     #     E.g. For submitting a POST to http://storeurl.vendhq.com/api/foo
     #          with the JSON data {"baz":"baloo"} we would call
@@ -76,6 +81,7 @@ module Vend #:nodoc:
     #
     def request(path, options = {})
       options = {:method => :get}.merge options
+      path += "/#{options[:id]}" if options[:id]
       url = URI.parse(base_url + path)
       http = Net::HTTP.new(url.host, url.port)
       http.use_ssl = true
