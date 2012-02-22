@@ -38,6 +38,13 @@ module Vend
       initialize_collection(client, response.body)
     end
 
+    # Returns a collection containing all resources of the specified type that
+    # have been modified since the specified date.
+    def self.since(client, time)
+      response = client.request(collection_name, :since => time)
+      initialize_collection(client, response.body)
+    end
+
     def self.build(client, attrs)
       self.new(client, :attrs => attrs)
     end

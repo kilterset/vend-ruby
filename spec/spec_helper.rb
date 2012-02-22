@@ -4,6 +4,7 @@ require 'bundler/setup'
 require 'webmock/rspec'
 Dir["./spec/support/**/*.rb"].each {|f| require f}
 
+require 'cgi'
 require 'vend'
 
 RSpec.configure do |config|

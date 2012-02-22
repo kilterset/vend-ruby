@@ -23,6 +23,11 @@ describe Vend::BaseFactory do
     subject.all
   end
 
+  it "proxies 'since' to the target class" do
+    Vend::Resource::Foo.should_receive(:since)
+    subject.since
+  end
+
   it "returns the target class" do
     subject.target_class.should == Vend::Resource::Foo
   end

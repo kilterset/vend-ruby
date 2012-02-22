@@ -74,6 +74,15 @@ describe Vend::Client do
         response.should be_instance_of(Net::HTTPOK)
       end
 
+      it "allows us to specify a since parameter" do
+        time = Time.new(2012,5,8)
+        stub_request(:get, "https://trish:sand@intergalactic.vendhq.com/api/foos/since/#{CGI.escape(time.strftime(Vend::Client::DATETIME_FORMAT))}").
+          to_return(:status => 200, :body => "", :headers => {})
+
+        response = subject.request('foos', :since => time)
+        response.should be_instance_of(Net::HTTPOK)
+      end
+
     end
   end
 

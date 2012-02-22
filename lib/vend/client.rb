@@ -15,6 +15,8 @@ module Vend #:nodoc:
 
     UNAUTHORIZED_MESSAGE = "Client not authorized. Check your store URL and credentials are correct and try again."
 
+    DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+
     # The store url for this client
     attr_accessor :store
 
@@ -83,7 +85,11 @@ module Vend #:nodoc:
     #
     def request(path, options = {})
       options = {:method => :get}.merge options
-      path += "/#{options[:id]}" if options[:id]
+      if options[:id]
+        path += "/#{options[:id]}"
+      elsif options[:since]
+        path += "/since/#{CGI::escape(options[:since].strftime(DATETIME_FORMAT))}"
+      end
       url = URI.parse(base_url + path)
       http = Net::HTTP.new(url.host, url.port)
       http.use_ssl = true

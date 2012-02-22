@@ -59,11 +59,30 @@ describe Vend::Base do
         ]
       }'
     response = mock
-    response.should_receive(:body).and_return(mock_response);
+    response.should_receive(:body).and_return(mock_response)
     client.should_receive(:request).with('foos').and_return(response)
     foos = Vend::Resource::Foo.all(client)
     foos.length.should == 1
     foos.first.should be_instance_of(Vend::Resource::Foo)
+    foos.first.bar.should == "baz"
+  end
+
+  it "returns all Foo objects that have been modified since a Time" do
+    time = Time.new(2012,5,8)
+    mock_response = '
+      {
+        "foos":[
+            {"id":"1","bar":"baz"},
+            {"id":"2","flar":"flum"}
+        ]
+      }'
+    response = mock
+    response.should_receive(:body).and_return(mock_response)
+    client.should_receive(:request).with('foos', :since => time).and_return(response)
+    foos = Vend::Resource::Foo.since(client, time)
+    foos.length.should == 2
+    foos.first.should be_instance_of(Vend::Resource::Foo)
+    foos.first.bar.should == "baz"
   end
 
   describe "dynamic instance methods" do
@@ -101,7 +120,7 @@ describe Vend::Base do
     end
   end
 
-  describe "deleting a resource" do
+  describe "deleting" do
     specify "delete! deletes an object" do
       objekt = Vend::Resource::Foo.new(client, :attrs => {'id' => 1} )
       client.should_receive(:request).with('foos', :method => :delete, :id => 1)
