@@ -37,3 +37,23 @@ shared_examples "a resource with a collection GET endpoint" do
     first.should have_attributes(expected_attributes)
   end
 end
+
+shared_examples "a resource with a DELETE endpoint" do
+
+  let(:username)  {"foo"}
+  let(:password)  {"bar"}
+  let(:store)     {"baz"}
+
+  let(:client) do
+    Vend::Client.new(store, username, password)
+  end
+
+  it "deletes the resource" do
+    stub_request(:delete, "https://#{username}:#{password}@#{store}.vendhq.com/api/#{class_basename.to_s.underscore.pluralize}/#{expected_attributes['id']}").
+    to_return(:status => 200, :body => {})
+
+    objekt = build_receiver.build(expected_attributes)
+    objekt.delete.should be_true
+  end
+
+end

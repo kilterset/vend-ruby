@@ -26,6 +26,7 @@ module Vend
       self.name.split('::').last.underscore
     end
 
+    # Returns the endpoint name for a collection of this resource
     def self.collection_name
       endpoint_name.pluralize
     end
@@ -35,6 +36,10 @@ module Vend
     def self.all(client)
       response = client.request(collection_name)
       initialize_collection(client, response.body)
+    end
+
+    def self.build(client, attrs)
+      self.new(client, :attrs => attrs)
     end
 
     def self.parse_json(string) #:nodoc:
@@ -47,7 +52,7 @@ module Vend
     def self.initialize_collection(client, json)
       results = parse_json(json)
       results[collection_name].map do |attrs|
-        self.new(client, :attrs => attrs)
+        self.build(client, attrs)
       end
     end
 
@@ -79,11 +84,18 @@ module Vend
       end
     end
 
+    def delete
+      delete!
+    rescue Vend::Resource::IllegalAction
+      false
+    end
+
     def delete!
       raise(Vend::Resource::IllegalAction,
-            "#{self.class.name} has no unique ID") unless attrs[:id]
-      response = client.request(self.class.collection_name,
-                                :method => :delete, :id => attrs[:id])
+            "#{self.class.name} has no unique ID") unless attrs['id']
+      client.request(self.class.collection_name,
+                     :method => :delete, :id => attrs['id'])
+      true
     end
   end
 end

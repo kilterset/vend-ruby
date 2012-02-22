@@ -13,6 +13,11 @@ describe Vend::Base do
     subject.should be_instance_of(Vend::Resource::Foo)
   end
 
+  it "builds a Foo" do
+    Vend::Resource::Foo.build(client, :attrs => attribute_hash).should
+      be_instance_of(Vend::Resource::Foo)
+  end
+
   it "assigns the client" do
     subject.client.should == client
   end
@@ -96,21 +101,27 @@ describe Vend::Base do
     end
   end
 
-  describe "delete!" do
-    it "deletes an object" do
-      objekt = Vend::Resource::Foo.new(client, :attrs => {:id => 1} )
+  describe "deleting a resource" do
+    specify "delete! deletes an object" do
+      objekt = Vend::Resource::Foo.new(client, :attrs => {'id' => 1} )
       client.should_receive(:request).with('foos', :method => :delete, :id => 1)
 
       objekt.delete!
     end
 
-    it "fails to when no id is present" do
+    specify "delete! throws an error when no id is present" do
       objekt = Vend::Resource::Foo.new(client, :attrs => {:foo => 'bar'})
       client.should_not_receive(:request)
 
       expect {
         objekt.delete!
       }.to raise_error(Vend::Resource::IllegalAction, "Vend::Resource::Foo has no unique ID")
+    end
+
+    specify "delete returns false when no id is present" do
+      objekt = Vend::Resource::Foo.new(client, :attrs => {:foo => 'bar'})
+      client.should_not_receive(:request)
+      objekt.delete.should be_false
     end
   end
 end
