@@ -13,6 +13,8 @@ module Vend #:nodoc:
   #
   class Client
 
+    UNAUTHORIZED_MESSAGE = "Client not authorized. Check your store URL and credentials are correct and try again."
+
     # The store url for this client
     attr_accessor :store
 
@@ -92,6 +94,7 @@ module Vend #:nodoc:
 
       request.body = options[:body] if options[:body]
       response = http.request(request)
+      raise Unauthorized.new(UNAUTHORIZED_MESSAGE) if response.kind_of?(Net::HTTPUnauthorized)
       raise HTTPError.new(response) unless response.kind_of?(Net::HTTPSuccess)
       response
     end
