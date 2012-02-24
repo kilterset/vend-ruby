@@ -10,7 +10,10 @@ describe Vend::Resource::RegisterSale do
     }
   end
 
+  let(:id) { '2e658bce-9627-bc27-d77d-6c9ba2e8216e' }
+
   let(:expected_collection_length) { 1 }
 
+  it_should_behave_like "a resource with a singular GET endpoint"
   it_should_behave_like "a resource with a collection GET endpoint"
 end

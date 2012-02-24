@@ -6,6 +6,14 @@ describe Vend::Base do
 
   let(:client) { mock(:client) }
   let(:attribute_hash) { {:key => "value"} }
+  let(:mock_response) { '
+      {
+        "foos":[
+            {"id":"1","bar":"baz"},
+            {"id":"2","flar":"flum"}
+        ]
+      }'
+  }
 
   subject { Vend::Resource::Foo.new(client, :attrs => attribute_hash) }
 
@@ -36,11 +44,17 @@ describe Vend::Base do
     }.to raise_error(Vend::Resource::InvalidResponse)
   end
 
+  it "initializes a singular resource from JSON results" do
+    resource = Vend::Resource::Foo.initialize_singular(client,mock_response)
+    resource.should be_a Vend::Resource::Foo
+    resource.bar.should == "baz"
+  end
+
   it "initializes a collection from JSON results" do
-    collection = Vend::Resource::Foo.initialize_collection(client, '{"foos":[{"id":1,"foo":"bar"}]}')
+    collection = Vend::Resource::Foo.initialize_collection(client, mock_response)
     a_foo = collection.first
     a_foo.should be_a Vend::Resource::Foo
-    a_foo.foo.should == "bar"
+    a_foo.bar.should == "baz"
   end
 
   it "returns the endpoint name" do
@@ -51,31 +65,28 @@ describe Vend::Base do
     Vend::Resource::Foo.collection_name.should == 'foos'
   end
 
+  it "finds a Foo by id" do
+    mock_response = '{"foos":[{"id":"1","bar":"baz"}]}'
+    response = mock
+    response.should_receive(:body).and_return(mock_response)
+    client.should_receive(:request).with('foos', :id => "1").and_return(response)
+    foo = Vend::Resource::Foo.find(client, "1")
+    foo.should be_instance_of(Vend::Resource::Foo)
+    foo.bar.should == "baz"
+  end
+
   it "returns all Foo objects" do
-    mock_response = '
-      {
-        "foos":[
-            {"id":"1","bar":"baz"}
-        ]
-      }'
     response = mock
     response.should_receive(:body).and_return(mock_response)
     client.should_receive(:request).with('foos').and_return(response)
     foos = Vend::Resource::Foo.all(client)
-    foos.length.should == 1
+    foos.length.should == 2
     foos.first.should be_instance_of(Vend::Resource::Foo)
     foos.first.bar.should == "baz"
   end
 
   it "returns all Foo objects that have been modified since a Time" do
     time = Time.new(2012,5,8)
-    mock_response = '
-      {
-        "foos":[
-            {"id":"1","bar":"baz"},
-            {"id":"2","flar":"flum"}
-        ]
-      }'
     response = mock
     response.should_receive(:body).and_return(mock_response)
     client.should_receive(:request).with('foos', :since => time).and_return(response)

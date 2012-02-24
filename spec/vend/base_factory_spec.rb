@@ -18,6 +18,11 @@ describe Vend::BaseFactory do
     subject.target_class.should == Vend::Resource::Foo
   end
 
+  it "proxies 'find' to the target class" do
+    Vend::Resource::Foo.should_receive(:find)
+    subject.find
+  end
+
   it "proxies 'all' to the target class" do
     Vend::Resource::Foo.should_receive(:all)
     subject.all
@@ -26,6 +31,11 @@ describe Vend::BaseFactory do
   it "proxies 'since' to the target class" do
     Vend::Resource::Foo.should_receive(:since)
     subject.since
+  end
+
+  it "proxies 'build' to the target class" do
+    Vend::Resource::Foo.should_receive(:build)
+    subject.build
   end
 
   it "returns the target class" do

@@ -55,6 +55,13 @@ module Vend
       raise Vend::Resource::InvalidResponse, "JSON Parse Error: #{string}"
     end
 
+    # Initializes a single object from a JSON response.
+    # Assumes the response is a JSON array with a single item.
+    def self.initialize_singular(client, json)
+      result = parse_json(json)
+      self.build(client, result[collection_name].first)
+    end
+
     # Will initialize a collection of Resources from the APIs JSON Response.
     def self.initialize_collection(client, json)
       results = parse_json(json)
@@ -69,6 +76,11 @@ module Vend
     def self.search(client, field, query)
       response = client.request(collection_name, :url_params => { field.to_sym => query.to_s } )
       initialize_collection(client, response.body)
+    end
+
+    def self.find(client, id)
+      response = client.request(collection_name, :id => id)
+      initialize_singular(client, response.body)
     end
 
     # Overrides respond_to? to query the attrs hash for the key before
