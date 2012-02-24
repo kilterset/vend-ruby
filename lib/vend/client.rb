@@ -117,9 +117,21 @@ module Vend #:nodoc:
     # Returns an empty string from a nil argument
     #
     # E.g. url_params_for({:field => "value"}) will return ?field=value
+    # url_params_for({:field => ["value1","value2"]}) will return ?field[]=value1&field[]=value2
     def url_params_for(options)
-      return "?".concat(options.collect { |k,v| "#{k}=#{CGI::escape(v.to_s)}" }.join('&')) if not options.nil?
-      return ''
+      ary = Array.new
+      if !options.nil?
+        options.each do |option,value|
+          if value.class == Array
+            ary << value.collect { |key| "#{option}%5B%5D=#{CGI::escape(key.to_s)}" }.join('&')
+          else
+            ary << "#{option}=#{CGI::escape(value.to_s)}"
+          end
+        end
+        '?'.concat(ary.join('&'))
+      else
+        ''
+      end
     end
 
   end

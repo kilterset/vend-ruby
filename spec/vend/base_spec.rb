@@ -126,7 +126,7 @@ describe Vend::Base do
       response.should_receive(:body).and_return(mock_response)
       client.should_receive(:request).with('foos', :url_params => {:bar => 'baz'}).
         and_return(response)
-      foos = Vend::Resource::Foo.search(client, 'bar', 'baz')
+      foos = Vend::Resource::Foo.search(client, :bar, 'baz')
       foos.first.should be_a Vend::Resource::Foo
     end
   end

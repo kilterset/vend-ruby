@@ -45,6 +45,8 @@ module Vend
       initialize_collection(client, response.body)
     end
 
+    # Builds a new instance of the described resource using the specified
+    # attributes.
     def self.build(client, attrs)
       self.new(client, :attrs => attrs)
     end
@@ -74,10 +76,12 @@ module Vend
     # from the response.
     # This method is only used internally by find_by_field methods.
     def self.search(client, field, query)
-      response = client.request(collection_name, :url_params => { field.to_sym => query.to_s } )
+      response = client.request(collection_name, :url_params => { field.to_sym => query } )
       initialize_collection(client, response.body)
     end
 
+    # Attempts to pull a singular object from Vend through the singular GET
+    # endpoint.
     def self.find(client, id)
       response = client.request(collection_name, :id => id)
       initialize_singular(client, response.body)
@@ -103,12 +107,17 @@ module Vend
       end
     end
 
+    # Attempts to delete the resource. If an exception is thrown by delete!,
+    # it is caught and false is returned (typically when the resource is not
+    # a type which can be deleted).
     def delete
       delete!
     rescue Vend::Resource::IllegalAction
       false
     end
 
+    # Attempts to delete there resource. Will throw an exception when the attempt
+    # fails, otherwise will return true.
     def delete!
       raise(Vend::Resource::IllegalAction,
             "#{self.class.name} has no unique ID") unless attrs['id']

@@ -59,10 +59,10 @@ describe Vend::Client do
       end
 
       it "allows us to specify url parameters" do
-        stub_request(:get, "https://trish:sand@intergalactic.vendhq.com/api/foo?foo=bar&baz=baloo").
+        stub_request(:get, "https://trish:sand@intergalactic.vendhq.com/api/foo?foo=bar&baz=baloo&flum%5B0%5D=blob&flum%5B1%5D=splat").
           to_return(:status => 200, :body => "", :headers => {})
 
-        response = subject.request('foo', :url_params => {:foo => "bar", :baz => "baloo"})
+        response = subject.request('foo', :url_params => {:foo => "bar", :baz => "baloo", :flum => ["blob","splat"]})
         response.should be_instance_of(Net::HTTPOK)
       end
 
