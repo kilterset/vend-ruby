@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.name        = "vend-ruby"
   s.version     = Vend::VERSION
   s.authors     = ["Trineo Ltd"]
-  s.email       = ["greg.signal@trineo.co.nz"]
+  s.email       = ["operations@trineo.co.nz"]
   s.homepage    = "http://trineo.co.nz"
   s.summary     = %q{Vend REST API Gem}
   s.description = %q{Ruby Gem to interface with the Vend REST API}
