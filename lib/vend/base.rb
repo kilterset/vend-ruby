@@ -45,6 +45,13 @@ module Vend
       initialize_collection(client, response.body)
     end
 
+    # Returns a collection containing all resources of the specified type that
+    # have an association to a specific outlet.
+    def self.outlet_id(client, outlet_id)
+      response = client.request(collection_name, :outlet_id => outlet_id)
+      initialize_collection(client, response.body)
+    end
+
     # Builds a new instance of the described resource using the specified
     # attributes.
     def self.build(client, attrs)

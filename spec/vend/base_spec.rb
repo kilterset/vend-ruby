@@ -96,6 +96,16 @@ describe Vend::Base do
     foos.first.bar.should == "baz"
   end
 
+  it "returns all Foo objects that belong to an outlet" do
+    response = mock
+    response.should_receive(:body).and_return(mock_response)
+    client.should_receive(:request).with('foos', :outlet_id => 'outlet').and_return(response)
+    foos = Vend::Resource::Foo.outlet_id(client, 'outlet')
+    foos.length.should == 2
+    foos.first.should be_instance_of(Vend::Resource::Foo)
+    foos.first.bar.should == "baz"
+  end
+
   describe "dynamic instance methods" do
     let(:attrs) { { "one" => "foo", "two" => "bar", "object_id" => "fail" } }
     subject { Vend::Resource::Foo.new(client, :attrs => attrs) }

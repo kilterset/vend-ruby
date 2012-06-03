@@ -83,6 +83,14 @@ describe Vend::Client do
         response.should be_instance_of(Net::HTTPOK)
       end
 
+      it "allows us to specify an outlet_id parameter" do
+        stub_request(:get, "https://trish:sand@intergalactic.vendhq.com/api/foos/outlet_id/outlet_guid_goes_here").
+          to_return(:status => 200, :body => "", :headers => {})
+
+        response = subject.request('foos', :outlet_id => 'outlet_guid_goes_here')
+        response.should be_instance_of(Net::HTTPOK)
+      end
+
     end
   end
 

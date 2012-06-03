@@ -32,6 +32,11 @@ describe Vend::BaseFactory do
     Vend::Resource::Foo.should_receive(:since)
     subject.since
   end
+  
+  it "proxies 'outlet_id' to the target class" do
+    Vend::Resource::Foo.should_receive(:outlet_id)
+    subject.outlet_id
+  end
 
   it "proxies 'build' to the target class" do
     Vend::Resource::Foo.should_receive(:build)
