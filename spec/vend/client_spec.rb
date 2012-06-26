@@ -16,6 +16,23 @@ describe Vend::Client do
     subject.base_url.should == "https://store.vendhq.com/api/"
   end
 
+  it "should set options" do
+    options = { :key => :value }
+    client = Vend::Client.new('store','user','password', options)
+    options.each do |key, value|
+      client.options[key].should == value
+    end
+  end
+
+  it "should set ssl verify mode" do
+    options = { :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE }
+    client = Vend::Client.new('store','user','password', options)
+
+    url = URI.parse('http://something/useful')
+    http = client.get_http_connection(url.host, url.port)
+    http.verify_mode.should == OpenSSL::SSL::VERIFY_NONE 
+  end
+
   it "raises an error when using invalid credentials" do
     stub_request(:get, "https://invalid:user@intergalactic.vendhq.com/api/products").
       to_return(:status => 401)

@@ -17,13 +17,19 @@ module Vend #:nodoc:
 
     DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
+    DEFAULT_OPTIONS = {
+      :ssl_verify_mode => OpenSSL::SSL::VERIFY_PEER
+    }
+
     # The store url for this client
     attr_accessor :store
+    attr_reader :options
 
-    def initialize(store, username, password) #:nodoc:
-      @store = store;
-      @username = username;
-      @password = password;
+    def initialize(store, username, password, options = {}) #:nodoc:
+      @store = store
+      @username = username
+      @password = password
+      @options = DEFAULT_OPTIONS.merge(options)
     end
 
     def Product #:nodoc:
@@ -93,8 +99,7 @@ module Vend #:nodoc:
         path += "/since/#{CGI::escape(options[:since].strftime(DATETIME_FORMAT))}"
       end
       url = URI.parse(base_url + path)
-      http = Net::HTTP.new(url.host, url.port)
-      http.use_ssl = true
+      http = get_http_connection(url.host, url.port)
 
       method = ("Net::HTTP::" + options[:method].to_s.classify).constantize
       request = method.new(url.path + url_params_for(options[:url_params]))
@@ -105,6 +110,14 @@ module Vend #:nodoc:
       raise Unauthorized.new(UNAUTHORIZED_MESSAGE) if response.kind_of?(Net::HTTPUnauthorized)
       raise HTTPError.new(response) unless response.kind_of?(Net::HTTPSuccess)
       response
+    end
+
+    # sets up a http connection
+    def get_http_connection(host, port)
+      http = Net::HTTP.new(host, port)
+      http.use_ssl = true
+      http.verify_mode = @options[:ssl_verify_mode]
+      http
     end
 
     # Returns the base API url for the client.
