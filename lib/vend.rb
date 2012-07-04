@@ -2,6 +2,7 @@ $: << File.expand_path(File.dirname(__FILE__))
 require 'active_support/inflector'
 
 require 'vend/exception'
+require 'vend/null_logger'
 require 'vend/base_factory'
 require 'vend/base'
 
