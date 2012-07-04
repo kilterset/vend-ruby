@@ -117,4 +117,19 @@ describe Vend::Client do
       subject.Product.all.should == []
     end
   end
+
+  describe "#logger" do
+
+    let(:logger)  { mock("logger") }
+
+    it "defaults to a null logger" do
+      subject.logger.should be_instance_of(Vend::NullLogger)
+    end
+
+    it "allows the logger to be set" do
+      subject.logger = logger
+      subject.logger.should == logger
+    end
+
+  end
 end

@@ -22,7 +22,7 @@ module Vend #:nodoc:
     }
 
     # The store url for this client
-    attr_accessor :store
+    attr_accessor :store, :logger
     attr_reader :options
 
     def initialize(store, username, password, options = {}) #:nodoc:
@@ -106,9 +106,11 @@ module Vend #:nodoc:
       request.basic_auth @username, @password
 
       request.body = options[:body] if options[:body]
+      logger.debug url
       response = http.request(request)
       raise Unauthorized.new(UNAUTHORIZED_MESSAGE) if response.kind_of?(Net::HTTPUnauthorized)
       raise HTTPError.new(response) unless response.kind_of?(Net::HTTPSuccess)
+      logger.debug response
       response
     end
 
@@ -124,6 +126,10 @@ module Vend #:nodoc:
     # E.g. for the store 'foo', it returns https://foo.vendhq.com/api/
     def base_url
       "https://#{@store}.vendhq.com/api/"
+    end
+
+    def logger
+      @logger ||= NullLogger.new
     end
 
   protected
@@ -150,4 +156,5 @@ module Vend #:nodoc:
     end
 
   end
+
 end
