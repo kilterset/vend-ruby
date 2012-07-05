@@ -55,15 +55,7 @@ module Vend
     #
     def request(path, options = {})
       options = {:method => :get}.merge options
-      # FIXME extract method
-      if options[:id]
-        path += "/#{options[:id]}"
-      elsif options[:outlet_id]
-        path += "/outlet_id/#{CGI::escape(options[:outlet_id])}"
-      elsif options[:since]
-        path += "/since/#{CGI::escape(options[:since].strftime(DATETIME_FORMAT))}"
-      end
-      url = URI.parse(base_url + path)
+      url = URI.parse(base_url + expand_path_with_options(path, options))
       http = get_http_connection(url.host, url.port)
 
       # FIXME extract method
@@ -109,6 +101,19 @@ module Vend
       else
         ''
       end
+    end
+
+    protected
+    # Modifies path with the provided options
+    def expand_path_with_options(path, options)
+      if options[:id]
+        path += "/#{options[:id]}"
+      elsif options[:outlet_id]
+        path += "/outlet_id/#{CGI::escape(options[:outlet_id])}"
+      elsif options[:since]
+        path += "/since/#{CGI::escape(options[:since].strftime(DATETIME_FORMAT))}"
+      end
+      return path
     end
 
   end
