@@ -17,7 +17,11 @@ module Vend
       @base_url = options[:base_url]
       @username = options[:username]
       @password = options[:password]
-      @verify_ssl = true
+      @verify_ssl = if options.has_key?(:verify_ssl)
+                      options[:verify_ssl]
+                    else
+                      true
+                    end
     end
 
     # sets up a http connection
