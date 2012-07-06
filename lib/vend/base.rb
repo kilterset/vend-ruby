@@ -73,10 +73,7 @@ module Vend
 
     # Will initialize a collection of Resources from the APIs JSON Response.
     def self.initialize_collection(client, json)
-      results = parse_json(json)
-      results[collection_name].map do |attrs|
-        self.build(client, attrs)
-      end
+      ResourceCollection.new(client, self, json).to_a
     end
 
     # Sends a search request to the API and initializes a collection of Resources

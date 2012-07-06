@@ -62,11 +62,19 @@ describe Vend::Base do
 
   describe '.initialize_collection' do
 
-    it "initializes a collection from JSON results" do
-      collection = Vend::Resource::Foo.initialize_collection(client, mock_response)
-      a_foo = collection.first
-      a_foo.should be_a Vend::Resource::Foo
-      a_foo.bar.should == "baz"
+    subject { Vend::Resource::Foo }
+
+    let(:array)               { mock("array") }
+    let(:resource_collection) { mock("resource_collection", :to_a => array) }
+
+    before do
+      Vend::ResourceCollection.should_receive(:new).with(
+        client, subject, mock_response
+      ) { resource_collection }
+    end
+
+    it "creates a ResourceCollection instance" do
+      subject.initialize_collection(client, mock_response).should == array
     end
 
   end
