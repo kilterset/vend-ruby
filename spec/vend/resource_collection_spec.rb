@@ -4,13 +4,27 @@ describe Vend::ResourceCollection do
 
   let(:client)        { mock("client") }
   let(:target_class)  { mock("target_class") }
-  let(:response)      { mock("response") }
+  let(:endpoint)      { mock("endpoint") }
+  let(:request_args)  { mock("request_args") }
 
-  subject { described_class.new(client, target_class, response) }
+  subject { described_class.new(client, target_class, endpoint, request_args) }
 
   its(:client)        { should == client }
   its(:target_class)  { should == target_class }
-  its(:response)      { should == response }
+  its(:endpoint)      { should == endpoint }
+
+  describe "#request_args" do
+
+    its(:request_args)  { should == request_args }
+
+    context "when not set in initialize" do
+      subject {
+        described_class.new(client, target_class, endpoint)
+      }
+      its(:request_args)  { should == {} }
+    end
+
+  end
 
   describe "#each" do
 

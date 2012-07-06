@@ -65,16 +65,18 @@ describe Vend::Base do
     subject { Vend::Resource::Foo }
 
     let(:array)               { mock("array") }
+    let(:endpoint)            { mock("endpoint") }
+    let(:args)                { mock("args") }
     let(:resource_collection) { mock("resource_collection", :to_a => array) }
 
     before do
       Vend::ResourceCollection.should_receive(:new).with(
-        client, subject, mock_response
+        client, subject, endpoint, args
       ) { resource_collection }
     end
 
     it "creates a ResourceCollection instance" do
-      subject.initialize_collection(client, mock_response).should == array
+      subject.initialize_collection(client, endpoint, args).should == array
     end
 
   end
@@ -111,43 +113,84 @@ describe Vend::Base do
 
   describe '.all' do
 
-    it "returns all Foo objects" do
-      response = mock
-      response.should_receive(:body).and_return(mock_response)
-      client.should_receive(:request).with('foos').and_return(response)
-      foos = Vend::Resource::Foo.all(client)
-      foos.length.should == 2
-      foos.first.should be_instance_of(Vend::Resource::Foo)
-      foos.first.bar.should == "baz"
+    subject { Vend::Resource::Foo }
+
+    let(:collection_name)     { mock("collection_name") }
+    let(:resource_collection) { mock("resource_collection") }
+
+    before do
+      subject.stub(:collection_name => collection_name)
+    end
+
+    it "calls initialize_collection with the collection_name" do
+      subject.should_receive(:initialize_collection).with(
+        client, collection_name
+      ) { resource_collection }
+      subject.all(client).should == resource_collection
     end
 
   end
 
   describe '.since' do
 
-    it "returns all Foo objects that have been modified since a Time" do
-      time = Time.new(2012,5,8)
-      response = mock
-      response.should_receive(:body).and_return(mock_response)
-      client.should_receive(:request).with('foos', :since => time).and_return(response)
-      foos = Vend::Resource::Foo.since(client, time)
-      foos.length.should == 2
-      foos.first.should be_instance_of(Vend::Resource::Foo)
-      foos.first.bar.should == "baz"
+    subject { Vend::Resource::Foo }
+
+    let(:collection_name)     { mock("collection_name") }
+    let(:resource_collection) { mock("resource_collection") }
+    let(:since)               { mock("since") }
+
+    before do
+      subject.stub(:collection_name => collection_name)
+    end
+
+    it "calls initialize_collection with collection_name and :since arg" do
+      subject.should_receive(:initialize_collection).with(
+        client, collection_name, :since => since
+      ) { resource_collection }
+      subject.since(client, since).should == resource_collection
     end
 
   end
 
   describe '.outlet_id' do
 
-    it "returns all Foo objects that belong to an outlet" do
-      response = mock
-      response.should_receive(:body).and_return(mock_response)
-      client.should_receive(:request).with('foos', :outlet_id => 'outlet').and_return(response)
-      foos = Vend::Resource::Foo.outlet_id(client, 'outlet')
-      foos.length.should == 2
-      foos.first.should be_instance_of(Vend::Resource::Foo)
-      foos.first.bar.should == "baz"
+    subject { Vend::Resource::Foo }
+
+    let(:collection_name)     { mock("collection_name") }
+    let(:resource_collection) { mock("resource_collection") }
+    let(:outlet_id)           { mock("outlet_id") }
+
+    before do
+      subject.stub(:collection_name => collection_name)
+    end
+
+    it "calls initialize_collection with collection_name and :outlet_id arg" do
+      subject.should_receive(:initialize_collection).with(
+        client, collection_name, :outlet_id => outlet_id
+      ) { resource_collection }
+      subject.outlet_id(client, outlet_id).should == resource_collection
+    end
+
+  end
+
+  describe ".search" do
+
+    subject { Vend::Resource::Foo }
+
+    let(:collection_name)     { mock("collection_name") }
+    let(:resource_collection) { mock("resource_collection") }
+    let(:field)               { "field" }
+    let(:query)               { "query" }
+
+    before do
+      subject.stub(:collection_name => collection_name)
+    end
+
+    it "calls initialize_collection with collection_name and :outlet_id arg" do
+      subject.should_receive(:initialize_collection).with(
+        client, collection_name, :url_params => { field.to_sym => query }
+      ) { resource_collection }
+      subject.search(client, field, query).should == resource_collection
     end
 
   end
@@ -166,26 +209,6 @@ describe Vend::Base do
       subject.object_id.should_not == "fail"
       subject.attrs['object_id'].should == "fail"
     end
-  end
-
-  describe ".search" do
-
-    it "returns an array of Foo objects" do
-      mock_response = '{
-          "foos":[
-            {"id":"1","bar":"baz"},
-            {"id":"2","bar":"baz"},
-            {"id":"3","bar":"baz"}
-          ]
-        }'
-      response = mock
-      response.should_receive(:body).and_return(mock_response)
-      client.should_receive(:request).with('foos', :url_params => {:bar => 'baz'}).
-        and_return(response)
-      foos = Vend::Resource::Foo.search(client, :bar, 'baz')
-      foos.first.should be_a Vend::Resource::Foo
-    end
-
   end
 
   describe "delete!" do

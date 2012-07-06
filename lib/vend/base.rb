@@ -34,22 +34,28 @@ module Vend
     # Returns a collection containing all of the specified resource objects.
     # Will paginate.
     def self.all(client)
-      response = client.request(collection_name)
-      initialize_collection(client, response.body)
+      initialize_collection(client, collection_name)
     end
 
     # Returns a collection containing all resources of the specified type that
     # have been modified since the specified date.
     def self.since(client, time)
-      response = client.request(collection_name, :since => time)
-      initialize_collection(client, response.body)
+      initialize_collection(client, collection_name, :since => time)
     end
 
     # Returns a collection containing all resources of the specified type that
     # have an association to a specific outlet.
     def self.outlet_id(client, outlet_id)
-      response = client.request(collection_name, :outlet_id => outlet_id)
-      initialize_collection(client, response.body)
+      initialize_collection(client, collection_name, :outlet_id => outlet_id)
+    end
+
+    # Sends a search request to the API and initializes a collection of Resources
+    # from the response.
+    # This method is only used internally by find_by_field methods.
+    def self.search(client, field, query)
+      initialize_collection(
+        client, collection_name,  :url_params => { field.to_sym => query }
+      )
     end
 
     # Builds a new instance of the described resource using the specified
@@ -72,17 +78,10 @@ module Vend
     end
 
     # Will initialize a collection of Resources from the APIs JSON Response.
-    def self.initialize_collection(client, json)
-      ResourceCollection.new(client, self, json).to_a
+    def self.initialize_collection(client, endpoint, args = {})
+      ResourceCollection.new(client, self, endpoint, args).to_a
     end
 
-    # Sends a search request to the API and initializes a collection of Resources
-    # from the response.
-    # This method is only used internally by find_by_field methods.
-    def self.search(client, field, query)
-      response = client.request(collection_name, :url_params => { field.to_sym => query } )
-      initialize_collection(client, response.body)
-    end
 
     # Attempts to pull a singular object from Vend through the singular GET
     # endpoint.
