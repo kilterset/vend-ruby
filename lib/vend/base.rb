@@ -94,6 +94,13 @@ module Vend
       initialize_singular(client, response.body)
     end
 
+    # Whether or not this resource can be paginated, false by default.
+    # Override this method in specific classes to enable pagination for that
+    # resource.
+    def self.paginates?
+      false
+    end
+
     # Overrides respond_to? to query the attrs hash for the key before
     # proxying it to the object
     def respond_to?(method_name)

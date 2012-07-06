@@ -164,4 +164,14 @@ describe Vend::Base do
       objekt.delete.should be_false
     end
   end
+
+  describe ".paginates?" do
+
+    subject { Vend::Resource::Foo }
+
+    it "defaults to false" do
+      subject.paginates?.should be_false
+    end
+
+  end
 end
