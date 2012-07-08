@@ -82,61 +82,72 @@ describe Vend::HttpClient do
 
     it "throws an error when an invalid request is made" do
       stub_request(:get, "https://username:password@foo/bar/invalid").
-        to_return(:status => 404, :body => '', :headers => {})
+        to_return(:status => 404, :body => '{"foo":"bar"}', :headers => {})
 
       expect {
         subject.request('invalid')
       }.to raise_error(Vend::HTTPError)
     end
 
+    it "returns parsed JSON" do
+      stub_request(:get, "https://username:password@foo/bar/bun").
+        to_return(:status => 200, :body => '{"foo":"bar"}', :headers => {})
+      subject.request("bun").should == {"foo" => "bar"}
+    end
+
+    it "returns nil if the response was empty" do
+      stub_request(:get, "https://username:password@foo/bar/bun").
+        to_return(:status => 200, :body => '', :headers => {})
+      subject.request("bun").should be_nil
+    end
     it "allows us to specify HTTP method" do
       stub_request(:post, "https://username:password@foo/bar/foo").
-        to_return(:status => 200, :body => "", :headers => {})
+        to_return(:status => 200, :body => '{"foo":"bar"}', :headers => {})
 
       response = subject.request('foo', :method => :post)
-      response.should be_instance_of(Net::HTTPOK)
+      response.should == {"foo" => "bar"}
     end
 
     it "allows us to set a request body" do
       stub_request(:post, "https://username:password@foo/bar/foo").
         with(:body => "{\"post\":\"data\"}").
-        to_return(:status => 200, :body => "", :headers => {})
+        to_return(:status => 200, :body => '{"foo":"bar"}', :headers => {})
 
       response = subject.request('foo', :method => :post, :body => '{"post":"data"}')
-      response.should be_instance_of(Net::HTTPOK)
+      response.should == {"foo" => "bar"}
     end
 
     it "allows us to specify url parameters" do
       stub_request(:get, "https://username:password@foo/bar/foo?foo=bar&baz=baloo&flum%5B0%5D=blob&flum%5B1%5D=splat").
-        to_return(:status => 200, :body => "", :headers => {})
+        to_return(:status => 200, :body => '{"foo":"bar"}', :headers => {})
 
       response = subject.request('foo', :url_params => {:foo => "bar", :baz => "baloo", :flum => ["blob","splat"]})
-      response.should be_instance_of(Net::HTTPOK)
+      response.should == {"foo" => "bar"}
     end
 
     it "allows us to specify an id" do
       stub_request(:get, "https://username:password@foo/bar/foos/1").
-        to_return(:status => 200, :body => "", :headers => {})
+        to_return(:status => 200, :body => '{"foo":"bar"}', :headers => {})
 
       response = subject.request('foos', :id => 1)
-      response.should be_instance_of(Net::HTTPOK)
+      response.should == {"foo" => "bar"}
     end
 
     it "allows us to specify a since parameter" do
       time = Time.new(2012,5,8)
       stub_request(:get, "https://username:password@foo/bar/foos/since/#{CGI.escape(time.strftime(Vend::HttpClient::DATETIME_FORMAT))}").
-        to_return(:status => 200, :body => "", :headers => {})
+        to_return(:status => 200, :body => '{"foo":"bar"}', :headers => {})
 
       response = subject.request('foos', :since => time)
-      response.should be_instance_of(Net::HTTPOK)
+      response.should == {"foo" => "bar"}
     end
 
     it "allows us to specify an outlet_id parameter" do
       stub_request(:get, "https://username:password@foo/bar/foos/outlet_id/outlet_guid_goes_here").
-        to_return(:status => 200, :body => "", :headers => {})
+        to_return(:status => 200, :body => '{"foo":"bar"}', :headers => {})
 
       response = subject.request('foos', :outlet_id => 'outlet_guid_goes_here')
-      response.should be_instance_of(Net::HTTPOK)
+      response.should == {"foo" => "bar"}
     end
 
   end

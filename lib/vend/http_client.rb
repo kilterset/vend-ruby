@@ -73,7 +73,7 @@ module Vend
       raise Unauthorized.new(UNAUTHORIZED_MESSAGE) if response.kind_of?(Net::HTTPUnauthorized)
       raise HTTPError.new(response) unless response.kind_of?(Net::HTTPSuccess)
       logger.debug response
-      response
+      JSON.parse response.body unless response.body.empty?
     end
 
     # Returns the SSL verification mode, based upon the value of verify_ssl?

@@ -6,13 +6,13 @@ describe Vend::Base do
 
   let(:client) { mock(:client) }
   let(:attribute_hash) { {:key => "value"} }
-  let(:mock_response) { '
+  let(:mock_response) { 
       {
-        "foos":[
-            {"id":"1","bar":"baz"},
-            {"id":"2","flar":"flum"}
+        "foos"=>[
+            {"id"=>"1","bar"=>"baz"},
+            {"id"=>"2","flar"=>"flum"}
         ]
-      }'
+      }
   }
 
   subject { Vend::Resource::Foo.new(client, :attrs => attribute_hash) }
@@ -36,23 +36,9 @@ describe Vend::Base do
     end
   end
 
-  describe '.parse_json' do
-
-    it "parses JSON" do
-      described_class.parse_json('{"baz":"baloo"}').should == {"baz" => "baloo"}
-    end
-
-    it "raises an exception with invalid JSON" do
-      expect {
-        described_class.parse_json('foo')
-      }.to raise_error(Vend::Resource::InvalidResponse)
-    end
-
-  end
-
   describe '.initialize_singular' do
 
-    it "initializes a singular resource from JSON results" do
+    it "initializes a singular resource from parsed JSON results" do
       resource = Vend::Resource::Foo.initialize_singular(client,mock_response)
       resource.should be_a Vend::Resource::Foo
       resource.bar.should == "baz"
@@ -100,10 +86,8 @@ describe Vend::Base do
   describe '.find' do
 
     it "finds a Foo by id" do
-      mock_response = '{"foos":[{"id":"1","bar":"baz"}]}'
-      response = mock
-      response.should_receive(:body).and_return(mock_response)
-      client.should_receive(:request).with('foos', :id => "1").and_return(response)
+      mock_response = {"foos"=>[{"id"=>"1","bar"=>"baz"}]}
+      client.should_receive(:request).with('foos', :id => "1") { mock_response }
       foo = Vend::Resource::Foo.find(client, "1")
       foo.should be_instance_of(Vend::Resource::Foo)
       foo.bar.should == "baz"

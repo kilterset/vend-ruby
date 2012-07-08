@@ -36,7 +36,7 @@ describe Vend::ResourceCollection do
       target_class.should_receive(:build_from_json).with(client, json) {
         [member_one, member_two]
       }
-      subject.stub(:parse_json => json)
+      client.stub(:request).with(endpoint, request_args) { json }
     end
 
     it "yields each member" do

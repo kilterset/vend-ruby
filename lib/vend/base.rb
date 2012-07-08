@@ -71,17 +71,10 @@ module Vend
       end
     end
 
-    def self.parse_json(string) #:nodoc:
-      JSON.parse(string)
-    rescue JSON::ParserError
-      raise Vend::Resource::InvalidResponse, "JSON Parse Error: #{string}"
-    end
-
     # Initializes a single object from a JSON response.
     # Assumes the response is a JSON array with a single item.
     def self.initialize_singular(client, json)
-      result = parse_json(json)
-      self.build(client, result[collection_name].first)
+      self.build(client, json[collection_name].first)
     end
 
     # Will initialize a collection of Resources from the APIs JSON Response.
@@ -94,7 +87,7 @@ module Vend
     # endpoint.
     def self.find(client, id)
       response = client.request(collection_name, :id => id)
-      initialize_singular(client, response.body)
+      initialize_singular(client, response)
     end
 
     # Whether or not this resource can be paginated, false by default.

@@ -24,17 +24,9 @@ module Vend
 
     protected
     def members
-      @members ||= target_class.build_from_json(client, parse_json)
-    end
-
-    # FIXME - Extract
-    protected
-    def parse_json
       response = client.request(endpoint, request_args)
-      JSON.parse(response.body)
-    rescue JSON::ParserError
-      raise Vend::Resource::InvalidResponse, "JSON Parse Error: #{string}"
+      @members ||= target_class.build_from_json(client, response)
     end
-
+  
   end
 end
