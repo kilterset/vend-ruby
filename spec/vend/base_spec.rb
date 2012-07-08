@@ -195,6 +195,27 @@ describe Vend::Base do
 
   end
 
+  describe ".build_from_json" do
+
+    subject { Vend::Resource::Foo }
+
+    let(:json)              { {"foos" => attributes_array} }
+    let(:attributes_one)    { mock("attributes_one") }
+    let(:attributes_two)    { mock("attributes_two") }
+    let(:attributes_array)  { [attributes_one, attributes_two] }
+    let(:instance_one)      { mock("instance_one") }
+    let(:instance_two)      { mock("instance_two") }
+
+    specify do
+      subject.stub(:build).with(client, attributes_one) { instance_one }
+      subject.stub(:build).with(client, attributes_two) { instance_two }
+      subject.build_from_json(client, json).should == [
+        instance_one, instance_two
+      ]
+    end
+
+  end
+
   describe "dynamic instance methods" do
     let(:attrs) { { "one" => "foo", "two" => "bar", "object_id" => "fail" } }
     subject { Vend::Resource::Foo.new(client, :attrs => attrs) }

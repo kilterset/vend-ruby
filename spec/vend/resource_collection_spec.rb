@@ -30,9 +30,13 @@ describe Vend::ResourceCollection do
 
     let(:member_one)  { mock("member_one") }
     let(:member_two)  { mock("member_two") }
+    let(:json)        { mock("json") }
 
     before do
-      subject.stub(:members => [member_one, member_two])
+      target_class.should_receive(:build_from_json).with(client, json) {
+        [member_one, member_two]
+      }
+      subject.stub(:parse_json => json)
     end
 
     it "yields each member" do
@@ -46,6 +50,8 @@ describe Vend::ResourceCollection do
     it "returns self" do
       subject.each.should == subject
     end
+
   end
+
 
 end

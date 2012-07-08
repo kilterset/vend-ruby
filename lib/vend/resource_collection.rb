@@ -24,17 +24,10 @@ module Vend
 
     protected
     def members
-      @members ||= build_members
+      @members ||= target_class.build_from_json(client, parse_json)
     end
 
-    # FIXME - Extract JSON parser / instance builder
-    protected
-    def build_members
-      parse_json[target_class.collection_name].map do |attrs|
-        target_class.build(client, attrs)
-      end
-    end
-
+    # FIXME - Extract
     protected
     def parse_json
       response = client.request(endpoint, request_args)

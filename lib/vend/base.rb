@@ -64,6 +64,13 @@ module Vend
       self.new(client, :attrs => attrs)
     end
 
+    # Builds a collection of instances from a JSON response
+    def self.build_from_json(client, json)
+      json[collection_name].map do |attrs|
+        self.build(client, attrs)
+      end
+    end
+
     def self.parse_json(string) #:nodoc:
       JSON.parse(string)
     rescue JSON::ParserError
