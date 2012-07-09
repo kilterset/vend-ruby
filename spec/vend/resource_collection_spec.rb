@@ -39,16 +39,12 @@ describe Vend::ResourceCollection do
       client.stub(:request).with(endpoint, request_args) { json }
     end
 
-    it "yields each member" do
+    it "yields each member and returns self" do
       member_one.should_receive(:ping!)
       member_two.should_receive(:ping!)
       subject.each do |member|
         member.ping!
-      end
-    end
-
-    it "returns self" do
-      subject.each.should == subject
+      end.should == subject
     end
 
   end

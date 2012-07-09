@@ -18,8 +18,15 @@ module Vend
     end
 
     def each
-      members.each do |member|
-        yield member if block_given?
+      # If each has previously been invoked on this collection, the response
+      # member will already be set, causing last_page? to immeadiatly return
+      # true.  So reset it here.
+      self.response = nil
+
+      until last_page?
+        target_class.build_from_json(client, get_next_page).map do |resource|
+          yield resource
+        end
       end
       self
     end
@@ -64,6 +71,7 @@ module Vend
         response["pagination"]
       end
     end
+
     protected
     attr_accessor :response
 
@@ -92,6 +100,6 @@ module Vend
       end
       self.response = client.request(full_endpoint, request_args)
     end
-  
+
   end
 end

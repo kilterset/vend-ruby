@@ -41,5 +41,11 @@ describe Vend::Resource::Product do
     it "returns paginated results" do
       client.Product.all.count.should == 4
     end
+
+    it "returns the first result" do
+      collection = client.Product.all
+      puts collection.first.id
+      puts collection.first.id
+    end
   end
 end
