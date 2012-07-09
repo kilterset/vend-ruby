@@ -39,7 +39,7 @@ describe Vend::Resource::Product do
     end
 
     it "returns paginated results" do
-      client.Product.all.length.should == 4
+      client.Product.all.count.should == 4
     end
   end
 end

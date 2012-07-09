@@ -32,7 +32,7 @@ shared_examples "a resource with a collection GET endpoint" do
     to_return(:status => 200, :body => get_mock_from_path(:get))
 
     collection = build_receiver.all
-    collection.length.should == expected_collection_length
+    collection.count.should == expected_collection_length
 
     first = collection.first
     first.should have_attributes(expected_attributes)

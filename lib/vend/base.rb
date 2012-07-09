@@ -79,7 +79,7 @@ module Vend
 
     # Will initialize a collection of Resources from the APIs JSON Response.
     def self.initialize_collection(client, endpoint, args = {})
-      ResourceCollection.new(client, self, endpoint, args).to_a
+      ResourceCollection.new(client, self, endpoint, args)
     end
 
 

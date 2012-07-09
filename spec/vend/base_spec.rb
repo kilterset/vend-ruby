@@ -50,10 +50,9 @@ describe Vend::Base do
 
     subject { Vend::Resource::Foo }
 
-    let(:array)               { mock("array") }
     let(:endpoint)            { mock("endpoint") }
     let(:args)                { mock("args") }
-    let(:resource_collection) { mock("resource_collection", :to_a => array) }
+    let(:resource_collection) { mock("resource_collection") }
 
     before do
       Vend::ResourceCollection.should_receive(:new).with(
@@ -62,7 +61,9 @@ describe Vend::Base do
     end
 
     it "creates a ResourceCollection instance" do
-      subject.initialize_collection(client, endpoint, args).should == array
+      subject.initialize_collection(
+        client, endpoint, args
+      ).should == resource_collection
     end
 
   end
