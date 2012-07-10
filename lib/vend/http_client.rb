@@ -110,6 +110,7 @@ module Vend
     protected
     # Modifies path with the provided options
     def expand_path_with_options(path, options)
+      # FIXME - Remove from here
       if options[:id]
         path += "/#{options[:id]}"
       elsif options[:outlet_id]

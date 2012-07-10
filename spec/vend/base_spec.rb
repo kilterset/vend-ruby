@@ -131,8 +131,11 @@ describe Vend::Base do
 
     it "calls initialize_collection with collection_name and :bar arg" do
       subject.should_receive(:initialize_collection).with(
-        client, collection_name, :bar => bar
+        client, collection_name
       ) { resource_collection }
+      resource_collection.should_receive(:scope).with(:bar, bar) {
+        resource_collection
+      }
       subject.bar(client, bar).should == resource_collection
     end
 
@@ -239,5 +242,33 @@ describe Vend::Base do
       subject.paginates?.should be_false
     end
 
+  end
+
+  describe ".available_scopes" do
+    subject { Vend::Resource::Foo }
+    its(:available_scopes)  { should == [:bar] }
+  end
+
+  describe ".accepts_scope?" do
+    let(:scope_name) {:scope_name}
+    subject { Vend::Resource::Foo }
+    
+    context "when scope is accepted" do
+      before do
+        subject.stub(:available_scopes => [scope_name])
+      end
+      specify do
+        subject.accepts_scope?(scope_name).should be_true
+      end
+    end
+
+    context "when scope is not accepted" do
+      before do
+        subject.stub(:available_scopes => [])
+      end
+      specify do
+        subject.accepts_scope?(scope_name).should be_false
+      end
+    end
   end
 end

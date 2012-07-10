@@ -46,4 +46,30 @@ describe Vend::Resource::Product do
       collection = client.Product.all
     end
   end
+
+  describe "chaining" do
+    let(:username)  {"foo"}
+    let(:password)  {"bar"}
+    let(:store)     {"baz"}
+
+    let(:timestamp) { Time.new(2012,7,5,11,12,13) }
+
+    let(:client) do
+      Vend::Client.new(store, username, password)
+    end
+
+    before do
+      stub_request( :get,
+        "https://#{username}:#{password}@#{store}.vendhq.com/api/products/active/1/since/2012-07-05+11:12:13"
+      ).to_return(
+        :status => 200, :body => get_mock_response('products.active.since.json')
+      )
+    end
+
+    it "allows scope chaining" do
+      client.Product.active(1).since(timestamp).count.should == 3
+    end
+
+
+  end
 end

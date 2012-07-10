@@ -37,6 +37,20 @@ module Vend
       initialize_collection(client, collection_name)
     end
 
+    # Returns the list of URL parameter scopes that are available for this
+    # resource.  For example, if the resource accepted URLs like:
+    #
+    #   /api/resources/since/YYYY-MM-DD HH:MM:SS/outlet_id/abc-1234-def
+    #
+    # this method would return [:since, :outlet_id]
+    def self.available_scopes
+      @available_scopes ||= []
+    end
+
+    def self.accepts_scope?(scope_name)
+      available_scopes.include?(scope_name)
+    end
+
     # Creates a class method that allows access to a filtered collection of
     # resources on the API.  For example:
     #
@@ -56,9 +70,10 @@ module Vend
     def self.url_scope(method_name)
       (class << self ; self ; end).instance_eval do
         define_method(method_name) do |client, arg|
-          initialize_collection(client, collection_name, method_name => arg)
+          initialize_collection(client, collection_name).scope(method_name, arg)
         end
       end
+      available_scopes << method_name
     end
 
     # Sends a search request to the API and initializes a collection of Resources
