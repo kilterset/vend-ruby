@@ -49,29 +49,23 @@ module Vend
     attr_accessor :response
 
     protected
-    def members
-      return @members if @members
-      @members = []
-      until last_page?
-        @members.concat(target_class.build_from_json(client, get_next_page))
-      end
-      return @members
-    end
-
-    protected
     def get_next_page
       if last_page?
         raise PageOutOfBoundsError.new(
           "get_next_page called when already on last page"
         )
       end
+      self.response = client.request(url, request_args)
+    end
+
+    protected
+    def url
       if response && paged?
         next_page = page + 1
-        full_endpoint = endpoint + '/page/' + next_page.to_s
+        endpoint + '/page/' + next_page.to_s
       else
-        full_endpoint = endpoint
+        endpoint
       end
-      self.response = client.request(full_endpoint, request_args)
     end
 
   end
