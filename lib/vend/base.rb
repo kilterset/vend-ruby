@@ -37,16 +37,28 @@ module Vend
       initialize_collection(client, collection_name)
     end
 
-    # Returns a collection containing all resources of the specified type that
-    # have been modified since the specified date.
-    def self.since(client, time)
-      initialize_collection(client, collection_name, :since => time)
-    end
-
-    # Returns a collection containing all resources of the specified type that
-    # have an association to a specific outlet.
-    def self.outlet_id(client, outlet_id)
-      initialize_collection(client, collection_name, :outlet_id => outlet_id)
+    # Creates a class method that allows access to a filtered collection of
+    # resources on the API.  For example:
+    #
+    #   class MyResource << Vend::Base
+    #     url_scope :since
+    #   end
+    #
+    # Will create a class method:
+    #
+    #   client.MyResource.since(argument)
+    #
+    # That will call the following URL on the Vend API:
+    #
+    #   /api/my_resources/since/:argument
+    #
+    # And return the corresponding collection of resources
+    def self.url_scope(method_name)
+      (class << self ; self ; end).instance_eval do
+        define_method(method_name) do |client, arg|
+          initialize_collection(client, collection_name, method_name => arg)
+        end
+      end
     end
 
     # Sends a search request to the API and initializes a collection of Resources

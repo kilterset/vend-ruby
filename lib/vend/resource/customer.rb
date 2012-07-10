@@ -6,7 +6,9 @@ module Vend
       findable_by :name, :as => :q
     end
 
-    class Customer < Vend::Base; end
+    class Customer < Vend::Base
+      url_scope :since
+    end
 
   end
 end

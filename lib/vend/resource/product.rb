@@ -4,7 +4,10 @@ module Vend
     class ProductFactory < Vend::BaseFactory #:nodoc:
     end
 
-    class Product < Vend::Base; end
+    class Product < Vend::Base
+      url_scope :since
+      url_scope :active
+    end
 
   end
 end

@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Vend::Base do
   class Vend::Resource::Foo < Vend::Base #:nodoc
+    url_scope :bar
   end
 
   let(:client) { mock(:client) }
@@ -116,44 +117,23 @@ describe Vend::Base do
 
   end
 
-  describe '.since' do
+  describe '.url_scope' do
 
     subject { Vend::Resource::Foo }
 
     let(:collection_name)     { mock("collection_name") }
     let(:resource_collection) { mock("resource_collection") }
-    let(:since)               { mock("since") }
+    let(:bar)                 { mock("bar") }
 
     before do
       subject.stub(:collection_name => collection_name)
     end
 
-    it "calls initialize_collection with collection_name and :since arg" do
+    it "calls initialize_collection with collection_name and :bar arg" do
       subject.should_receive(:initialize_collection).with(
-        client, collection_name, :since => since
+        client, collection_name, :bar => bar
       ) { resource_collection }
-      subject.since(client, since).should == resource_collection
-    end
-
-  end
-
-  describe '.outlet_id' do
-
-    subject { Vend::Resource::Foo }
-
-    let(:collection_name)     { mock("collection_name") }
-    let(:resource_collection) { mock("resource_collection") }
-    let(:outlet_id)           { mock("outlet_id") }
-
-    before do
-      subject.stub(:collection_name => collection_name)
-    end
-
-    it "calls initialize_collection with collection_name and :outlet_id arg" do
-      subject.should_receive(:initialize_collection).with(
-        client, collection_name, :outlet_id => outlet_id
-      ) { resource_collection }
-      subject.outlet_id(client, outlet_id).should == resource_collection
+      subject.bar(client, bar).should == resource_collection
     end
 
   end
