@@ -1,3 +1,4 @@
+require 'forwardable'
 module Vend
   # This is an enumerable class which allows iteration over a collection of
   # resources.  This class will automatically fetch paginated results if the
@@ -7,8 +8,11 @@ module Vend
     class PageOutOfBoundsError < StandardError ; end
 
     include Enumerable
+    extend Forwardable
 
     attr_reader :client, :target_class, :endpoint, :request_args
+
+    def_delegators :pagination, :pages, :page, :paged?
 
     def initialize(client, target_class, endpoint, request_args = {})
       @client       = client
@@ -31,45 +35,14 @@ module Vend
       self
     end
 
-    def is_paged?
-      !pagination.nil?
+    def pagination
+      if response.instance_of? Hash
+        PaginationInfo.new(response)
+      end
     end
 
     def last_page?
-      if !response.nil?
-        if is_paged?
-          pagination['page'] == pagination['pages']
-        else
-          true
-        end
-      end
-    end
-
-    # FIXME - Extract class
-    def current_page
-      if !response.nil?
-        if is_paged?
-          pagination["page"]
-        else
-          1
-        end
-      end
-    end
-
-    def pages
-      if !response.nil?
-        if is_paged?
-          pagination["pages"]
-        else
-          1
-        end
-      end
-    end
-
-    def pagination
-      if response.instance_of? Hash
-        response["pagination"]
-      end
+      pagination && pagination.last_page?
     end
 
     protected
@@ -92,8 +65,8 @@ module Vend
           "get_next_page called when already on last page"
         )
       end
-      if response && is_paged?
-        next_page = current_page + 1
+      if response && paged?
+        next_page = page + 1
         full_endpoint = endpoint + '/page/' + next_page.to_s
       else
         full_endpoint = endpoint

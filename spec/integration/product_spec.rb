@@ -44,8 +44,6 @@ describe Vend::Resource::Product do
 
     it "returns the first result" do
       collection = client.Product.all
-      puts collection.first.id
-      puts collection.first.id
     end
   end
 end
