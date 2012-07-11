@@ -26,18 +26,18 @@ module Vend
       target_class.send(method_name, *args, &block)
     end
 
-    def respond_to(method_name)
+    def respond_to?(method_name)
       return true if target_class.respond_to?(method_name)
       super(method_name)
     end
 
-    # Generates find_by_field methods which call a search on the target class
-    def self.findable_by(field, options = {})
-      url_param = options[:as] || field
-      define_method "find_by_#{field.to_s}" do |*args|
-        target_class.send(:search, @client, url_param, *args)
-      end
-    end
+    ## Generates find_by_field methods which call a search on the target class
+    #def self.findable_by(field, options = {})
+    #  url_param = options[:as] || field
+    #  define_method "find_by_#{field.to_s}" do |*args|
+    #    target_class.send(:search, @client, url_param, *args)
+    #  end
+    #end
 
   end
 

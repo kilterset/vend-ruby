@@ -75,7 +75,15 @@ module Vend
       end
       available_scopes << method_name
     end
-
+    
+    def self.findable_by(field, options = {})
+      
+      (class << self ; self ; end).instance_eval do
+        define_method("find_by_#{field}") do |client, *args|
+          search(client, options[:as] || field, *args)
+        end
+      end
+    end
     # Sends a search request to the API and initializes a collection of Resources
     # from the response.
     # This method is only used internally by find_by_field methods.

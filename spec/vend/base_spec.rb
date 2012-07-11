@@ -271,4 +271,29 @@ describe Vend::Base do
       end
     end
   end
+
+  describe ".findable_by" do
+    subject { Vend::Resource::Foo }
+
+    let(:args)  { mock("args") }
+
+    it "creates a find_by_foo method on the class" do
+      subject.should_not respond_to(:find_by_foo)
+      subject.findable_by(:foo)
+      subject.should respond_to(:find_by_foo)
+    end
+
+    it "proxies to search" do
+      subject.findable_by(:foo)
+      subject.should_receive(:search).with(client, :foo, args)
+      subject.find_by_foo(client, args)
+    end
+
+    it "allows a different method name" do
+      subject.findable_by(:foo, :as => :bar)
+      subject.should_receive(:search).with(client, :bar, args)
+      subject.find_by_foo(client, args)
+    end
+
+  end
 end
