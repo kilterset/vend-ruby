@@ -113,10 +113,6 @@ module Vend
       # FIXME - Remove from here
       if options[:id]
         path += "/#{options[:id]}"
-      elsif options[:outlet_id]
-        path += "/outlet_id/#{CGI::escape(options[:outlet_id])}"
-      elsif options[:since]
-        path += "/since/#{CGI::escape(options[:since].strftime(DATETIME_FORMAT))}"
       end
       return path
     end

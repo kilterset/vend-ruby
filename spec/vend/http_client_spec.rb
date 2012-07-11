@@ -133,22 +133,5 @@ describe Vend::HttpClient do
       response.should == {"foo" => "bar"}
     end
 
-    it "allows us to specify a since parameter" do
-      time = Time.new(2012,5,8)
-      stub_request(:get, "https://username:password@foo/bar/foos/since/#{CGI.escape(time.strftime(Vend::HttpClient::DATETIME_FORMAT))}").
-        to_return(:status => 200, :body => '{"foo":"bar"}', :headers => {})
-
-      response = subject.request('foos', :since => time)
-      response.should == {"foo" => "bar"}
-    end
-
-    it "allows us to specify an outlet_id parameter" do
-      stub_request(:get, "https://username:password@foo/bar/foos/outlet_id/outlet_guid_goes_here").
-        to_return(:status => 200, :body => '{"foo":"bar"}', :headers => {})
-
-      response = subject.request('foos', :outlet_id => 'outlet_guid_goes_here')
-      response.should == {"foo" => "bar"}
-    end
-
   end
 end
