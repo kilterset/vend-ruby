@@ -92,7 +92,8 @@ describe Vend::ResourceCollection do
     end
 
   end
-  [:pages, :page, :paged?].each do |method|
+
+  [:pages, :page].each do |method|
     describe method do
       let(:value)       { mock("value") }
       let(:pagination)  { mock("pagination", method => value) }
@@ -195,26 +196,15 @@ describe Vend::ResourceCollection do
   end
 
   describe "#url" do
+
     let(:endpoint_with_scopes) { "endpoint_with_scopes" }
 
     before do
       subject.stub(:endpoint_with_scopes => endpoint_with_scopes)
-    end
-    context "when response is not paged" do
-      before do
-        subject.stub(:paged? => false)
-      end
-      its(:url) { should == endpoint_with_scopes }
-      
+      subject.should_receive(:increment_page)
     end
 
-    context "when response is paged" do
-      before do
-        subject.stub(:paged? => true, :page => 1)
-      end
-
-      its(:url) { should == endpoint_with_scopes + "/page/2" }
-    end
+    its(:url) { should == endpoint_with_scopes }
   end
 
   describe "#endpoint_with_scopes" do
@@ -233,5 +223,90 @@ describe Vend::ResourceCollection do
 
       its(:endpoint_with_scopes) { should == endpoint + scopes.join}
     end
+  end
+
+  describe "#increment_page" do
+
+    context "when not paged" do
+
+      before do
+        subject.stub(:paged? => false)
+      end
+
+      its(:increment_page) { should be_nil }
+
+    end
+
+    context "when paged" do
+
+      let(:page_scope)  { mock("page_scope", :value => 1) }
+
+      before do
+        subject.stub(:paged? => true)
+        subject.stub(:page => 1)
+        subject.should_receive(:get_or_create_page_scope) { page_scope }
+        page_scope.should_receive(:value=).with(2) { 2 }
+      end
+
+      its(:increment_page) { should == 2 }
+
+    end
+
+  end
+
+  describe "#get_or_create_page_scope" do
+
+    let(:page_scope)  { mock("page_scope") }
+    let(:page)        { 1 }
+
+    before do
+      subject.stub(:page => page)
+      subject.should_receive(:get_scope).with(:page) { page_scope }
+    end
+
+    context "when scope is not present" do
+      before do
+        subject.stub(:has_scope?).with(:page) { false }
+        subject.should_receive(:scope).with(:page, page) { page_scope }
+      end
+      its(:get_or_create_page_scope)  { should == page_scope }
+    end
+
+    context "when scope is already present" do
+      before do
+        subject.stub(:has_scope?).with(:page) { true }
+      end
+      its(:get_or_create_page_scope)  { should == page_scope }
+    end
+  end
+
+  describe "#get_scope" do
+
+    let(:scope_name)  { :scope_name }
+    let(:scope)       { mock("scope", :name => scope_name) }
+
+    context "when scope is present" do
+
+      before do
+        subject.stub(:scopes => [scope])
+      end
+
+      specify do
+        subject.get_scope(scope_name).should == scope
+      end
+
+    end
+
+    context "when scope is not present" do
+      before do
+        subject.stub(:scopes => [])
+      end
+      specify do
+        lambda do
+          subject.get_scope(scope_name)
+        end.should raise_exception(Vend::ResourceCollection::ScopeNotFoundError)
+      end
+    end
+
   end
 end

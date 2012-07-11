@@ -7,6 +7,7 @@ module Vend
 
     class PageOutOfBoundsError  < StandardError ; end
     class AlreadyScopedError    < StandardError ; end
+    class ScopeNotFoundError    < StandardError ; end
 
     include Enumerable
     extend Forwardable
@@ -80,14 +81,35 @@ module Vend
       return true if accepts_scope?(method_name)
       super
     end
-    
-    def url
+
+    def increment_page
       if paged?
-        next_page = page + 1
-        endpoint_with_scopes + '/page/' + next_page.to_s
-      else
-        endpoint_with_scopes
+        page_scope = get_or_create_page_scope
+        page_scope.value = page_scope.value + 1
       end
+    end
+
+    def get_scope(name)
+      
+      result = scopes.find { |scope| scope.name == name }
+      if result.nil?
+        raise ScopeNotFoundError.new(
+          "Scope: #{name} was not found in #{scopes}."
+        )
+      end
+      return result
+    end
+
+    def get_or_create_page_scope
+      unless has_scope? :page
+        scope(:page, page)
+      end
+      get_scope :page
+    end
+
+    def url
+      increment_page
+      endpoint_with_scopes
     end
 
     def endpoint_with_scopes

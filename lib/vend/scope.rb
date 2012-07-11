@@ -1,6 +1,8 @@
 module Vend
   class Scope
-    attr_reader :name, :value
+
+    attr_reader :name
+    attr_accessor :value
 
     DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
