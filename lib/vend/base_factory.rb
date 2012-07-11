@@ -19,20 +19,17 @@ module Vend
       end
     end
 
-    # Proxies a set of methods to the target class, prepending the client to
-    # the argument list
-    def self.delegate_to_target_class(*method_names)
-      method_names.each do |method_name|
-        define_method method_name do |*args|
-          target_class.send(method_name, @client, *args)
-        end
-      end
-    end
-
     # The main point of this factory class is to proxy methods to the target
     # class and prepend client to the argument list.
-    # FIXME - Some of these (e.g. :active, :outlet_id, :since) don't belong here.
-    delegate_to_target_class :all, :active, :outlet_id, :since, :search, :find, :build
+    def method_missing(method_name, *args, &block)
+      args.unshift(client)
+      target_class.send(method_name, *args, &block)
+    end
+
+    def respond_to(method_name)
+      return true if target_class.respond_to?(method_name)
+      super(method_name)
+    end
 
     # Generates find_by_field methods which call a search on the target class
     def self.findable_by(field, options = {})
