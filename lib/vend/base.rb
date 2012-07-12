@@ -31,6 +31,14 @@ module Vend
       endpoint_name.pluralize
     end
 
+    def singular_name
+      self.class.singular_name(id)
+    end
+
+    def self.singular_name(id)
+      "#{collection_name}/#{id}"
+    end
+
     # Returns a collection containing all of the specified resource objects.
     # Will paginate.
     def self.all(client)
@@ -121,7 +129,7 @@ module Vend
     # Attempts to pull a singular object from Vend through the singular GET
     # endpoint.
     def self.find(client, id)
-      response = client.request(collection_name, :id => id)
+      response = client.request(singular_name(id))
       initialize_singular(client, response)
     end
 
@@ -166,8 +174,7 @@ module Vend
     def delete!
       raise(Vend::Resource::IllegalAction,
             "#{self.class.name} has no unique ID") unless attrs['id']
-      client.request(self.class.collection_name,
-                     :method => :delete, :id => attrs['id'])
+      client.request(singular_name, :method => :delete)
       true
     end
   end

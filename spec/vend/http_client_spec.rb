@@ -125,13 +125,5 @@ describe Vend::HttpClient do
       response.should == {"foo" => "bar"}
     end
 
-    it "allows us to specify an id" do
-      stub_request(:get, "https://username:password@foo/bar/foos/1").
-        to_return(:status => 200, :body => '{"foo":"bar"}', :headers => {})
-
-      response = subject.request('foos', :id => 1)
-      response.should == {"foo" => "bar"}
-    end
-
   end
 end

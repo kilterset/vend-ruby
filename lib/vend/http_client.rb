@@ -59,7 +59,7 @@ module Vend
     #
     def request(path, options = {})
       options = {:method => :get}.merge options
-      url = URI.parse(base_url + expand_path_with_options(path, options))
+      url = URI.parse(base_url + path) 
       http = get_http_connection(url.host, url.port)
 
       # FIXME extract method

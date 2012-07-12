@@ -85,12 +85,42 @@ describe Vend::Base do
 
   end
 
+  describe '.singular_name' do
+
+    it "returns the collection name plus the id" do
+      Vend::Resource::Foo.singular_name("1").should == 'foos/1'
+      Vend::Resource::Foo.singular_name(42).should == 'foos/42'
+    end
+
+  end
+
+  describe "#singular_name" do
+
+    let(:singular_name) { mock("singular_name")}
+    let(:id)            { 42 }
+
+    before do
+      subject.stub(:id => id)
+      described_class.stub(:singular_name).with(id) { singular_name }
+    end
+
+    its(:singular_name) { should == singular_name }
+
+  end
+
   describe '.find' do
+
+    let(:id) { 1 }
+    let(:singular_name) { "foos/1" }
+
+    before do
+      Vend::Resource::Foo.stub(:singular_name).with(id) { singular_name }
+    end
 
     it "finds a Foo by id" do
       mock_response = {"foos"=>[{"id"=>"1","bar"=>"baz"}]}
-      client.should_receive(:request).with('foos', :id => "1") { mock_response }
-      foo = Vend::Resource::Foo.find(client, "1")
+      client.should_receive(:request).with(singular_name) { mock_response }
+      foo = Vend::Resource::Foo.find(client, id)
       foo.should be_instance_of(Vend::Resource::Foo)
       foo.bar.should == "baz"
     end
@@ -205,8 +235,14 @@ describe Vend::Base do
     context "when id is present" do
       subject { Vend::Resource::Foo.new(client, :attrs => {'id' => 1}) }
 
+      let(:singular_name) { mock("singular_name")}
+
+      before do
+        subject.stub(:singular_name => singular_name)
+      end
+
       it "deletes the object" do
-        client.should_receive(:request).with('foos', :method => :delete, :id => 1)
+        client.should_receive(:request).with(singular_name, :method => :delete)
         subject.delete!
       end
     end
