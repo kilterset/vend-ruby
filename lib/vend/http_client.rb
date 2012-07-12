@@ -6,8 +6,6 @@ module Vend
 
     UNAUTHORIZED_MESSAGE = "Client not authorized. Check your store URL and credentials are correct and try again."
 
-    DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
-
     include Logable
 
     attr_accessor :base_url, :verify_ssl, :username, :password
