@@ -6,6 +6,7 @@ describe Vend::Resource::Product do
     {
       'id'      => '6cc53042-3d5f-11e0-8697-4040f540b50a',
       'handle'  => 'tshirt',
+      'supply_price' => 2.00,
       'name'    => 'T-shirt (Demo)'
     }
   end

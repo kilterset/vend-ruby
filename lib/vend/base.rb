@@ -20,6 +20,13 @@ module Vend
       @attrs = options[:attrs] || {}
     end
 
+    def self.cast_attribute(attribute_name, type)
+      attribute_casts[attribute_name] = type
+    end
+
+    def self.attribute_casts
+      @attribute_casts ||= {}
+    end
     # Returns the endpoint name for the resource, used in API urls when making
     # requests.
     def self.endpoint_name
@@ -154,7 +161,7 @@ module Vend
     # at the specified key before proxying it to the object
     def method_missing(method_name, *args, &block)
       if attrs.keys.include? method_name.to_s
-        attrs[method_name.to_s]
+        attribute_value_for(method_name)
       else
         super(method_name)
       end
@@ -176,6 +183,18 @@ module Vend
             "#{self.class.name} has no unique ID") unless attrs['id']
       client.request(singular_name, :method => :delete)
       true
+    end
+
+    protected
+    def attribute_value_for(attribute_name)
+      if self.class.attribute_casts.has_key? attribute_name
+        case self.class.attribute_casts[attribute_name].to_s
+        when "Float"
+          return attrs[attribute_name.to_s].to_f
+        end
+      else
+        attrs[attribute_name.to_s]
+      end
     end
   end
 end

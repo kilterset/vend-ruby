@@ -332,4 +332,17 @@ describe Vend::Base do
     end
 
   end
+
+  describe ".cast_attribute" do
+
+    subject { Vend::Resource::Foo }
+
+    let(:attrs) { {'floater' => '1.23'} }
+
+    it "casts to float" do
+      subject.cast_attribute :floater, Float
+      foo = Vend::Resource::Foo.new(client, :attrs => attrs)
+      foo.floater.should == 1.23
+    end
+  end
 end
