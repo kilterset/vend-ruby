@@ -30,35 +30,35 @@ module Vend #:nodoc:
     end
 
     def Product #:nodoc:
-      Vend::Resource::ProductFactory.new(self)
+      Vend::BaseFactory.new(self, Resource::Product)
     end
 
     def Outlet #:nodoc:
-      Vend::Resource::OutletFactory.new(self)
+      Vend::BaseFactory.new(self, Resource::Outlet)
     end
 
     def Customer #:nodoc:
-      Vend::Resource::CustomerFactory.new(self)
+      Vend::BaseFactory.new(self, Resource::Customer)
     end
 
     def PaymentType #:nodoc:
-      Vend::Resource::PaymentTypeFactory.new(self)
+      Vend::BaseFactory.new(self, Resource::PaymentType)
     end
 
     def Register #:nodoc:
-      Vend::Resource::RegisterFactory.new(self)
+      Vend::BaseFactory.new(self, Resource::Register)
     end
 
     def RegisterSale #:nodoc:
-      Vend::Resource::RegisterSaleFactory.new(self)
+      Vend::BaseFactory.new(self, Resource::RegisterSale)
     end
 
     def Tax #:nodoc:
-      Vend::Resource::TaxFactory.new(self)
+      Vend::BaseFactory.new(self, Resource::Tax)
     end
 
     def User #:nodoc:
-      Vend::Resource::UserFactory.new(self)
+      Vend::BaseFactory.new(self, Resource::User)
     end
 
     # Returns the base API url for the client.

@@ -8,7 +8,7 @@ describe Vend::BaseFactory do
   end
 
   let(:client) { mock() }
-  subject { Vend::Resource::FooFactory.new(client) }
+  subject { Vend::Resource::FooFactory.new(client, Vend::Resource::Foo) }
 
   it "initializes correctly" do
     subject.should be_instance_of(Vend::Resource::FooFactory)
