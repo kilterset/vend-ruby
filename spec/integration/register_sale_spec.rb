@@ -30,5 +30,6 @@ describe Vend::Resource::RegisterSale do
     collection = client.RegisterSale.find_by_state([:OPEN, :CLOSED])
     collection.first.should be_a Vend::Resource::RegisterSale
     collection.first.id.should == "8dd57077-c158-f7db-d582-6785f43c9d72"
+    collection.first.register_sale_products.count.should == 2
   end
 end

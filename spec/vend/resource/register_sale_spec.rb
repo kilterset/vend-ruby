@@ -10,7 +10,7 @@ describe Vend::Resource::RegisterSale do
 
     before do
       subject.stub(:attrs) { 
-        { :register_sale_products => [raw_register_sale_product] } 
+        { "register_sale_products" => [raw_register_sale_product] } 
       }
       Vend::Resource::RegisterSaleProduct.stub(:new).with(raw_register_sale_product) {
         register_sale_product 

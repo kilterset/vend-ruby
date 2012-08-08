@@ -9,7 +9,7 @@ module Vend
       findable_by :state, :as => :status
 
       def register_sale_products
-        attrs[:register_sale_products].collect do |sale_product_attrs|
+        attrs["register_sale_products"].collect do |sale_product_attrs|
           RegisterSaleProduct.new(sale_product_attrs)
         end
       end
