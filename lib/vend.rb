@@ -16,6 +16,7 @@ require 'vend/resource/customer'
 require 'vend/resource/payment_type'
 require 'vend/resource/register'
 require 'vend/resource/register_sale'
+require 'vend/resource/register_sale_product'
 require 'vend/resource/tax'
 require 'vend/resource/user'
 
