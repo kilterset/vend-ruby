@@ -1,8 +1,20 @@
 require './lib/vend'
-STORE = 'trineodev'
-USERNAME = 'greg.signal@trineo.co.nz'
-PASSWORD = 'this is a very strong password'
+require 'log4r'
+
+STORE = ARGV[0]
+USERNAME = ARGV[1]
+PASSWORD = ARGV[2]
+
+unless STORE and USERNAME and PASSWORD
+  $stderr.puts "Usage: example.rb store username password"
+  exit 1
+end
+
 client = Vend::Client.new(STORE, USERNAME, PASSWORD)
+
+logger = Log4r::Logger.new 'vend'
+logger.outputters = Log4r::Outputter.stdout
+client.http_client.logger = client.logger = logger
 
 # puts client.request('products', :method => :put, :body => '{"foo":"bar"}')
 
