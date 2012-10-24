@@ -147,6 +147,17 @@ module Vend
       false
     end
 
+    # Override this with arguments that are required on every collection
+    # request.  I.e, to default to 500 items per page:
+    #
+    #   def default_collection_request_args
+    #     super.merge(:url_params => {:page_size => 500})
+    #   end
+    #
+    def self.default_collection_request_args
+      {}
+    end
+
     # Overrides respond_to? to query the attrs hash for the key before
     # proxying it to the object
     def respond_to?(method_name)

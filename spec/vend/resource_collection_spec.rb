@@ -3,9 +3,11 @@ require 'spec_helper'
 describe Vend::ResourceCollection do
 
   let(:client)        { mock("client") }
-  let(:target_class)  { mock("target_class") }
+  let(:target_class)  {
+    mock("target_class", :default_collection_request_args => {})
+  }
   let(:endpoint)      { "endpoint" }
-  let(:request_args)  { mock("request_args") }
+  let(:request_args)  { {} }
 
   subject { described_class.new(client, target_class, endpoint, request_args) }
 
@@ -23,6 +25,14 @@ describe Vend::ResourceCollection do
         described_class.new(client, target_class, endpoint)
       }
       its(:request_args)  { should == {} }
+    end
+
+    context "when target class has default request args" do
+      subject {
+        described_class.new(client, target_class, endpoint)
+      }
+      before { target_class.stub(:default_collection_request_args => {:foo => :bar}) }
+      its(:request_args)  { should == {:foo => :bar}}
     end
 
   end

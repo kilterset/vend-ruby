@@ -21,7 +21,7 @@ module Vend
       @client       = client
       @target_class = target_class
       @endpoint     = endpoint
-      @request_args = request_args
+      @request_args = target_class.default_collection_request_args.merge(request_args)
     end
 
     def each

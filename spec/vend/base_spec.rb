@@ -270,6 +270,11 @@ describe Vend::Base do
 
   end
 
+  describe '.default_collection_request_args' do
+    subject { Vend::Resource::Foo }
+    its(:default_collection_request_args) { should == {} }
+  end
+
   describe ".paginates?" do
 
     subject { Vend::Resource::Foo }
