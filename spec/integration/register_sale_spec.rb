@@ -19,7 +19,9 @@ describe Vend::Resource::RegisterSale do
   let(:expected_collection_length) { 1 }
 
   it_should_behave_like "a resource with a singular GET endpoint"
-  it_should_behave_like "a resource with a collection GET endpoint"
+  it_should_behave_like "a resource with a collection GET endpoint" do
+    let(:append_to_url) { '?page_size=200' }
+  end
 
   specify "register_sales are findable by state" do
     client.RegisterSale.should respond_to(:find_by_state)

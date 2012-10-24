@@ -22,14 +22,20 @@ shared_examples "a resource with a collection GET endpoint" do
   let(:username)  {"foo"}
   let(:password)  {"bar"}
   let(:store)     {"baz"}
+  let(:append_to_url) { '' }
 
   let(:client) do
     Vend::Client.new(store, username, password)
   end
 
   it "gets the collection" do
-    stub_request(:get, "https://#{username}:#{password}@#{store}.vendhq.com/api/#{class_basename.to_s.underscore.pluralize}").
-    to_return(:status => 200, :body => get_mock_from_path(:get))
+    url = "https://%s:%s@%s.vendhq.com/api/%s%s" % [
+      username, password, store, class_basename.to_s.underscore.pluralize,
+      append_to_url
+    ]
+    stub_request(:get, url).to_return(
+      :status => 200, :body => get_mock_from_path(:get)
+    )
 
     collection = build_receiver.all
     collection.count.should == expected_collection_length

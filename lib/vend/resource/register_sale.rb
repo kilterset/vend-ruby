@@ -13,6 +13,10 @@ module Vend
           RegisterSaleProduct.new(sale_product_attrs)
         end
       end
+
+      def self.default_collection_request_args
+        super.merge(:url_params => {:page_size => 200})
+      end
     end
 
   end
