@@ -5,6 +5,8 @@ module Vend
   class HttpClient
 
     UNAUTHORIZED_MESSAGE = "Client not authorized. Check your store URL and credentials are correct and try again."
+    # Read timeout in seconds
+    READ_TIMEOUT = 240
 
     include Logable
 
@@ -27,6 +29,9 @@ module Vend
       http = Net::HTTP.new(host, port)
       http.use_ssl = true
       http.verify_mode = verify_mode
+      # Default read_tiemout is 60 seconds, some of the Vend API calls are
+      # taking longer than this.
+      http.read_timeout = READ_TIMEOUT
       http
     end
 

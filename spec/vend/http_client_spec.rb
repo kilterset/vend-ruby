@@ -37,6 +37,7 @@ describe Vend::HttpClient do
       subject.stub(:verify_mode => verify_mode)
       http.should_receive(:use_ssl=).with(true)
       http.should_receive(:verify_mode=).with(verify_mode)
+      http.should_receive(:read_timeout=).with(240)
       Net::HTTP.stub(:new).with(host, port) { http }
     end
 
