@@ -4,7 +4,7 @@ require 'cgi'
 module Vend
   class HttpClient
 
-    UNAUTHORIZED_MESSAGE = "Client not authorized. Check your store URL and credentials are correct and try again."
+    UNAUTHORIZED_MESSAGE = "Client not authorized. Check your store credentials are correct and try again."
     # Read timeout in seconds
     READ_TIMEOUT = 240
 
@@ -25,9 +25,9 @@ module Vend
     end
 
     # sets up a http connection
-    def get_http_connection(host, port)
+    def get_http_connection(host, port, use_ssl = true)
       http = Net::HTTP.new(host, port)
-      http.use_ssl = true
+      http.use_ssl = use_ssl
       http.verify_mode = verify_mode
       # Default read_tiemout is 60 seconds, some of the Vend API calls are
       # taking longer than this.
@@ -61,9 +61,15 @@ module Vend
     #          request('foo', :method => :post, :body => '{\"baz\":\"baloo\"}'
     #
     def request(path, options = {})
-      options = {:method => :get}.merge options
-      url = URI.parse(base_url + path) 
-      http = get_http_connection(url.host, url.port)
+      options = {:method => :get, :redirect_count => 0}.merge options
+      raise RedirectionLimitExceeded if options[:redirect_count] > 10
+      url = if path.kind_of?(URI)
+              path
+            else
+              URI.parse(base_url + path)
+            end
+      ssl = (url.scheme == 'https')
+      http = get_http_connection(url.host, url.port, ssl)
 
       # FIXME extract method
       method = ("Net::HTTP::" + options[:method].to_s.classify).constantize
@@ -73,10 +79,17 @@ module Vend
       request.body = options[:body] if options[:body]
       logger.debug url
       response = http.request(request)
-      raise Unauthorized.new(UNAUTHORIZED_MESSAGE) if response.kind_of?(Net::HTTPUnauthorized)
-      raise HTTPError.new(response) unless response.kind_of?(Net::HTTPSuccess)
-      logger.debug response
-      JSON.parse response.body unless response.body.nil? or response.body.empty?
+      if response.kind_of?(Net::HTTPRedirection)
+        location = URI.parse(response['location'])
+        logger.debug "Following redirect to %s" % [location]
+        options[:redirect_count] = options[:redirect_count] + 1
+        request(location, options)
+      else
+        raise Unauthorized.new(UNAUTHORIZED_MESSAGE) if response.kind_of?(Net::HTTPUnauthorized)
+        raise HTTPError.new(response) unless response.kind_of?(Net::HTTPSuccess)
+        logger.debug response
+        JSON.parse response.body unless response.body.nil? or response.body.empty?
+      end
     end
 
     # Returns the SSL verification mode, based upon the value of verify_ssl?

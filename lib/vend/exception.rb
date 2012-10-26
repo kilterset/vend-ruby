@@ -19,6 +19,8 @@ module Vend
   # from the Vend API
   class Unauthorized < StandardError; end
 
+  class RedirectionLimitExceeded < StandardError; end
+
   # Nonspecific HTTP error which is usually thrown when a non 2xx response
   # is received.
   class HTTPError < StandardError

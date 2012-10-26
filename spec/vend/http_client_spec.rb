@@ -126,5 +126,23 @@ describe Vend::HttpClient do
       response.should == {"foo" => "bar"}
     end
 
+    it "follows redirects" do
+      stub_request(:get, "https://username:password@foo/bar/foo").
+        to_return(:status => 302, :body => '{"bar":"baz"}', :headers => {"Location" => "http://username:password@foo/bar/floo"})
+
+      stub_request(:get, "http://username:password@foo/bar/floo").
+        to_return(:status => 200, :body => '{"foo":"bar"}', :headers => {})
+
+      response = subject.request('foo')
+      response.should == {"foo" => "bar"}
+    end
+
+    it "raises an exception when the redirection limit is exceeded" do
+      stub_request(:get, "https://username:password@foo/bar/foo").
+        to_return(:status => 302, :body => '{"bar":"baz"}', :headers => {"Location" => "https://username:password@foo/bar/foo"})
+      expect {
+        subject.request('foo')
+      }.to raise_exception(Vend::RedirectionLimitExceeded)
+    end
   end
 end
