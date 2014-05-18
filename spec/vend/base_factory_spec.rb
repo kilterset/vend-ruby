@@ -7,7 +7,7 @@ describe Vend::BaseFactory do
   class Vend::Resource::Foo < Vend::Base #:nodoc:
   end
 
-  let(:client) { mock() }
+  let(:client) { double() }
   subject { Vend::Resource::FooFactory.new(client, Vend::Resource::Foo) }
 
   it "initializes correctly" do

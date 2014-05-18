@@ -5,8 +5,8 @@ describe Vend::Resource::RegisterSale do
   subject { described_class.new(nil, {}) }
 
   describe "#register_sale_products" do
-    let(:register_sale_product) { mock("register sale product") }
-    let(:raw_register_sale_product) { mock("raw register sale prodcut") }
+    let(:register_sale_product) { double("register sale product") }
+    let(:raw_register_sale_product) { double("raw register sale prodcut") }
 
     before do
       subject.stub(:attrs) { 

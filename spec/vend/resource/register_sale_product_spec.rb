@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 describe Vend::Resource::RegisterSaleProduct do
-  let(:attrs) { mock("attrs") }
+  let(:attrs) { double("attrs") }
 
   subject { described_class.new(attrs) }
 
   its(:attrs) { should == attrs }
 
   describe "provides an attr reader for the attributes in attrs" do
-    let(:attr1) { mock("attr1") }
+    let(:attr1) { double("attr1") }
 
     let(:attrs) { 
       { 

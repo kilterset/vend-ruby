@@ -35,8 +35,8 @@ describe Vend::Client do
 
   describe "#http_client" do
 
-    let(:http_client)         { mock("http_client") }
-    let(:http_client_options) { mock("http_client_options") }
+    let(:http_client)         { double("http_client") }
+    let(:http_client_options) { double("http_client_options") }
 
     before do
       subject.stub(:http_client_options => http_client_options)
@@ -78,8 +78,8 @@ describe Vend::Client do
 
   describe "#request" do
 
-    let(:response)    { mock("response") }
-    let(:http_client) { mock("http_client") }
+    let(:response)    { double("response") }
+    let(:http_client) { double("http_client") }
 
     before do
       subject.stub(:http_client => http_client)

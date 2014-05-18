@@ -28,8 +28,8 @@ describe Vend::HttpClient do
   end
 
   describe "#get_http_connection" do
-    let(:http)        { mock("http") }
-    let(:verify_mode) { mock("verify_mode") }
+    let(:http)        { double("http") }
+    let(:verify_mode) { double("verify_mode") }
     let(:host)        { "foo" }
     let(:port)        { 42 }
 

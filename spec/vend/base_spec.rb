@@ -5,7 +5,7 @@ describe Vend::Base do
     url_scope :bar
   end
 
-  let(:client) { mock(:client) }
+  let(:client) { double(:client) }
   let(:attribute_hash) { {:key => "value"} }
   let(:mock_response) { 
       {
@@ -51,9 +51,9 @@ describe Vend::Base do
 
     subject { Vend::Resource::Foo }
 
-    let(:endpoint)            { mock("endpoint") }
-    let(:args)                { mock("args") }
-    let(:resource_collection) { mock("resource_collection") }
+    let(:endpoint)            { double("endpoint") }
+    let(:args)                { double("args") }
+    let(:resource_collection) { double("resource_collection") }
 
     before do
       Vend::ResourceCollection.should_receive(:new).with(
@@ -96,7 +96,7 @@ describe Vend::Base do
 
   describe "#singular_name" do
 
-    let(:singular_name) { mock("singular_name")}
+    let(:singular_name) { double("singular_name")}
     let(:id)            { 42 }
 
     before do
@@ -131,8 +131,8 @@ describe Vend::Base do
 
     subject { Vend::Resource::Foo }
 
-    let(:collection_name)     { mock("collection_name") }
-    let(:resource_collection) { mock("resource_collection") }
+    let(:collection_name)     { double("collection_name") }
+    let(:resource_collection) { double("resource_collection") }
 
     before do
       subject.stub(:collection_name => collection_name)
@@ -151,9 +151,9 @@ describe Vend::Base do
 
     subject { Vend::Resource::Foo }
 
-    let(:collection_name)     { mock("collection_name") }
-    let(:resource_collection) { mock("resource_collection") }
-    let(:bar)                 { mock("bar") }
+    let(:collection_name)     { double("collection_name") }
+    let(:resource_collection) { double("resource_collection") }
+    let(:bar)                 { double("bar") }
 
     before do
       subject.stub(:collection_name => collection_name)
@@ -175,8 +175,8 @@ describe Vend::Base do
 
     subject { Vend::Resource::Foo }
 
-    let(:collection_name)     { mock("collection_name") }
-    let(:resource_collection) { mock("resource_collection") }
+    let(:collection_name)     { double("collection_name") }
+    let(:resource_collection) { double("resource_collection") }
     let(:field)               { "field" }
     let(:query)               { "query" }
 
@@ -198,11 +198,11 @@ describe Vend::Base do
     subject { Vend::Resource::Foo }
 
     let(:json)              { {"foos" => attributes_array} }
-    let(:attributes_one)    { mock("attributes_one") }
-    let(:attributes_two)    { mock("attributes_two") }
+    let(:attributes_one)    { double("attributes_one") }
+    let(:attributes_two)    { double("attributes_two") }
     let(:attributes_array)  { [attributes_one, attributes_two] }
-    let(:instance_one)      { mock("instance_one") }
-    let(:instance_two)      { mock("instance_two") }
+    let(:instance_one)      { double("instance_one") }
+    let(:instance_two)      { double("instance_two") }
 
     specify do
       subject.stub(:build).with(client, attributes_one) { instance_one }
@@ -235,7 +235,7 @@ describe Vend::Base do
     context "when id is present" do
       subject { Vend::Resource::Foo.new(client, :attrs => {'id' => 1}) }
 
-      let(:singular_name) { mock("singular_name")}
+      let(:singular_name) { double("singular_name")}
 
       before do
         subject.stub(:singular_name => singular_name)
@@ -316,7 +316,7 @@ describe Vend::Base do
   describe ".findable_by" do
     subject { Vend::Resource::Foo }
 
-    let(:args)  { mock("args") }
+    let(:args)  { double("args") }
 
     it "creates a find_by_foo method on the class" do
       subject.should_not respond_to(:find_by_foo)

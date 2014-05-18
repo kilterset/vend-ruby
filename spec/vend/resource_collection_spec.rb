@@ -2,9 +2,9 @@ require 'spec_helper'
 
 describe Vend::ResourceCollection do
 
-  let(:client)        { mock("client") }
+  let(:client)        { double("client") }
   let(:target_class)  {
-    mock("target_class", :default_collection_request_args => {})
+    double("target_class", :default_collection_request_args => {})
   }
   let(:endpoint)      { "endpoint" }
   let(:request_args)  { {} }
@@ -39,10 +39,10 @@ describe Vend::ResourceCollection do
 
   describe "#each" do
 
-    let(:member_one)  { mock("member_one") }
-    let(:member_two)  { mock("member_two") }
-    let(:json)        { mock("json") }
-    let(:next_page)   { mock("next_page") }
+    let(:member_one)  { double("member_one") }
+    let(:member_two)  { double("member_two") }
+    let(:json)        { double("json") }
+    let(:next_page)   { double("next_page") }
 
     before do
       target_class.should_receive(:build_from_json).with(client, next_page) {
@@ -66,8 +66,8 @@ describe Vend::ResourceCollection do
   describe "#last_page?" do
 
     context "when pagination is set" do
-      let(:value)       { mock("value") }
-      let(:pagination)  { mock("pagination", :last_page? => value) }
+      let(:value)       { double("value") }
+      let(:pagination)  { double("pagination", :last_page? => value) }
       before do
         subject.stub(:pagination => pagination)
       end
@@ -85,8 +85,8 @@ describe Vend::ResourceCollection do
   describe "#paged?" do
 
     context "when pagination is set" do
-      let(:value)       { mock("value") }
-      let(:pagination)  { mock("pagination", :paged? => value) }
+      let(:value)       { double("value") }
+      let(:pagination)  { double("pagination", :paged? => value) }
       before do
         subject.stub(:pagination => pagination)
       end
@@ -105,8 +105,8 @@ describe Vend::ResourceCollection do
 
   [:pages, :page].each do |method|
     describe method do
-      let(:value)       { mock("value") }
-      let(:pagination)  { mock("pagination", method => value) }
+      let(:value)       { double("value") }
+      let(:pagination)  { double("pagination", method => value) }
       before do
         subject.stub(:pagination => pagination)
       end
@@ -117,9 +117,9 @@ describe Vend::ResourceCollection do
   end
 
   describe "#scope" do
-    let(:value)   { mock("value") }
-    let(:scope)   { mock("scope") }
-    let(:scopes)  { mock("scopes") }
+    let(:value)   { double("value") }
+    let(:scope)   { double("scope") }
+    let(:scopes)  { double("scopes") }
 
     context "when scope is not already present" do
       before do
@@ -150,7 +150,7 @@ describe Vend::ResourceCollection do
       it { should_not have_scope(:name) }
     end
     context "when scope is present" do
-      let(:scope) { mock("scope", :name => :name) }
+      let(:scope) { double("scope", :name => :name) }
       before do
         subject.stub(:scopes => [scope])
       end
@@ -159,7 +159,7 @@ describe Vend::ResourceCollection do
   end
 
   describe "#accepts_scope?" do
-    let(:value) { mock("value") }
+    let(:value) { double("value") }
     before do
       target_class.stub(:accepts_scope?).with(:name)  { value }
     end
@@ -170,7 +170,7 @@ describe Vend::ResourceCollection do
 
   describe "#method_missing" do
 
-    let(:value) { mock("value") }
+    let(:value) { double("value") }
 
     context "when the method name is a valid scope name" do
 
@@ -249,7 +249,7 @@ describe Vend::ResourceCollection do
 
     context "when paged" do
 
-      let(:page_scope)  { mock("page_scope", :value => 1) }
+      let(:page_scope)  { double("page_scope", :value => 1) }
 
       before do
         subject.stub(:paged? => true)
@@ -266,7 +266,7 @@ describe Vend::ResourceCollection do
 
   describe "#get_or_create_page_scope" do
 
-    let(:page_scope)  { mock("page_scope") }
+    let(:page_scope)  { double("page_scope") }
     let(:page)        { 1 }
 
     before do
@@ -293,7 +293,7 @@ describe Vend::ResourceCollection do
   describe "#get_scope" do
 
     let(:scope_name)  { :scope_name }
-    let(:scope)       { mock("scope", :name => scope_name) }
+    let(:scope)       { double("scope", :name => scope_name) }
 
     context "when scope is present" do
 

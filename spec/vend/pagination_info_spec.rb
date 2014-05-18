@@ -4,7 +4,7 @@ describe Vend::PaginationInfo do
 
   subject { described_class.new(response) }
 
-  let(:response)  { mock("response") }
+  let(:response)  { double("response") }
 
   its(:response)  { should == response }
 
