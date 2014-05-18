@@ -1,4 +1,4 @@
-= Vend API Gem
+= Vend API Gem {<img src="https://travis-ci.org/trineo/vend-ruby.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/trineo/vend-ruby]
 
 This gem provides access to Vend's REST API.
 
