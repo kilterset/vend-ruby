@@ -9,7 +9,7 @@ end
 shared_examples_for "it has a logger" do
   describe "#logger" do
 
-    let(:logger)  { mock("logger") }
+    let(:logger)  { double("logger") }
 
     it "defaults to a null logger" do
       subject.logger.should be_instance_of(Vend::NullLogger)
