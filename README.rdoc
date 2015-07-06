@@ -6,3 +6,39 @@ This gem provides access to Vend's REST API.
 
 At the time of writing, this is located at
 https://docs.google.com/document/pub?id=13JiV6771UcrkmawFRxzvVl3tf5PGSTBH56RYy0-5cps
+
+== Using Vend API via Oauth 2.0
+
+You will need to implement the following steps to connect your application to a Vend Retailer account.
+
+=====1 Requesting authorisation url. User must be redirected on this url for receiving authorisation code.
+
+    auth_code = Vend::Oauth2::AuthCode.new(STORE, CLIENT_ID, SECRET, REDIRECT_URI)
+    url = auth_code.authorize_url
+
+Url will looks:
+ https://secure.vendhq.com/connect?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&state={state}
+After successful authorisation will redirected:
+ {redirect_uri}?code={code}&domain_prefix={domain_prefix}&state={state}
+
+
+=====2 Requesting access token.
+
+    auth_code = Vend::Oauth2::AuthCode.new(STORE, CLIENT_ID, SECRET, REDIRECT_URI)
+    token = auth_code.get_token(params[:code])
+
+Where <b>token</b> is instance of OAuth2::AccessToken http://www.rubydoc.info/gems/oauth2/1.0.0/OAuth2/AccessToken
+
+=====3  Using the token to access the Vend API.
+
+    client = Vend::Oauth2::Client.new(STORE, AUTH_TOKEN)
+    client.Product.all.each do |product|
+        puts product.name
+    end
+
+=====4 Refreshing the access token
+
+    auth_code = Vend::Oauth2::AuthCode.new(STORE, CLIENT_ID, SECRET, REDIRECT_URI)
+    token = auth_code.refresh_token(auth_token, refresh_token)
+
+The response payload may include a refresh token, if so, you need to update your currently stored refresh token.

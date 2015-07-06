@@ -265,7 +265,7 @@ describe Vend::Base do
     it "returns false when no id is present" do
       objekt = Vend::Resource::Foo.new(client, :attrs => {:foo => 'bar'})
       client.should_not_receive(:request)
-      objekt.delete.should be_false
+      objekt.delete.should be_falsey
     end
 
   end
@@ -280,7 +280,7 @@ describe Vend::Base do
     subject { Vend::Resource::Foo }
 
     it "defaults to false" do
-      subject.paginates?.should be_false
+      subject.paginates?.should be_falsey
     end
 
   end
@@ -299,7 +299,7 @@ describe Vend::Base do
         subject.stub(:available_scopes => [scope_name])
       end
       specify do
-        subject.accepts_scope?(scope_name).should be_true
+        subject.accepts_scope?(scope_name).should be_truthy
       end
     end
 
@@ -308,7 +308,7 @@ describe Vend::Base do
         subject.stub(:available_scopes => [])
       end
       specify do
-        subject.accepts_scope?(scope_name).should be_false
+        subject.accepts_scope?(scope_name).should be_falsey
       end
     end
   end
