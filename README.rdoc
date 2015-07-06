@@ -11,9 +11,9 @@ https://docs.google.com/document/pub?id=13JiV6771UcrkmawFRxzvVl3tf5PGSTBH56RYy0-
 
 You will need to implement the following steps to connect your application to a Vend Retailer account.
 
-===1 Requesting authorisation url. User must be redirected on this url for receiving authorisation code.
+====1 Requesting authorisation url. User must be redirected on this url for receiving authorisation code.
 
-```
+```ruby
     auth_code = Vend::Oauth2::AuthCode.new(STORE, CLIENT_ID, SECRET, REDIRECT_URI)
     url = auth_code.authorize_url
 ```
