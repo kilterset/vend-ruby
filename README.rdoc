@@ -16,7 +16,7 @@ You will need to implement the following steps to connect your application to a 
 <code>
     auth_code = Vend::Oauth2::AuthCode.new(STORE, CLIENT_ID, SECRET, REDIRECT_URI)
     url = auth_code.authorize_url
-</code
+</code>
 
 Url will looks:
  https://secure.vendhq.com/connect?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}&state={state}
