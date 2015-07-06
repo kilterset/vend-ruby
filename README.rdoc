@@ -27,7 +27,7 @@ After successful authorisation will redirected:
     auth_code = Vend::Oauth2::AuthCode.new(STORE, CLIENT_ID, SECRET, REDIRECT_URI)
     token = auth_code.get_token(params[:code])
 
-Where <b>token</b> is instance of [OAuth2::AccessToken](http://www.rubydoc.info/gems/oauth2/1.0.0/OAuth2/AccessToken "OAuth2::AccessToken")
+Where <b>token</b> is instance of OAuth2::AccessToken http://www.rubydoc.info/gems/oauth2/1.0.0/OAuth2/AccessToken
 
 =====3  Using the token to access the Vend API.
 
