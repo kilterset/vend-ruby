@@ -10,13 +10,14 @@ module Vend
 
     include Logable
 
-    attr_accessor :base_url, :verify_ssl, :username, :password
+    attr_accessor :base_url, :verify_ssl, :username, :password, :auth_token
     alias :verify_ssl? :verify_ssl
 
     def initialize(options = {})
       @base_url = options[:base_url]
       @username = options[:username]
       @password = options[:password]
+      @auth_token = options[:auth_token]
       @verify_ssl = if options.has_key?(:verify_ssl)
                       options[:verify_ssl]
                     else
@@ -74,7 +75,8 @@ module Vend
       # FIXME extract method
       method = ("Net::HTTP::" + options[:method].to_s.classify).constantize
       request = method.new(url.path + url_params_for(options[:url_params]))
-      request.basic_auth username, password
+      request.basic_auth username, password if username && password
+      request['Authorization'] = "Bearer #{auth_token}" if auth_token
 
       request.body = options[:body] if options[:body]
       logger.debug url

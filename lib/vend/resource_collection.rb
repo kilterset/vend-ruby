@@ -77,7 +77,7 @@ module Vend
       end
     end
 
-    def respond_to?(method_name)
+    def respond_to?(method_name, include_all=false)
       return true if accepts_scope?(method_name)
       super
     end
