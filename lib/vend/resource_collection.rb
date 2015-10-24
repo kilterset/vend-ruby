@@ -77,7 +77,7 @@ module Vend
       end
     end
 
-    def respond_to?(method_name, include_all=false)
+    def respond_to?(method_name)
       return true if accepts_scope?(method_name)
       super
     end
@@ -90,7 +90,7 @@ module Vend
     end
 
     def get_scope(name)
-      
+
       result = scopes.find { |scope| scope.name == name }
       if result.nil?
         raise ScopeNotFoundError.new(

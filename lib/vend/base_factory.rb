@@ -16,7 +16,7 @@ module Vend
       target_class.send(method_name, *args, &block)
     end
 
-    def respond_to?(method_name,  include_all=false)
+    def respond_to?(method_name)
       return true if target_class.respond_to?(method_name)
       super(method_name)
     end

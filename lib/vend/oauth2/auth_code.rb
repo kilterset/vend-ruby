@@ -23,7 +23,7 @@ module Vend
         get_oauth2_client.auth_code.authorize_url(:redirect_uri => redirect_uri)
       end
 
-      def get_token(code)
+      def token_from_code(code)
         client = get_oauth2_client(store)
         client.auth_code.get_token(code, :redirect_uri => redirect_uri)
       end
