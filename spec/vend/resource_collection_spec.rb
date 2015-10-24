@@ -4,7 +4,7 @@ describe Vend::ResourceCollection do
 
   let(:client)        { double("client") }
   let(:target_class)  {
-    double("target_class", :default_collection_request_args => {})
+    double("target_class", default_collection_request_args: {})
   }
   let(:endpoint)      { "endpoint" }
   let(:request_args)  { {} }
@@ -64,43 +64,41 @@ describe Vend::ResourceCollection do
   end
 
   describe "#last_page?" do
-
-    context "when pagination is set" do
+    context "when pagination" do
       let(:value)       { double("value") }
-      let(:pagination)  { double("pagination", :last_page? => value) }
-      before do
-        subject.stub(:pagination => pagination)
-      end
-      it "delegates to #pagination" do
-        subject.last_page?.should == value
+      let(:pagination)  { double("pagination", last_page?: value) }
+
+      it "is set" do
+        subject.stub(pagination: pagination)
+        expect(subject.last_page?).to eq(value)
       end
     end
 
-    context "when pagination is nil" do
-      it { should_not be_last_page }
+    context 'when pagination' do
+      it "is nil" do
+        expect(subject.last_page?).to_not be_truthy
+      end
     end
-
   end
 
   describe "#paged?" do
-
     context "when pagination is set" do
       let(:value)       { double("value") }
       let(:pagination)  { double("pagination", :paged? => value) }
       before do
         subject.stub(:pagination => pagination)
       end
+
       it "delegates to #pagination" do
-        subject.paged?.should == value
+        expect(subject.paged?).to eq value
       end
     end
 
-    context "when pagination is nil" do
-      specify do
-        subject.paged?.should be_falsey
+    context "when pagination" do
+      it 'is nil' do
+        expect(subject.paged?).to be_falsey
       end
     end
-
   end
 
 =begin
@@ -148,15 +146,20 @@ describe Vend::ResourceCollection do
   end
 
   describe "#has_scope?" do
-    context "when scope is not present" do
-      it { should_not have_scope(:name) }
+    it "when scope is not present" do
+      expect(subject.has_scope?(:name)).to be_falsey
     end
+
     context "when scope is present" do
-      let(:scope) { double("scope", :name => :name) }
+      let(:scope) { double("scope", name: :name) }
+
       before do
-        subject.stub(:scopes => [scope])
+        subject.stub(scopes: [scope])
       end
-      it { should have_scope(:name) }
+
+      it "when scope is present" do
+        expect(subject.has_scope?(:name)).to be_truthy
+      end
     end
   end
 
@@ -190,21 +193,20 @@ describe Vend::ResourceCollection do
     end
 
     context "when the method name is not a valid scope name" do
-
       before do
         subject.stub(:accepts_scope?).with(:foo) { false }
       end
 
-      it { should_not respond_to(:foo) }
+      it 'responds to foo' do
+        expect(subject).to_not respond_to(:foo)
+      end
 
       it "raises method missing" do
         lambda do
           subject.foo(value)
         end.should raise_exception(NoMethodError)
       end
-
     end
-
   end
 
   describe "#url" do

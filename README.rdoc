@@ -26,7 +26,7 @@ After successful authorisation, you will be redirected to:
 =====2 Requesting access token.
 
     auth_code = Vend::Oauth2::AuthCode.new(STORE, CLIENT_ID, SECRET, REDIRECT_URI)
-    token = auth_code.get_token(params[:code])
+    token = auth_code.token_from_code(params[:code])
 
 Where <b>token</b> is an instance of OAuth2::AccessToken http://www.rubydoc.info/gems/oauth2/1.0.0/OAuth2/AccessToken
 

@@ -20,7 +20,7 @@ describe Vend::Oauth2::AuthCode do
   end
 
 
-  describe "#get_token" do
+  describe "#token_from_code" do
     let(:store) {"store"}
     let(:token_type) { "Bearer" }
     let(:access_token) { "Uy4eObSRn1RwzQbAitDMEkY6thdHsDJjwdGehpgr"}
@@ -37,7 +37,7 @@ describe Vend::Oauth2::AuthCode do
     end
 
     it "return access token" do
-      token = subject.get_token('code')
+      token = subject.token_from_code('code')
       expect(token).to be_a OAuth2::AccessToken
       expect(token.token).to eq(access_token)
       expect(token.refresh_token).to eq(refresh_token)

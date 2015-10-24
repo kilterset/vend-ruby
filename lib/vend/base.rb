@@ -1,5 +1,4 @@
 module Vend
-
   # This Base class provides the basic mapping between Vend::Resource subclasses
   # and the HTTP endpoints in the Vend API.
   #
