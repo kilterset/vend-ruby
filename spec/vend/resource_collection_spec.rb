@@ -77,7 +77,7 @@ describe Vend::ResourceCollection do
     end
 
     context "when pagination is nil" do
-      xit { should_not be_last_page }
+      it { should_not be_last_page }
     end
 
   end
@@ -149,14 +149,14 @@ describe Vend::ResourceCollection do
 
   describe "#has_scope?" do
     context "when scope is not present" do
-      xit { should_not have_scope(:name) }
+      it { should_not have_scope(:name) }
     end
     context "when scope is present" do
       let(:scope) { double("scope", :name => :name) }
       before do
         subject.stub(:scopes => [scope])
       end
-      xit { should have_scope(:name) }
+      it { should have_scope(:name) }
     end
   end
 
@@ -220,7 +220,7 @@ describe Vend::ResourceCollection do
   end
 
   describe "#endpoint_with_scopes" do
-    
+
     context "when there are no scopes" do
       its(:endpoint_with_scopes) { should == endpoint }
     end

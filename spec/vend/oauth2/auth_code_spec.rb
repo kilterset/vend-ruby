@@ -11,7 +11,6 @@ describe Vend::Oauth2::AuthCode do
 
   it "creates an instance of Client" do
     expect(subject).to be_a Vend::Oauth2::AuthCode
-    #subject.should be_instance_of(Vend::Oauth2::AuthCode)
   end
 
   describe "#authorize_url" do

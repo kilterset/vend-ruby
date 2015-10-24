@@ -63,7 +63,7 @@ module Vend
     end
 
     def self.accepts_scope?(scope_name)
-      return available_scopes.include?(scope_name)
+      available_scopes.include?(scope_name)
     end
 
     # Creates a class method that allows access to a filtered collection of
@@ -90,9 +90,9 @@ module Vend
       end
       available_scopes << method_name
     end
-    
+
     def self.findable_by(field, options = {})
-      
+
       (class << self ; self ; end).instance_eval do
         define_method("find_by_#{field}") do |client, *args|
           search(client, options[:as] || field, *args)
@@ -160,7 +160,7 @@ module Vend
 
     # Overrides respond_to? to query the attrs hash for the key before
     # proxying it to the object
-    def respond_to?(method_name, include_all=false)
+    def respond_to?(method_name)
       if attrs.keys.include? method_name.to_s
         true
       else

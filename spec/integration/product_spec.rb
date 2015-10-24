@@ -14,7 +14,7 @@ describe Vend::Resource::Product do
   let(:expected_collection_length) { 2 }
 
   it_should_behave_like "a resource with a collection GET endpoint"
-  #it_should_behave_like "a resource with a DELETE endpoint"
+  it_should_behave_like "a resource with a DELETE endpoint"
 
   describe "pagination" do
 
