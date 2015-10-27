@@ -1,7 +1,5 @@
-
 module Vend
   module Resource
-
     class RegisterSale < Vend::Base
       url_scope :since
       url_scope :outlet_id
@@ -18,6 +16,5 @@ module Vend
         super.merge(:url_params => {:page_size => 200})
       end
     end
-
   end
 end

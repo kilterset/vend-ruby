@@ -4,7 +4,6 @@ module Vend
   # resources.  This class will automatically fetch paginated results if the
   # target_class supports it.
   class ResourceCollection
-
     class PageOutOfBoundsError  < StandardError ; end
     class AlreadyScopedError    < StandardError ; end
     class ScopeNotFoundError    < StandardError ; end

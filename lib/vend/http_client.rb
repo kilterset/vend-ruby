@@ -3,7 +3,6 @@ require 'json'
 require 'cgi'
 module Vend
   class HttpClient
-
     UNAUTHORIZED_MESSAGE = "Client not authorized. Check your store credentials are correct and try again."
     # Read timeout in seconds
     READ_TIMEOUT = 240

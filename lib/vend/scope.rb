@@ -1,6 +1,5 @@
 module Vend
   class Scope
-
     attr_reader :name
     attr_accessor :value
 

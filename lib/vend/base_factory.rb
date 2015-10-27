@@ -1,7 +1,5 @@
 module Vend
-
   class BaseFactory
-
     attr_reader :client, :target_class
 
     def initialize(client, target_class)
@@ -28,7 +26,5 @@ module Vend
     #    target_class.send(:search, @client, url_param, *args)
     #  end
     #end
-
   end
-
 end
