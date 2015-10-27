@@ -4,3 +4,5 @@ Gemfile.lock
 pkg/*
 doc/*
 .rvmrc
+use-cases/
+.idea*

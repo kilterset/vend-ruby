@@ -22,3 +22,6 @@ require 'vend/resource/user'
 
 require 'vend/http_client'
 require 'vend/client'
+
+require 'vend/oauth2/client'
+require 'vend/oauth2/auth_code'

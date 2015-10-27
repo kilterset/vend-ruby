@@ -18,10 +18,9 @@ def build_receiver
 end
 
 shared_examples "a resource with a collection GET endpoint" do
-
-  let(:username)  {"foo"}
-  let(:password)  {"bar"}
-  let(:store)     {"baz"}
+  let(:username)  { "foo".freeze }
+  let(:password)  { "bar".freeze }
+  let(:store)     { "baz".freeze }
   let(:append_to_url) { '' }
 
   let(:client) do
@@ -33,23 +32,23 @@ shared_examples "a resource with a collection GET endpoint" do
       username, password, store, class_basename.to_s.underscore.pluralize,
       append_to_url
     ]
+
     stub_request(:get, url).to_return(
       :status => 200, :body => get_mock_from_path(:get)
     )
 
     collection = build_receiver.all
-    collection.count.should == expected_collection_length
+    expect(collection.count).to eq(expected_collection_length)
 
     first = collection.first
-    first.should have_attributes(expected_attributes)
+    expect(first).to have_attributes(expected_attributes)
   end
 end
 
 shared_examples "a resource with a singular GET endpoint" do
-
-  let(:username)  {"foo"}
-  let(:password)  {"bar"}
-  let(:store)     {"baz"}
+  let(:username)  { "foo".freeze }
+  let(:password)  { "bar".freeze }
+  let(:store)     { "baz".freeze }
 
   let(:client) do
     Vend::Client.new(store, username, password)
@@ -65,21 +64,20 @@ shared_examples "a resource with a singular GET endpoint" do
 end
 
 shared_examples "a resource with a DELETE endpoint" do
-
-  let(:username)  {"foo"}
-  let(:password)  {"bar"}
-  let(:store)     {"baz"}
+  let(:username)  { "foo".freeze }
+  let(:password)  { "bar".freeze }
+  let(:store)     { "baz".freeze }
 
   let(:client) do
     Vend::Client.new(store, username, password)
   end
 
   it "deletes the resource" do
+
     stub_request(:delete, "https://#{username}:#{password}@#{store}.vendhq.com/api/#{class_basename.to_s.underscore.pluralize}/#{expected_attributes['id']}").
-    to_return(:status => 200, :body => {})
+    to_return(status: 200, body: {}.to_json)
 
     objekt = build_receiver.build(expected_attributes)
-    objekt.delete.should be_true
+    expect(objekt.delete).to be_truthy
   end
-
 end

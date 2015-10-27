@@ -1,5 +1,4 @@
 module Vend
-
   # This Base class provides the basic mapping between Vend::Resource subclasses
   # and the HTTP endpoints in the Vend API.
   #
@@ -90,9 +89,9 @@ module Vend
       end
       available_scopes << method_name
     end
-    
+
     def self.findable_by(field, options = {})
-      
+
       (class << self ; self ; end).instance_eval do
         define_method("find_by_#{field}") do |client, *args|
           search(client, options[:as] || field, *args)

@@ -20,7 +20,7 @@ describe Vend::HttpClient do
   its(:password) { should == password }
 
   describe "#verify_ssl?" do
-    its(:verify_ssl) { should be_true }
+    its(:verify_ssl) { should be_truthy }
 
     context "when overridden in the options" do
       subject { described_class.new(options.merge(:verify_ssl => false)) }

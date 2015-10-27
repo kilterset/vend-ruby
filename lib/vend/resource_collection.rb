@@ -90,7 +90,7 @@ module Vend
     end
 
     def get_scope(name)
-      
+
       result = scopes.find { |scope| scope.name == name }
       if result.nil?
         raise ScopeNotFoundError.new(
