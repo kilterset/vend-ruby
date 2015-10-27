@@ -34,7 +34,7 @@ shared_examples "a resource with a collection GET endpoint" do
     ]
 
     stub_request(:get, url).to_return(
-      :status => 200, :body => get_mock_from_path(:get)
+      status: 200, body: get_mock_from_path(:get)
     )
 
     collection = build_receiver.all
@@ -59,7 +59,7 @@ shared_examples "a resource with a singular GET endpoint" do
     to_return(:status => 200, :body => get_mock_from_path(:get, :id => id))
 
     objekt = build_receiver.find(id)
-    objekt.should have_attributes(expected_attributes)
+    expect(objekt).to have_attributes(expected_attributes)
   end
 end
 

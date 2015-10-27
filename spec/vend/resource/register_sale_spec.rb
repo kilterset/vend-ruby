@@ -9,16 +9,16 @@ describe Vend::Resource::RegisterSale do
     let(:raw_register_sale_product) { double("raw register sale prodcut") }
 
     before do
-      subject.stub(:attrs) { 
-        { "register_sale_products" => [raw_register_sale_product] } 
+      subject.stub(:attrs) {
+        { "register_sale_products" => [raw_register_sale_product] }
       }
       Vend::Resource::RegisterSaleProduct.stub(:new).with(raw_register_sale_product) {
-        register_sale_product 
+        register_sale_product
       }
     end
 
     it "returns all the register sale products" do
-      subject.register_sale_products.should == [register_sale_product]
+      expect(subject.register_sale_products).to eq [register_sale_product]
     end
   end
 end

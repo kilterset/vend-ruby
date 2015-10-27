@@ -12,8 +12,8 @@ describe Vend::Resource::Product do
 
   let(:expected_collection_length) { 2 }
 
-  it_should_behave_like "a resource with a collection GET endpoint"
-  it_should_behave_like "a resource with a DELETE endpoint"
+  it_behaves_like "a resource with a collection GET endpoint"
+  it_behaves_like "a resource with a DELETE endpoint"
 
   describe "pagination" do
 
@@ -39,7 +39,7 @@ describe Vend::Resource::Product do
     end
 
     it "returns paginated results" do
-      client.Product.all.count.should == 4
+      expect(client.Product.all.count).to eq 4
     end
 
     it "returns the first result" do
@@ -67,9 +67,7 @@ describe Vend::Resource::Product do
     end
 
     it "allows scope chaining" do
-      client.Product.active(1).since(timestamp).count.should == 3
+      expect(client.Product.active(1).since(timestamp).count).to eq 3
     end
-
-
   end
 end

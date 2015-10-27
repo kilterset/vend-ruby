@@ -5,23 +5,25 @@ describe Vend::Resource::RegisterSaleProduct do
 
   subject { described_class.new(attrs) }
 
-  its(:attrs) { should == attrs }
+  it :attrs do
+    expect(subject.attrs).to eq attrs
+  end
 
   describe "provides an attr reader for the attributes in attrs" do
     let(:attr1) { double("attr1") }
 
-    let(:attrs) { 
-      { 
+    let(:attrs) {
+      {
         "attr1" => attr1
       }
     }
 
     it "responds to attr1" do
-      subject.send(:attr1).should == attr1
+      expect(subject.send(:attr1)).to eq attr1
     end
 
     it "does not respond to attr2" do
-      lambda { subject.send(:attr2) }.should raise_error NoMethodError
+      expect { subject.send(:attr2) }.to raise_error NoMethodError
     end
   end
 end

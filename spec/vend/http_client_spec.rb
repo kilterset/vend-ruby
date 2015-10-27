@@ -13,17 +13,27 @@ describe Vend::HttpClient do
     described_class.new(options)
   }
 
-  it_should_behave_like "it has a logger"
+  it_behaves_like "it has a logger"
 
-  its(:base_url) { should == base_url }
-  its(:username) { should == username }
-  its(:password) { should == password }
+  it :base_url do
+    expect(subject.base_url).to eq base_url
+  end
+
+  it :username do
+    expect(subject.username).to eq username
+  end
+
+  it :password do
+    expect(subject.password).to eq password
+  end
 
   describe "#verify_ssl?" do
-    its(:verify_ssl) { should be_truthy }
+    it :verify_ssl do
+      expect(subject.verify_ssl).to be_truthy
+    end
 
     context "when overridden in the options" do
-      subject { described_class.new(options.merge(:verify_ssl => false)) }
+      subject { described_class.new(options.merge(verify_ssl: false)) }
     end
   end
 
@@ -35,14 +45,14 @@ describe Vend::HttpClient do
 
     before do
       subject.stub(:verify_mode => verify_mode)
-      http.should_receive(:use_ssl=).with(true)
-      http.should_receive(:verify_mode=).with(verify_mode)
-      http.should_receive(:read_timeout=).with(240)
+      expect(http).to receive(:use_ssl=).with(true)
+      expect(http).to receive(:verify_mode=).with(verify_mode)
+      expect(http).to receive(:read_timeout=).with(240)
       Net::HTTP.stub(:new).with(host, port) { http }
     end
 
     it "returns the http_connection" do
-      subject.get_http_connection(host, port).should == http
+      expect(subject.get_http_connection(host, port)).to eq http
     end
   end
 
@@ -52,14 +62,18 @@ describe Vend::HttpClient do
       before do
         subject.stub(:verify_ssl? => true)
       end
-      its(:verify_mode) { should == OpenSSL::SSL::VERIFY_PEER }
+      it :verify_mode do
+        expect(subject.verify_mode).to eq OpenSSL::SSL::VERIFY_PEER
+      end
     end
 
     context "when verify_ssl? is false" do
       before do
         subject.stub(:verify_ssl? => false)
       end
-      its(:verify_mode) { should == OpenSSL::SSL::VERIFY_NONE }
+      it :verify_mode do
+        expect(subject.verify_mode).to eq OpenSSL::SSL::VERIFY_NONE
+      end
     end
 
   end
@@ -93,20 +107,20 @@ describe Vend::HttpClient do
     it "returns parsed JSON" do
       stub_request(:get, "https://username:password@foo/bar/bun").
         to_return(:status => 200, :body => '{"foo":"bar"}', :headers => {})
-      subject.request("bun").should == {"foo" => "bar"}
+      expect(subject.request("bun")).to eq({"foo" => "bar"})
     end
 
     it "returns nil if the response was empty" do
       stub_request(:get, "https://username:password@foo/bar/bun").
         to_return(:status => 200, :body => '', :headers => {})
-      subject.request("bun").should be_nil
+      expect(subject.request("bun")).to be_nil
     end
     it "allows us to specify HTTP method" do
       stub_request(:post, "https://username:password@foo/bar/foo").
         to_return(:status => 200, :body => '{"foo":"bar"}', :headers => {})
 
       response = subject.request('foo', :method => :post)
-      response.should == {"foo" => "bar"}
+      expect(response).to eq({"foo" => "bar"})
     end
 
     it "allows us to set a request body" do
@@ -115,7 +129,7 @@ describe Vend::HttpClient do
         to_return(:status => 200, :body => '{"foo":"bar"}', :headers => {})
 
       response = subject.request('foo', :method => :post, :body => '{"post":"data"}')
-      response.should == {"foo" => "bar"}
+      expect(response).to eq({"foo" => "bar"})
     end
 
     it "allows us to specify url parameters" do
@@ -123,7 +137,7 @@ describe Vend::HttpClient do
         to_return(:status => 200, :body => '{"foo":"bar"}', :headers => {})
 
       response = subject.request('foo', :url_params => {:foo => "bar", :baz => "baloo", :flum => ["blob","splat"]})
-      response.should == {"foo" => "bar"}
+      expect(response).to eq({"foo" => "bar"})
     end
 
     it "follows redirects" do
@@ -134,7 +148,7 @@ describe Vend::HttpClient do
         to_return(:status => 200, :body => '{"foo":"bar"}', :headers => {})
 
       response = subject.request('foo')
-      response.should == {"foo" => "bar"}
+      expect(response).to eq({"foo" => "bar"})
     end
 
     it "raises an exception when the redirection limit is exceeded" do
