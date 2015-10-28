@@ -6,11 +6,11 @@ describe Vend::Scope do
 
   subject { described_class.new(name, value) }
 
-  it :name do
+  specify :name do
     expect(subject.name).to eq name
   end
 
-  it :value do
+  specify :value do
     expect(subject.value).to eq value
   end
 
@@ -21,27 +21,27 @@ describe Vend::Scope do
       subject.stub(:escaped_value => escaped_value)
     end
 
-    it :to_s do
+    specify :to_s do
       expect(subject.to_s).to eq "/#{name}/#{escaped_value}"
     end
   end
 
   describe "#escaped_value" do
     let(:value) { "value with spaces" }
-    it :escaped_value do
+    specify :escaped_value do
       expect(subject.escaped_value).to eq "value+with+spaces"
     end
 
     context "when value is a Fixnum" do
       let(:value) { 42 }
-      it :escaped_value do
+      specify :escaped_value do
         expect(subject.escaped_value).to eq "42"
       end
     end
 
     context "when value is a timestamp" do
       let(:value) { Time.new(2012,7,11,10,40,29) }
-      it :escaped_value do
+      specify :escaped_value do
         expect(subject.escaped_value).to eq "2012-07-11+10%3A40%3A29"
       end
     end

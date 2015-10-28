@@ -11,30 +11,30 @@ describe Vend::ResourceCollection do
 
   subject { described_class.new(client, target_class, endpoint, request_args) }
 
-  it :client do
+  specify :client do
     expect(subject.client).to eq client
   end
 
-  it :target_class do
+  specify :target_class do
     expect(subject.target_class).to eq target_class
   end
 
-  it :endpoint do
+  specify :endpoint do
     expect(subject.endpoint).to eq endpoint
   end
 
-  it :scopes do
+  specify :scopes do
     expect(subject.scopes).to eq []
   end
 
   describe "#request_args" do
-    it :request_args  do
+    specify :request_args  do
       expect(subject.request_args).to eq request_args
     end
 
     context "when not set in initialize" do
       subject { described_class.new(client, target_class, endpoint) }
-      it :request_args  do
+      specify :request_args  do
         expect(subject.request_args).to eq({})
       end
     end
@@ -46,7 +46,7 @@ describe Vend::ResourceCollection do
 
       before { target_class.stub(:default_collection_request_args => {:foo => :bar}) }
 
-      it :request_args  do
+      specify :request_args  do
         expect(subject.request_args).to eq({ foo: :bar })
       end
     end
@@ -196,7 +196,7 @@ describe Vend::ResourceCollection do
         subject.stub(:accepts_scope?).with(:foo) { true }
       end
 
-      it :responds_to_foo do
+      specify :responds_to_foo do
         expect(subject).to respond_to(:foo)
       end
 
@@ -231,14 +231,14 @@ describe Vend::ResourceCollection do
       expect(subject).to receive(:increment_page)
     end
 
-    it :url do
+    specify :url do
        expect(subject.url).to eq endpoint_with_scopes
     end
   end
 
   describe "#endpoint_with_scopes" do
     context "when there are no scopes" do
-      it :endpoint_with_scopes do
+      specify :endpoint_with_scopes do
          expect(subject.endpoint_with_scopes).to eq endpoint
       end
     end
@@ -251,7 +251,7 @@ describe Vend::ResourceCollection do
         subject.stub(:scopes => scopes)
       end
 
-      it :endpoint_with_scopes do
+      specify :endpoint_with_scopes do
          expect(subject.endpoint_with_scopes).to eq endpoint + scopes.join
       end
     end
@@ -264,7 +264,7 @@ describe Vend::ResourceCollection do
         subject.stub(:paged? => false)
       end
 
-      it :increment_page do
+      specify :increment_page do
         expect(subject.increment_page).to be_nil
       end
     end
@@ -279,7 +279,7 @@ describe Vend::ResourceCollection do
         expect(page_scope).to receive(:value=).with(2) { 2 }
       end
 
-      it :increment_page do
+      specify :increment_page do
          expect(subject.increment_page).to eq 2
       end
     end
@@ -300,7 +300,7 @@ describe Vend::ResourceCollection do
         expect(subject).to receive(:scope).with(:page, page) { page_scope }
       end
 
-      it :get_or_create_page_scope  do
+      specify :get_or_create_page_scope  do
         expect(subject.get_or_create_page_scope).to eq page_scope
       end
     end
@@ -309,7 +309,7 @@ describe Vend::ResourceCollection do
       before do
         subject.stub(:has_scope?).with(:page) { true }
       end
-      it :get_or_create_page_scope  do
+      specify :get_or_create_page_scope  do
         expect(subject.get_or_create_page_scope).to eq page_scope
       end
     end

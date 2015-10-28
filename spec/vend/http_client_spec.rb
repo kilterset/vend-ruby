@@ -15,20 +15,20 @@ describe Vend::HttpClient do
 
   it_behaves_like "it has a logger"
 
-  it :base_url do
+  specify :base_url do
     expect(subject.base_url).to eq base_url
   end
 
-  it :username do
+  specify :username do
     expect(subject.username).to eq username
   end
 
-  it :password do
+  specify :password do
     expect(subject.password).to eq password
   end
 
   describe "#verify_ssl?" do
-    it :verify_ssl do
+    specify :verify_ssl do
       expect(subject.verify_ssl).to be_truthy
     end
 
@@ -62,7 +62,7 @@ describe Vend::HttpClient do
       before do
         subject.stub(:verify_ssl? => true)
       end
-      it :verify_mode do
+      specify :verify_mode do
         expect(subject.verify_mode).to eq OpenSSL::SSL::VERIFY_PEER
       end
     end
@@ -71,7 +71,7 @@ describe Vend::HttpClient do
       before do
         subject.stub(:verify_ssl? => false)
       end
-      it :verify_mode do
+      specify :verify_mode do
         expect(subject.verify_mode).to eq OpenSSL::SSL::VERIFY_NONE
       end
     end

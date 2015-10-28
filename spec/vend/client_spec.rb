@@ -4,15 +4,15 @@ describe Vend::Client do
   subject { Vend::Client.new('store','user','password') }
   it_behaves_like "it has a logger"
 
-  it :store do
+  specify :store do
     expect(subject.store).to eq 'store'
   end
 
-  it :username do
+  specify :username do
     expect(subject.username).to eq 'user'
   end
 
-  it :password do
+  specify :password do
     expect(subject.password).to eq 'password'
   end
 
@@ -69,7 +69,7 @@ describe Vend::Client do
         :password => password
       )
     end
-    it :http_client_options do
+    specify :http_client_options do
       expect(subject.http_client_options).to eq({
         foo: 'bar',
         base_url: base_url,

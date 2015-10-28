@@ -15,11 +15,11 @@ describe Vend::Resource::Customer do
 
   let(:expected_collection_length) { 1 }
 
-  it :find_by_email do
+  specify :find_by_email do
     expect(client.Customer).to respond_to(:find_by_email)
   end
 
-  it :find_by_name do
+  specify :find_by_name do
     expect(client.Customer).to respond_to(:find_by_name)
   end
 

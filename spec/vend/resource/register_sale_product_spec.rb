@@ -5,7 +5,7 @@ describe Vend::Resource::RegisterSaleProduct do
 
   subject { described_class.new(attrs) }
 
-  it :attrs do
+  specify :attrs do
     expect(subject.attrs).to eq attrs
   end
 

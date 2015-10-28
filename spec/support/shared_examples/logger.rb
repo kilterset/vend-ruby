@@ -1,21 +1,21 @@
 shared_examples_for "a logger" do
-  it :responds_to_debug do
+  specify :responds_to_debug do
     expect(subject).to respond_to(:debug)
   end
 
-  it :responds_to_info do
+  specify :responds_to_info do
     expect(subject).to respond_to(:info)
   end
 
-  it :responds_to_warn do
+  specify :responds_to_warn do
     expect(subject).to respond_to(:warn)
   end
 
-  it :responds_to_error do
+  specify :responds_to_error do
     expect(subject).to respond_to(:error)
   end
 
-  it :responds_to_fatal do
+  specify :responds_to_fatal do
     expect(subject).to respond_to(:fatal)
   end
 end

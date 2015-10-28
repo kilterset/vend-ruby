@@ -33,7 +33,7 @@ describe Vend::Oauth2::Client do
       )
     end
 
-    it :http_client_options do
+    specify :http_client_options do
       expect(subject.http_client_options).to eq({
         :foo => 'bar',
         :base_url => base_url,

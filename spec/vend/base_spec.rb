@@ -85,7 +85,7 @@ describe Vend::Base do
   end
 
   describe '#singular_name' do
-    it :singular_name do
+    specify :singular_name do
       expect(subject.singular_name).to eq "foos/#{subject.id}"
     end
   end
@@ -239,7 +239,7 @@ describe Vend::Base do
 
   describe '.default_collection_request_args' do
     subject { Vend::Resource::Foo }
-    it :default_collection_request_args do
+    specify :default_collection_request_args do
       expect(subject.default_collection_request_args).to eq({})
     end
   end
@@ -254,7 +254,7 @@ describe Vend::Base do
 
   describe '.available_scopes' do
     subject { Vend::Resource::Foo }
-    it :available_scopes do
+    specify :available_scopes do
       expect(subject.available_scopes).to eq [:bar]
     end
   end
