@@ -6,8 +6,12 @@ describe Vend::Oauth2::Client do
 
   it_behaves_like "it has a logger"
 
-  its(:store) { is_expected.to eq('store') }
-  its(:auth_token) { is_expected.to eq('auth_token') }
+  describe "#initialize" do
+    it "sets up the attr_readers" do
+      expect(subject.store).to      eq('store')
+      expect(subject.auth_token).to eq('auth_token')
+    end
+  end
 
   it "creates an instance of Client" do
     expect(subject).to be_a Vend::Oauth2::Client
