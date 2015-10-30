@@ -27,7 +27,7 @@ describe Vend::Resource::RegisterSale do
     expect(client.RegisterSale).to respond_to(:find_by_state)
 
     stub_request(:get, "https://bar:baz@foo.vendhq.com/api/register_sales?status[]=OPEN&status[]=CLOSED").
-      to_return(:status => 200, :body => get_mock_response('register_sales.find_by_state.json'))
+      to_return(status: 200, body: get_mock_response('register_sales.find_by_state.json'))
 
     collection = client.RegisterSale.find_by_state([:OPEN, :CLOSED])
     expect(collection.first).to be_a Vend::Resource::RegisterSale

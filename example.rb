@@ -16,7 +16,7 @@ logger = Log4r::Logger.new 'vend'
 logger.outputters = Log4r::Outputter.stdout
 client.http_client.logger = client.logger = logger
 
-# puts client.request('products', :method => :put, :body => '{"foo":"bar"}')
+# puts client.request('products', method: :put, body: '{"foo":"bar"}')
 
 # puts "###### Products ######"
 # client.Product.all.each do |product|
@@ -29,7 +29,7 @@ client.http_client.logger = client.logger = logger
 # end
 #
 # puts "###### Creating a Customer ######"
-# response = client.request('customers', :method => :post, :body => '{"customer_code":"foo"}')
+# response = client.request('customers', method: :post, body: '{"customer_code":"foo"}')
 # puts response
 #
 # puts "###### Finding a Customer by name ######"

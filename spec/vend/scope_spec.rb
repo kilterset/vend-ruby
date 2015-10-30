@@ -18,7 +18,7 @@ describe Vend::Scope do
     let(:escaped_value) { "escaped_value" }
 
     before do
-      subject.stub(:escaped_value => escaped_value)
+      subject.stub(escaped_value: escaped_value)
     end
 
     specify :to_s do

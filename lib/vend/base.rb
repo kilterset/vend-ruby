@@ -102,14 +102,14 @@ module Vend
     # This method is only used internally by find_by_field methods.
     def self.search(client, field, query)
       initialize_collection(
-        client, collection_name,  :url_params => { field.to_sym => query }
+        client, collection_name,  url_params: { field.to_sym => query }
       )
     end
 
     # Builds a new instance of the described resource using the specified
     # attributes.
     def self.build(client, attrs)
-      self.new(client, :attrs => attrs)
+      self.new(client, attrs: attrs)
     end
 
     # Builds a collection of instances from a JSON response
@@ -149,7 +149,7 @@ module Vend
     # request.  I.e, to default to 500 items per page:
     #
     #   def default_collection_request_args
-    #     super.merge(:url_params => {:page_size => 500})
+    #     super.merge(url_params: {page_size: 500})
     #   end
     #
     def self.default_collection_request_args
@@ -190,7 +190,7 @@ module Vend
     def delete!
       raise(Vend::Resource::IllegalAction,
             "#{self.class.name} has no unique ID") unless attrs['id']
-      client.request(singular_name, :method => :delete)
+      client.request(singular_name, method: :delete)
       true
     end
 

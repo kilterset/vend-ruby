@@ -71,7 +71,7 @@ module Vend #:nodoc:
 
     def http_client_options
       options.merge(
-        :base_url => base_url, :username => username, :password => password
+        base_url: base_url, username: username, password: password
       )
     end
   end

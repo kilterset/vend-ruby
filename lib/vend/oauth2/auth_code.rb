@@ -20,12 +20,12 @@ module Vend
       end
 
       def authorize_url
-        get_oauth2_client.auth_code.authorize_url(:redirect_uri => redirect_uri)
+        get_oauth2_client.auth_code.authorize_url(redirect_uri: redirect_uri)
       end
 
       def token_from_code(code)
         client = get_oauth2_client(store)
-        client.auth_code.get_token(code, :redirect_uri => redirect_uri)
+        client.auth_code.get_token(code, redirect_uri: redirect_uri)
       end
 
       def refresh_token(auth_token, refresh_token)

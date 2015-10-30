@@ -29,12 +29,12 @@ describe Vend::Resource::Product do
       stub_request( :get,
         "https://#{username}:#{password}@#{store}.vendhq.com/api/products"
       ).to_return(
-        :status => 200, :body => get_mock_response('products/page/1.json')
+        status: 200, body: get_mock_response('products/page/1.json')
       )
       stub_request( :get,
         "https://#{username}:#{password}@#{store}.vendhq.com/api/products/page/2"
       ).to_return(
-        :status => 200, :body => get_mock_response('products/page/2.json')
+        status: 200, body: get_mock_response('products/page/2.json')
       )
     end
 
@@ -62,7 +62,7 @@ describe Vend::Resource::Product do
       stub_request( :get,
         "https://#{username}:#{password}@#{store}.vendhq.com/api/products/active/1/since/2012-07-05+11:12:13"
       ).to_return(
-        :status => 200, :body => get_mock_response('products.active.since.json')
+        status: 200, body: get_mock_response('products.active.since.json')
       )
     end
 

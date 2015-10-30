@@ -21,7 +21,7 @@ module Vend
 
       def http_client_options
         options.merge(
-            :auth_token => @auth_token, :base_url => base_url
+            auth_token: @auth_token, base_url: base_url
         )
       end
 

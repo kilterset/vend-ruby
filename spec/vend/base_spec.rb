@@ -16,7 +16,7 @@ describe Vend::Base do
     }
   }
 
-  subject { Vend::Resource::Foo.new(client, :attrs => attribute_hash) }
+  subject { Vend::Resource::Foo.new(client, attrs: attribute_hash) }
 
   it 'creates an instance of Foo' do
     expect(subject).to be_instance_of(Vend::Resource::Foo)
@@ -114,7 +114,7 @@ describe Vend::Base do
     let(:resource_collection) { double('resource_collection') }
 
     before do
-      subject.stub(:collection_name => collection_name)
+      subject.stub(collection_name: collection_name)
     end
 
     it 'calls initialize_collection with the collection_name' do
@@ -133,7 +133,7 @@ describe Vend::Base do
     let(:bar)                 { double('bar') }
 
     before do
-      subject.stub(:collection_name => collection_name)
+      subject.stub(collection_name: collection_name)
     end
 
     it 'calls initialize_collection with collection_name and :bar arg' do
@@ -156,12 +156,12 @@ describe Vend::Base do
     let(:query)               { 'query' }
 
     before do
-      subject.stub(:collection_name => collection_name)
+      subject.stub(collection_name: collection_name)
     end
 
     it 'calls initialize_collection with collection_name and :outlet_id arg' do
       expect(subject).to receive(:initialize_collection).with(
-        client, collection_name, :url_params => { field.to_sym => query }
+        client, collection_name, url_params: { field.to_sym => query }
       ) { resource_collection }
       expect(subject.search(client, field, query)).to eq resource_collection
     end
@@ -188,7 +188,7 @@ describe Vend::Base do
 
   describe 'dynamic instance methods' do
     let(:attrs) { { 'one' => 'foo', 'two' => 'bar', 'object_id' => 'fail' } }
-    subject { Vend::Resource::Foo.new(client, :attrs => attrs) }
+    subject { Vend::Resource::Foo.new(client, attrs: attrs) }
 
     it 'responds to top level attributes' do
       expect(subject).to respond_to(:one)
@@ -203,12 +203,12 @@ describe Vend::Base do
 
   describe 'delete!' do
     context 'when id is present' do
-      subject { Vend::Resource::Foo.new(client, :attrs => {'id' => 1}) }
+      subject { Vend::Resource::Foo.new(client, attrs: {'id' => 1}) }
 
       let(:singular_name) { double('singular_name')}
 
       before do
-        subject.stub(:singular_name => singular_name)
+        subject.stub(singular_name: singular_name)
       end
 
       it 'deletes the object' do
@@ -218,7 +218,7 @@ describe Vend::Base do
     end
 
     context 'when id is absent' do
-      subject { Vend::Resource::Foo.new(client, :attrs => {:foo => 'bar'}) }
+      subject { Vend::Resource::Foo.new(client, attrs: {foo: 'bar'}) }
 
       it 'raises Vend::Resource::IllegalAction' do
         expect(client).to_not receive(:request)
@@ -231,7 +231,7 @@ describe Vend::Base do
 
   describe 'delete' do
     it 'returns false when no id is present' do
-      subject = Vend::Resource::Foo.new(client, :attrs => {:foo => 'bar'})
+      subject = Vend::Resource::Foo.new(client, attrs: {foo: 'bar'})
       expect(client).to_not receive(:request)
       expect(subject.delete).to be_falsey
     end

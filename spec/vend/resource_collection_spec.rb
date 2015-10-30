@@ -44,7 +44,7 @@ describe Vend::ResourceCollection do
         described_class.new(client, target_class, endpoint)
       }
 
-      before { target_class.stub(:default_collection_request_args => {:foo => :bar}) }
+      before { target_class.stub(default_collection_request_args: {foo: :bar}) }
 
       specify :request_args  do
         expect(subject.request_args).to eq({ foo: :bar })
@@ -98,7 +98,7 @@ describe Vend::ResourceCollection do
       let(:value)       { double("value") }
       let(:pagination)  { double("pagination", :paged? => value) }
       before do
-        subject.stub(:pagination => pagination)
+        subject.stub(pagination: pagination)
       end
 
       it "delegates to #pagination" do
@@ -119,7 +119,7 @@ describe Vend::ResourceCollection do
       let(:value)       { double("value") }
       let(:pagination)  { double("pagination", method => value) }
       before do
-        subject.stub(:pagination => pagination)
+        subject.stub(pagination: pagination)
       end
       it "delegates to #pagination" do
         expect(subject.send(method)).to eq value
@@ -136,7 +136,7 @@ describe Vend::ResourceCollection do
     context "when scope is not already present" do
       before do
         subject.stub(:has_scope?).with(:name) { false }
-        subject.stub(:scopes => scopes)
+        subject.stub(scopes: scopes)
         Vend::Scope.stub(:new).with(:name, value) { scope }
         expect(scopes).to receive(:<<).with(scope)
       end
@@ -248,7 +248,7 @@ describe Vend::ResourceCollection do
       let(:scope2) { "scope2" }
       let(:scopes) { [scope1, scope2] }
       before do
-        subject.stub(:scopes => scopes)
+        subject.stub(scopes: scopes)
       end
 
       specify :endpoint_with_scopes do
@@ -270,11 +270,11 @@ describe Vend::ResourceCollection do
     end
 
     context "when paged" do
-      let(:page_scope)  { double("page_scope", :value => 1) }
+      let(:page_scope)  { double("page_scope", value: 1) }
 
       before do
         subject.stub(:paged? => true)
-        subject.stub(:page => 1)
+        subject.stub(page: 1)
         expect(subject).to receive(:get_or_create_page_scope) { page_scope }
         expect(page_scope).to receive(:value=).with(2) { 2 }
       end
@@ -290,7 +290,7 @@ describe Vend::ResourceCollection do
     let(:page)        { 1 }
 
     before do
-      subject.stub(:page => page)
+      subject.stub(page: page)
       expect(subject).to receive(:get_scope).with(:page) { page_scope }
     end
 
@@ -317,12 +317,12 @@ describe Vend::ResourceCollection do
 
   describe "#get_scope" do
     let(:scope_name)  { :scope_name }
-    let(:scope)       { double("scope", :name => scope_name) }
+    let(:scope)       { double("scope", name: scope_name) }
 
     context "when scope is present" do
 
       before do
-        subject.stub(:scopes => [scope])
+        subject.stub(scopes: [scope])
       end
 
       specify do
@@ -332,7 +332,7 @@ describe Vend::ResourceCollection do
 
     context "when scope is not present" do
       before do
-        subject.stub(:scopes => [])
+        subject.stub(scopes: [])
       end
 
       specify do

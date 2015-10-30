@@ -41,7 +41,7 @@ describe Vend::PaginationInfo do
 
       context "when page is equal to pages" do
         before do
-          subject.stub(:page => 42, :pages => 42)
+          subject.stub(page: 42, pages: 42)
         end
 
         specify :is_last_page do

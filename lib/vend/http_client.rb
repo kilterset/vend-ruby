@@ -43,25 +43,25 @@ module Vend
     #
     # An optional hash of arguments may be specified. Possible options include:
     #   :method - The HTTP method
-    #     E.g. request('foo', :method => :post) will perform a POST request for
+    #     E.g. request('foo', method: :post) will perform a POST request for
     #          http://storeurl.vendhq.com/api/foo
     #
     #   :url_params - The URL parameters for GET requests.
-    #     E.g. request('foo', :url_params => {:bar => "baz"}) will request
+    #     E.g. request('foo', url_params: {bar: "baz"}) will request
     #          http://storeurl.vendhq.com/api/foo?bar=baz
     #
     #   :id - The ID required for performing actions on specific resources
     #         (e.g. delete).
-    #     E.g. request('foos', :method => :delete, :id => 1) will request
+    #     E.g. request('foos', method: :delete, id: 1) will request
     #          DELETE http://storeurl.vendhq.com/api/foos/1
     #
     #   :body - The request body
     #     E.g. For submitting a POST to http://storeurl.vendhq.com/api/foo
     #          with the JSON data {"baz":"baloo"} we would call
-    #          request('foo', :method => :post, :body => '{\"baz\":\"baloo\"}'
+    #          request('foo', method: :post, body: '{\"baz\":\"baloo\"}'
     #
     def request(path, options = {})
-      options = {:method => :get, :redirect_count => 0}.merge options
+      options = {method: :get, redirect_count: 0}.merge options
       raise RedirectionLimitExceeded if options[:redirect_count] > 10
       url = if path.kind_of?(URI)
               path
@@ -105,8 +105,8 @@ module Vend
     # Internal method to parse URL parameters.
     # Returns an empty string from a nil argument
     #
-    # E.g. url_params_for({:field => "value"}) will return ?field=value
-    # url_params_for({:field => ["value1","value2"]}) will return ?field[]=value1&field[]=value2
+    # E.g. url_params_for({field: "value"}) will return ?field=value
+    # url_params_for({field: ["value1","value2"]}) will return ?field[]=value1&field[]=value2
     protected
     def url_params_for(options)
       ary = Array.new

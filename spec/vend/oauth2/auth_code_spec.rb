@@ -32,7 +32,7 @@ describe Vend::Oauth2::AuthCode do
 
     before do
       stub_request(:post, "https://store.vendhq.com/api/1.0/token").
-          to_return(:status => 200, :body => {token_type: token_type,
+          to_return(status: 200, body: {token_type: token_type,
 	                expires: 2435942384,
                   domain_prefix: store,
                   access_token: access_token,
