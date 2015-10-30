@@ -4,10 +4,14 @@ describe Vend::Oauth2::AuthCode do
 
   subject { described_class.new('store', 'client_id', 'secret', 'redirect_uri') }
 
-  its(:store) { is_expected.to eq('store') }
-  its(:client_id) { is_expected.to eq('client_id') }
-  its(:secret) { is_expected.to eq('secret') }
-  its(:redirect_uri) { is_expected.to eq('redirect_uri') }
+  describe "#initialize" do
+    it "sets up the attr_readers" do
+      expect(subject.store).to        eq 'store'
+      expect(subject.client_id).to    eq 'client_id'
+      expect(subject.secret).to       eq 'secret'
+      expect(subject.redirect_uri).to eq 'redirect_uri'
+    end
+  end
 
   it "creates an instance of Client" do
     expect(subject).to be_a Vend::Oauth2::AuthCode
