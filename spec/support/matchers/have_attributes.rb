@@ -1,7 +1,7 @@
 RSpec::Matchers.define :have_attributes do |expected|
   match do |attributes|
     expected.each do |key,value|
-      actual.send(key).should == value
+      expect(actual.send(key)).to eq value
     end
   end
 

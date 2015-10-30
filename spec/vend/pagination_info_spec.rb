@@ -6,7 +6,9 @@ describe Vend::PaginationInfo do
 
   let(:response)  { double("response") }
 
-  its(:response)  { should == response }
+  specify :response do
+    expect(subject.response).to eq response
+  end
 
   context "when response has pagination info" do
     let(:response)  {
@@ -15,24 +17,36 @@ describe Vend::PaginationInfo do
           "results"   => 7461,
           "page"      => 41,
           "page_size" => 100,
-          "pages"     => 75 
+          "pages"     => 75
         }
       }
     }
 
-    its(:pages) { should == 75 }
-    its(:page)  { should == 41 }
-    it { should be_paged }
+    specify :pages do
+      expect(subject.pages).to eq 75
+    end
+
+    specify :page do
+      expect(subject.page).to eq 41
+    end
+
+    specify :paged do
+      expect(subject).to be_paged
+    end
 
     describe "#last_page?" do
-
-      it { should_not be_last_page }
+      specify :is_not_last_page do
+        expect(subject).to_not be_last_page
+      end
 
       context "when page is equal to pages" do
         before do
           subject.stub(:page => 42, :pages => 42)
         end
-        it { should be_last_page }
+
+        specify :is_last_page do
+          expect(subject).to be_last_page
+        end
       end
 
     end
@@ -40,9 +54,20 @@ describe Vend::PaginationInfo do
 
   context "when response does not have pagination info" do
     let(:response)  { Hash.new }
-    its(:pages) { should == 1 }
-    its(:page)  { should == 1 }
-    it { should be_last_page }
-    it { should_not be_paged }
+    specify :pages do
+      expect(subject.pages).to eq 1
+    end
+
+    specify :page do
+      expect(subject.page).to eq 1
+    end
+
+    specify :is_last_page do
+      expect(subject).to be_last_page
+    end
+
+    specify :is_paged do
+      expect(subject).to_not be_paged
+    end
   end
 end

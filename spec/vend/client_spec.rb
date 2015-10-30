@@ -1,53 +1,57 @@
 require 'spec_helper'
 
 describe Vend::Client do
-
   subject { Vend::Client.new('store','user','password') }
+  it_behaves_like "it has a logger"
 
-  it_should_behave_like "it has a logger"
+  specify :store do
+    expect(subject.store).to eq 'store'
+  end
 
-  its(:store) { should == 'store' }
-  its(:username) { should == 'user' }
-  its(:password) { should == 'password' }
+  specify :username do
+    expect(subject.username).to eq 'user'
+  end
+
+  specify :password do
+    expect(subject.password).to eq 'password'
+  end
 
   it "creates an instance of Client" do
-    subject.should be_instance_of(Vend::Client)
+    expect(subject).to be_instance_of(Vend::Client)
   end
 
   it "returns the API base url" do
-    subject.base_url.should == "https://store.vendhq.com/api/"
+    expect(subject.base_url).to eq "https://store.vendhq.com/api/"
   end
 
-  it "should set options" do
+  it "sets options" do
     options = { :key => :value }
     client = Vend::Client.new('store','user','password', options)
     options.each do |key, value|
-      client.options[key].should == value
+      expect(client.options[key]).to eq value
     end
   end
 
   describe "resource factories" do
     it "gets all products" do
-      Vend::Resource::Product.should_receive(:all).and_return([])
-      subject.Product.all.should == []
+      expect(Vend::Resource::Product).to receive(:all).and_return([])
+      expect(subject.Product.all).to eq []
     end
   end
 
   describe "#http_client" do
-
     let(:http_client)         { double("http_client") }
     let(:http_client_options) { double("http_client_options") }
 
     before do
       subject.stub(:http_client_options => http_client_options)
-      Vend::HttpClient.should_receive(:new).with(http_client_options) { http_client }
+      expect(Vend::HttpClient).to receive(:new).with(http_client_options) { http_client }
     end
 
-    it "should return a memoized HttpClient instance" do
-      subject.http_client.should == http_client
-      subject.http_client.should == http_client
+    it "returns a memoized HttpClient instance" do
+      expect(subject.http_client).to eq http_client
+      expect(subject.http_client).to eq http_client
     end
-
   end
 
   describe "#http_client_options" do
@@ -65,15 +69,14 @@ describe Vend::Client do
         :password => password
       )
     end
-
-    its(:http_client_options) {
-      should == {
-        :foo => 'bar',
-        :base_url => base_url,
-        :username => username,
-        :password => password
-      }
-    }
+    specify :http_client_options do
+      expect(subject.http_client_options).to eq({
+        foo: 'bar',
+        base_url: base_url,
+        username: username,
+        password: password
+      })
+    end
   end
 
   describe "#request" do
@@ -82,12 +85,12 @@ describe Vend::Client do
     let(:http_client) { double("http_client") }
 
     before do
-      subject.stub(:http_client => http_client)
-      http_client.should_receive(:request).with("foo", "bar") { response }
+      subject.stub(http_client: http_client)
+      expect(http_client).to receive(:request).with("foo", "bar") { response }
     end
 
     it "delegates to the http_client" do
-      subject.request("foo", "bar").should == response
+      expect(subject.request("foo", "bar")).to eq response
     end
   end
 end

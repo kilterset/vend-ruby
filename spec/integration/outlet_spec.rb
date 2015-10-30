@@ -11,5 +11,5 @@ describe Vend::Resource::Outlet do
 
   let(:expected_collection_length) { 1 }
 
-  it_should_behave_like "a resource with a collection GET endpoint"
+  it_behaves_like "a resource with a collection GET endpoint"
 end

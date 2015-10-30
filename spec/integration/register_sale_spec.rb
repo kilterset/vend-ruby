@@ -18,20 +18,20 @@ describe Vend::Resource::RegisterSale do
 
   let(:expected_collection_length) { 1 }
 
-  it_should_behave_like "a resource with a singular GET endpoint"
-  it_should_behave_like "a resource with a collection GET endpoint" do
+  it_behaves_like "a resource with a singular GET endpoint"
+  it_behaves_like "a resource with a collection GET endpoint" do
     let(:append_to_url) { '?page_size=200' }
   end
 
-  specify "register_sales are findable by state" do
-    client.RegisterSale.should respond_to(:find_by_state)
+  it "register_sales are findable by state" do
+    expect(client.RegisterSale).to respond_to(:find_by_state)
 
     stub_request(:get, "https://bar:baz@foo.vendhq.com/api/register_sales?status[]=OPEN&status[]=CLOSED").
       to_return(:status => 200, :body => get_mock_response('register_sales.find_by_state.json'))
 
     collection = client.RegisterSale.find_by_state([:OPEN, :CLOSED])
-    collection.first.should be_a Vend::Resource::RegisterSale
-    collection.first.id.should == "8dd57077-c158-f7db-d582-6785f43c9d72"
-    collection.first.register_sale_products.count.should == 2
+    expect(collection.first).to be_a Vend::Resource::RegisterSale
+    expect(collection.first.id).to eq "8dd57077-c158-f7db-d582-6785f43c9d72"
+    expect(collection.first.register_sale_products.count).to eq 2
   end
 end

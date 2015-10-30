@@ -11,38 +11,37 @@ describe Vend::BaseFactory do
   subject { Vend::Resource::FooFactory.new(client, Vend::Resource::Foo) }
 
   it "initializes correctly" do
-    subject.should be_instance_of(Vend::Resource::FooFactory)
-    subject.client.should == client
-    subject.target_class.should == Vend::Resource::Foo
+    expect(subject).to be_instance_of(Vend::Resource::FooFactory)
+    expect(subject.client).to eq client
+    expect(subject.target_class).to eq Vend::Resource::Foo
   end
 
   it "proxies 'find' to the target class" do
-    Vend::Resource::Foo.should_receive(:find)
+    expect(Vend::Resource::Foo).to receive(:find)
     subject.find
   end
 
   it "proxies 'all' to the target class" do
-    Vend::Resource::Foo.should_receive(:all)
+    expect(Vend::Resource::Foo).to receive(:all)
     subject.all
   end
 
   it "proxies 'since' to the target class" do
-    Vend::Resource::Foo.should_receive(:since)
+    expect(Vend::Resource::Foo).to receive(:since)
     subject.since
   end
-  
+
   it "proxies 'outlet_id' to the target class" do
-    Vend::Resource::Foo.should_receive(:outlet_id)
+    expect(Vend::Resource::Foo).to receive(:outlet_id)
     subject.outlet_id
   end
 
   it "proxies 'build' to the target class" do
-    Vend::Resource::Foo.should_receive(:build)
+    expect(Vend::Resource::Foo).to receive(:build)
     subject.build
   end
 
   it "returns the target class" do
-    subject.target_class.should == Vend::Resource::Foo
+    expect(subject.target_class).to eq Vend::Resource::Foo
   end
-
 end
