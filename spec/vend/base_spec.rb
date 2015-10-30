@@ -7,14 +7,14 @@ describe Vend::Base do
 
   let(:client) { double(:client) }
   let(:attribute_hash) { { key: 'value', 'id' => 1} }
-  let(:mock_response) {
+  let(:mock_response) do
     {
-      'foos'=>[
-        {'id'=>'1','bar'=>'baz'},
-        {'id'=>'2','flar'=>'flum'}
+      'foos' => [
+        {'id' => '1', 'bar' => 'baz'},
+        {'id' => '2', 'flar' => 'flum'}
       ]
     }
-  }
+  end
 
   subject { Vend::Resource::Foo.new(client, attrs: attribute_hash) }
 
@@ -42,7 +42,6 @@ describe Vend::Base do
       expect(resource).to be_a Vend::Resource::Foo
       expect(resource.bar).to eq 'baz'
     end
-
   end
 
   describe '.initialize_collection' do
@@ -205,7 +204,7 @@ describe Vend::Base do
     context 'when id is present' do
       subject { Vend::Resource::Foo.new(client, attrs: {'id' => 1}) }
 
-      let(:singular_name) { double('singular_name')}
+      let(:singular_name) { double('singular_name') }
 
       before do
         subject.stub(singular_name: singular_name)
@@ -222,9 +221,9 @@ describe Vend::Base do
 
       it 'raises Vend::Resource::IllegalAction' do
         expect(client).to_not receive(:request)
-        expect {
+        expect do
           subject.delete!
-        }.to raise_error(Vend::Resource::IllegalAction, 'Vend::Resource::Foo has no unique ID')
+        end.to raise_error(Vend::Resource::IllegalAction, 'Vend::Resource::Foo has no unique ID')
       end
     end
   end
@@ -260,7 +259,7 @@ describe Vend::Base do
   end
 
   describe '.accepts_scope?' do
-    let(:scope_name) {:scope_name}
+    let(:scope_name) { :scope_name }
     subject { Vend::Resource::Foo }
 
     context 'when scope is accepted' do

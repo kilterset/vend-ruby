@@ -1,17 +1,16 @@
 require 'spec_helper'
 
 describe Vend::HttpClient do
-
   let(:base_url)  { "https://foo/bar/" }
   let(:username)  { "username" }
   let(:password)  { "password" }
-  let(:options)   {
+  let(:options)   do
     {base_url: base_url, username: username, password: password}
-  }
+  end
 
-  subject {
+  subject do
     described_class.new(options)
-  }
+  end
 
   it_behaves_like "it has a logger"
 
@@ -57,10 +56,9 @@ describe Vend::HttpClient do
   end
 
   describe "#verify_mode" do
-
     context "when verify_ssl? is true" do
       before do
-        subject.stub(:verify_ssl? => true)
+        subject.stub(verify_ssl?: true)
       end
       specify :verify_mode do
         expect(subject.verify_mode).to eq OpenSSL::SSL::VERIFY_PEER
@@ -69,94 +67,90 @@ describe Vend::HttpClient do
 
     context "when verify_ssl? is false" do
       before do
-        subject.stub(:verify_ssl? => false)
+        subject.stub(verify_ssl?: false)
       end
       specify :verify_mode do
         expect(subject.verify_mode).to eq OpenSSL::SSL::VERIFY_NONE
       end
     end
-
   end
 
   describe "#request" do
-
     context "when using invalid credentials" do
-
       let(:username)  { "invalid" }
 
       it "raises an error" do
-        stub_request(:get, "https://invalid:password@foo/bar/products").
-          to_return(status: 401)
+        stub_request(:get, "https://invalid:password@foo/bar/products")
+          .to_return(status: 401)
 
-        expect {
+        expect do
           subject.request('products')
-        }.to raise_error(Vend::Unauthorized)
+        end.to raise_error(Vend::Unauthorized)
       end
-
     end
 
     it "throws an error when an invalid request is made" do
-      stub_request(:get, "https://username:password@foo/bar/invalid").
-        to_return(status: 404, body: '{"foo":"bar"}', headers: {})
+      stub_request(:get, "https://username:password@foo/bar/invalid")
+        .to_return(status: 404, body: '{"foo":"bar"}', headers: {})
 
-      expect {
+      expect do
         subject.request('invalid')
-      }.to raise_error(Vend::HTTPError)
+      end.to raise_error(Vend::HTTPError)
     end
 
     it "returns parsed JSON" do
-      stub_request(:get, "https://username:password@foo/bar/bun").
-        to_return(status: 200, body: '{"foo":"bar"}', headers: {})
+      stub_request(:get, "https://username:password@foo/bar/bun")
+        .to_return(status: 200, body: '{"foo":"bar"}', headers: {})
       expect(subject.request("bun")).to eq({"foo" => "bar"})
     end
 
     it "returns nil if the response was empty" do
-      stub_request(:get, "https://username:password@foo/bar/bun").
-        to_return(status: 200, body: '', headers: {})
+      stub_request(:get, "https://username:password@foo/bar/bun")
+        .to_return(status: 200, body: '', headers: {})
       expect(subject.request("bun")).to be_nil
     end
     it "allows us to specify HTTP method" do
-      stub_request(:post, "https://username:password@foo/bar/foo").
-        to_return(status: 200, body: '{"foo":"bar"}', headers: {})
+      stub_request(:post, "https://username:password@foo/bar/foo")
+        .to_return(status: 200, body: '{"foo":"bar"}', headers: {})
 
       response = subject.request('foo', method: :post)
       expect(response).to eq({"foo" => "bar"})
     end
 
     it "allows us to set a request body" do
-      stub_request(:post, "https://username:password@foo/bar/foo").
-        with(body: "{\"post\":\"data\"}").
-        to_return(status: 200, body: '{"foo":"bar"}', headers: {})
+      stub_request(:post, "https://username:password@foo/bar/foo")
+        .with(body: "{\"post\":\"data\"}")
+        .to_return(status: 200, body: '{"foo":"bar"}', headers: {})
 
       response = subject.request('foo', method: :post, body: '{"post":"data"}')
       expect(response).to eq({"foo" => "bar"})
     end
 
     it "allows us to specify url parameters" do
-      stub_request(:get, "https://username:password@foo/bar/foo?foo=bar&baz=baloo&flum%5B0%5D=blob&flum%5B1%5D=splat").
-        to_return(status: 200, body: '{"foo":"bar"}', headers: {})
+      stub_request(:get, "https://username:password@foo/bar/foo?foo=bar&baz=baloo&flum%5B0%5D=blob&flum%5B1%5D=splat")
+        .to_return(status: 200, body: '{"foo":"bar"}', headers: {})
 
-      response = subject.request('foo', url_params: {foo: "bar", baz: "baloo", flum: ["blob","splat"]})
+      response = subject.request('foo', url_params: {foo: "bar", baz: "baloo", flum: ["blob", "splat"]})
       expect(response).to eq({"foo" => "bar"})
     end
 
     it "follows redirects" do
-      stub_request(:get, "https://username:password@foo/bar/foo").
-        to_return(status: 302, body: '{"bar":"baz"}', headers: {"Location" => "http://username:password@foo/bar/floo"})
+      stub_request(:get, "https://username:password@foo/bar/foo")
+        .to_return(status: 302, body: '{"bar":"baz"}', headers: {"Location" => "http://username:password@foo/bar/floo"})
 
-      stub_request(:get, "http://username:password@foo/bar/floo").
-        to_return(status: 200, body: '{"foo":"bar"}', headers: {})
+      stub_request(:get, "http://username:password@foo/bar/floo")
+        .to_return(status: 200, body: '{"foo":"bar"}', headers: {})
 
       response = subject.request('foo')
       expect(response).to eq({"foo" => "bar"})
     end
 
     it "raises an exception when the redirection limit is exceeded" do
-      stub_request(:get, "https://username:password@foo/bar/foo").
-        to_return(status: 302, body: '{"bar":"baz"}', headers: {"Location" => "https://username:password@foo/bar/foo"})
-      expect {
+      stub_request(:get, "https://username:password@foo/bar/foo")
+        .to_return(status: 302, body: '{"bar":"baz"}', headers: {"Location" => "https://username:password@foo/bar/foo"})
+      expect do
         subject.request('foo')
-      }.to raise_exception(Vend::RedirectionLimitExceeded)
+      end.to raise_exception(Vend::RedirectionLimitExceeded)
     end
   end
 end

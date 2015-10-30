@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Vend::Client do
-  subject { Vend::Client.new('store','user','password') }
+  subject { Vend::Client.new('store', 'user', 'password') }
   it_behaves_like "it has a logger"
 
   specify :store do
@@ -26,7 +26,7 @@ describe Vend::Client do
 
   it "sets options" do
     options = { key: :value }
-    client = Vend::Client.new('store','user','password', options)
+    client = Vend::Client.new('store', 'user', 'password', options)
     options.each do |key, value|
       expect(client.options[key]).to eq value
     end
@@ -55,7 +55,6 @@ describe Vend::Client do
   end
 
   describe "#http_client_options" do
-
     let(:options)   { {foo: 'bar'} }
     let(:base_url)  { "http://foo/" }
     let(:username)  { "username" }
@@ -80,7 +79,6 @@ describe Vend::Client do
   end
 
   describe "#request" do
-
     let(:response)    { double("response") }
     let(:http_client) { double("http_client") }
 

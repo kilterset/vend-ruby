@@ -2,9 +2,7 @@ require 'oauth2'
 
 module Vend
   module Oauth2
-
     class AuthCode
-
       DEFAULT_OPTIONS = {}
       AUTHORIZE_URL = '/connect'
       TOKEN_URL = '/api/1.0/token'
@@ -33,16 +31,15 @@ module Vend
         access_token.refresh!
       end
 
-      protected
+    protected
+
       def get_oauth2_client(domain_prefix = 'secure')
         OAuth2::Client.new(client_id, secret, {
-            site: "https://#{domain_prefix}.vendhq.com",
-            authorize_url: AUTHORIZE_URL,
-            token_url: TOKEN_URL
+          site: "https://#{domain_prefix}.vendhq.com",
+          authorize_url: AUTHORIZE_URL,
+          token_url: TOKEN_URL
         })
       end
-
     end
-
   end
 end

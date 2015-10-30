@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Vend::Resource::Tax do
-
   let(:expected_attributes) do
     {
       'id'        => '53b3501c-887c-102d-8a4b-a9cf13f17faa',

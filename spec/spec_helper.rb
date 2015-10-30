@@ -3,7 +3,7 @@ require 'rubygems'
 require 'bundler/setup'
 require 'webmock/rspec'
 require 'pry'
-Dir["./spec/support/**/*.rb"].each {|f| require f}
+Dir["./spec/support/**/*.rb"].each { |f| require f }
 
 require 'cgi'
 require 'vend'

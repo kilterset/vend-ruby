@@ -40,7 +40,7 @@ describe Vend::Scope do
     end
 
     context "when value is a timestamp" do
-      let(:value) { Time.new(2012,7,11,10,40,29) }
+      let(:value) { Time.new(2012, 7, 11, 10, 40, 29) }
       specify :escaped_value do
         expect(subject.escaped_value).to eq "2012-07-11+10%3A40%3A29"
       end

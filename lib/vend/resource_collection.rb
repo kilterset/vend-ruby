@@ -4,9 +4,9 @@ module Vend
   # resources.  This class will automatically fetch paginated results if the
   # target_class supports it.
   class ResourceCollection
-    class PageOutOfBoundsError  < StandardError ; end
-    class AlreadyScopedError    < StandardError ; end
-    class ScopeNotFoundError    < StandardError ; end
+    class PageOutOfBoundsError < StandardError; end
+    class AlreadyScopedError < StandardError; end
+    class ScopeNotFoundError < StandardError; end
 
     include Enumerable
     extend Forwardable
@@ -38,9 +38,7 @@ module Vend
     end
 
     def pagination
-      if response.instance_of? Hash
-        PaginationInfo.new(response)
-      end
+      PaginationInfo.new(response) if response.instance_of? Hash
     end
 
     def last_page?
@@ -65,7 +63,7 @@ module Vend
     end
 
     def has_scope?(name)
-      scopes.any? {|s| s.name == name }
+      scopes.any? { |s| s.name == name }
     end
 
     def method_missing(method_name, *args, &block)
@@ -89,20 +87,17 @@ module Vend
     end
 
     def get_scope(name)
-
       result = scopes.find { |scope| scope.name == name }
       if result.nil?
         raise ScopeNotFoundError.new(
           "Scope: #{name} was not found in #{scopes}."
         )
       end
-      return result
+      result
     end
 
     def get_or_create_page_scope
-      unless has_scope? :page
-        scope(:page, page)
-      end
+      scope(:page, page) unless has_scope? :page
       get_scope :page
     end
 
@@ -115,10 +110,12 @@ module Vend
       endpoint + scopes.join
     end
 
-    protected
+  protected
+
     attr_accessor :response
 
-    protected
+  protected
+
     def get_next_page
       if last_page?
         raise PageOutOfBoundsError.new(

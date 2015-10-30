@@ -16,26 +16,25 @@ describe Vend::Resource::Product do
   it_behaves_like "a resource with a DELETE endpoint"
 
   describe "pagination" do
-
-    let(:username)  {"foo"}
-    let(:password)  {"bar"}
-    let(:store)     {"baz"}
+    let(:username)  { "foo" }
+    let(:password)  { "bar" }
+    let(:store)     { "baz" }
 
     let(:client) do
       Vend::Client.new(store, username, password)
     end
 
     before do
-      stub_request( :get,
-        "https://#{username}:#{password}@#{store}.vendhq.com/api/products"
-      ).to_return(
-        status: 200, body: get_mock_response('products/page/1.json')
-      )
-      stub_request( :get,
-        "https://#{username}:#{password}@#{store}.vendhq.com/api/products/page/2"
-      ).to_return(
-        status: 200, body: get_mock_response('products/page/2.json')
-      )
+      stub_request(:get,
+                   "https://#{username}:#{password}@#{store}.vendhq.com/api/products"
+                  ).to_return(
+                    status: 200, body: get_mock_response('products/page/1.json')
+                  )
+      stub_request(:get,
+                   "https://#{username}:#{password}@#{store}.vendhq.com/api/products/page/2"
+                  ).to_return(
+                    status: 200, body: get_mock_response('products/page/2.json')
+                  )
     end
 
     it "returns paginated results" do
@@ -48,22 +47,22 @@ describe Vend::Resource::Product do
   end
 
   describe "chaining" do
-    let(:username)  {"foo"}
-    let(:password)  {"bar"}
-    let(:store)     {"baz"}
+    let(:username)  { "foo" }
+    let(:password)  { "bar" }
+    let(:store)     { "baz" }
 
-    let(:timestamp) { Time.new(2012,7,5,11,12,13) }
+    let(:timestamp) { Time.new(2012, 7, 5, 11, 12, 13) }
 
     let(:client) do
       Vend::Client.new(store, username, password)
     end
 
     before do
-      stub_request( :get,
-        "https://#{username}:#{password}@#{store}.vendhq.com/api/products/active/1/since/2012-07-05+11:12:13"
-      ).to_return(
-        status: 200, body: get_mock_response('products.active.since.json')
-      )
+      stub_request(:get,
+                   "https://#{username}:#{password}@#{store}.vendhq.com/api/products/active/1/since/2012-07-05+11:12:13"
+                  ).to_return(
+                    status: 200, body: get_mock_response('products.active.since.json')
+                  )
     end
 
     it "allows scope chaining" do

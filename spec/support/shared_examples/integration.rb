@@ -55,8 +55,8 @@ shared_examples "a resource with a singular GET endpoint" do
   end
 
   it "gets the resource" do
-    stub_request(:get, "https://#{username}:#{password}@#{store}.vendhq.com/api/#{class_basename.to_s.underscore.pluralize}/#{id}").
-    to_return(status: 200, body: get_mock_from_path(:get, id: id))
+    stub_request(:get, "https://#{username}:#{password}@#{store}.vendhq.com/api/#{class_basename.to_s.underscore.pluralize}/#{id}")
+    .to_return(status: 200, body: get_mock_from_path(:get, id: id))
 
     objekt = build_receiver.find(id)
     expect(objekt).to have_attributes(expected_attributes)
@@ -73,9 +73,8 @@ shared_examples "a resource with a DELETE endpoint" do
   end
 
   it "deletes the resource" do
-
-    stub_request(:delete, "https://#{username}:#{password}@#{store}.vendhq.com/api/#{class_basename.to_s.underscore.pluralize}/#{expected_attributes['id']}").
-    to_return(status: 200, body: {}.to_json)
+    stub_request(:delete, "https://#{username}:#{password}@#{store}.vendhq.com/api/#{class_basename.to_s.underscore.pluralize}/#{expected_attributes['id']}")
+    .to_return(status: 200, body: {}.to_json)
 
     objekt = build_receiver.build(expected_attributes)
     expect(objekt.delete).to be_truthy

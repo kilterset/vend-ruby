@@ -1,11 +1,10 @@
 require 'spec_helper'
 
 describe Vend::ResourceCollection do
-
   let(:client)        { double("client") }
-  let(:target_class)  {
+  let(:target_class)  do
     double("target_class", default_collection_request_args: {})
-  }
+  end
   let(:endpoint)      { "endpoint" }
   let(:request_args)  { {} }
 
@@ -40,9 +39,9 @@ describe Vend::ResourceCollection do
     end
 
     context "when target class has default request args" do
-      subject {
+      subject do
         described_class.new(client, target_class, endpoint)
-      }
+      end
 
       before { target_class.stub(default_collection_request_args: {foo: :bar}) }
 
@@ -96,7 +95,7 @@ describe Vend::ResourceCollection do
   describe "#paged?" do
     context "when pagination is set" do
       let(:value)       { double("value") }
-      let(:pagination)  { double("pagination", :paged? => value) }
+      let(:pagination)  { double("pagination", paged?: value) }
       before do
         subject.stub(pagination: pagination)
       end
@@ -113,20 +112,18 @@ describe Vend::ResourceCollection do
     end
   end
 
-=begin
-  [:pages, :page].each do |method|
-    describe method do
-      let(:value)       { double("value") }
-      let(:pagination)  { double("pagination", method => value) }
-      before do
-        subject.stub(pagination: pagination)
-      end
-      it "delegates to #pagination" do
-        expect(subject.send(method)).to eq value
-      end
-    end
-  end
-=end
+  #   [:pages, :page].each do |method|
+  #     describe method do
+  #       let(:value)       { double("value") }
+  #       let(:pagination)  { double("pagination", method => value) }
+  #       before do
+  #         subject.stub(pagination: pagination)
+  #       end
+  #       it "delegates to #pagination" do
+  #         expect(subject.send(method)).to eq value
+  #       end
+  #     end
+  #   end
 
   describe "#scope" do
     let(:value)   { double("value") }
@@ -152,9 +149,9 @@ describe Vend::ResourceCollection do
       end
 
       it "raises and AlreadyScopedError" do
-        expect {
+        expect do
           subject.scope(:name, value)
-        }.to raise_exception(Vend::ResourceCollection::AlreadyScopedError)
+        end.to raise_exception(Vend::ResourceCollection::AlreadyScopedError)
       end
     end
   end
@@ -191,7 +188,6 @@ describe Vend::ResourceCollection do
   describe "#method_missing" do
     let(:value) { double("value") }
     context "when the method name is a valid scope name" do
-
       before do
         subject.stub(:accepts_scope?).with(:foo) { true }
       end
@@ -216,9 +212,9 @@ describe Vend::ResourceCollection do
       end
 
       it "raises method missing" do
-        expect {
+        expect do
           subject.foo(value)
-        }.to raise_exception(NoMethodError)
+        end.to raise_exception(NoMethodError)
       end
     end
   end
@@ -232,14 +228,14 @@ describe Vend::ResourceCollection do
     end
 
     specify :url do
-       expect(subject.url).to eq endpoint_with_scopes
+      expect(subject.url).to eq endpoint_with_scopes
     end
   end
 
   describe "#endpoint_with_scopes" do
     context "when there are no scopes" do
       specify :endpoint_with_scopes do
-         expect(subject.endpoint_with_scopes).to eq endpoint
+        expect(subject.endpoint_with_scopes).to eq endpoint
       end
     end
 
@@ -252,16 +248,15 @@ describe Vend::ResourceCollection do
       end
 
       specify :endpoint_with_scopes do
-         expect(subject.endpoint_with_scopes).to eq endpoint + scopes.join
+        expect(subject.endpoint_with_scopes).to eq endpoint + scopes.join
       end
     end
   end
 
   describe "#increment_page" do
     context "when not paged" do
-
       before do
-        subject.stub(:paged? => false)
+        subject.stub(paged?: false)
       end
 
       specify :increment_page do
@@ -273,14 +268,14 @@ describe Vend::ResourceCollection do
       let(:page_scope)  { double("page_scope", value: 1) }
 
       before do
-        subject.stub(:paged? => true)
+        subject.stub(paged?: true)
         subject.stub(page: 1)
         expect(subject).to receive(:get_or_create_page_scope) { page_scope }
         expect(page_scope).to receive(:value=).with(2) { 2 }
       end
 
       specify :increment_page do
-         expect(subject.increment_page).to eq 2
+        expect(subject.increment_page).to eq 2
       end
     end
   end
@@ -320,7 +315,6 @@ describe Vend::ResourceCollection do
     let(:scope)       { double("scope", name: scope_name) }
 
     context "when scope is present" do
-
       before do
         subject.stub(scopes: [scope])
       end
@@ -336,9 +330,9 @@ describe Vend::ResourceCollection do
       end
 
       specify do
-        expect{
+        expect do
           subject.get_scope(scope_name)
-        }.to raise_exception(Vend::ResourceCollection::ScopeNotFoundError)
+        end.to raise_exception(Vend::ResourceCollection::ScopeNotFoundError)
       end
     end
   end

@@ -5,7 +5,7 @@ STORE = ARGV[0]
 USERNAME = ARGV[1]
 PASSWORD = ARGV[2]
 
-unless STORE and USERNAME and PASSWORD
+unless STORE && USERNAME && PASSWORD
   $stderr.puts "Usage: example.rb store username password"
   exit 1
 end

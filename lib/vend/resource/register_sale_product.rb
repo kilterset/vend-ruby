@@ -9,7 +9,7 @@ module Vend
         @attrs = attrs
       end
 
-      def method_missing(method_name, *args, &block)
+      def method_missing(method_name, *_args, &_block)
         if attrs.keys.include? method_name.to_s
           attrs[method_name.to_s]
         else

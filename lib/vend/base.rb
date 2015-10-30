@@ -25,6 +25,7 @@ module Vend
     def self.attribute_casts
       @attribute_casts ||= {}
     end
+
     # Returns the endpoint name for the resource, used in API urls when making
     # requests.
     def self.endpoint_name
@@ -81,7 +82,7 @@ module Vend
     #
     # And return the corresponding collection of resources
     def self.url_scope(method_name)
-      (class << self ; self ; end).instance_eval do
+      (class << self; self; end).instance_eval do
         define_method(method_name) do |client, arg|
           initialize_collection(client, collection_name).scope(method_name, arg)
         end
@@ -90,13 +91,13 @@ module Vend
     end
 
     def self.findable_by(field, options = {})
-
-      (class << self ; self ; end).instance_eval do
+      (class << self; self; end).instance_eval do
         define_method("find_by_#{field}") do |client, *args|
           search(client, options[:as] || field, *args)
         end
       end
     end
+
     # Sends a search request to the API and initializes a collection of Resources
     # from the response.
     # This method is only used internally by find_by_field methods.
@@ -129,7 +130,6 @@ module Vend
     def self.initialize_collection(client, endpoint, args = {})
       ResourceCollection.new(client, self, endpoint, args)
     end
-
 
     # Attempts to pull a singular object from Vend through the singular GET
     # endpoint.
@@ -168,7 +168,7 @@ module Vend
 
     # Overrides method_missing to query the attrs hash for the value stored
     # at the specified key before proxying it to the object
-    def method_missing(method_name, *args, &block)
+    def method_missing(method_name, *_args, &_block)
       if attrs.keys.include? method_name.to_s
         attribute_value_for(method_name)
       else
@@ -194,9 +194,10 @@ module Vend
       true
     end
 
-    protected
+  protected
+
     def attribute_value_for(attribute_name)
-      if self.class.attribute_casts.has_key? attribute_name
+      if self.class.attribute_casts.key? attribute_name
         case self.class.attribute_casts[attribute_name].to_s
         when "Float"
           return attrs[attribute_name.to_s].to_f

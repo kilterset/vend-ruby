@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Vend::Oauth2::Client do
-
   subject { described_class.new('store', 'auth_token') }
 
   it_behaves_like "it has a logger"

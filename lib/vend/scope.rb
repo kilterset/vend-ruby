@@ -16,7 +16,7 @@ module Vend
       else
         result = value.to_s
       end
-      CGI::escape(result)
+      CGI.escape(result)
     end
 
     def to_s

@@ -10,14 +10,14 @@ module Vend
     include Logable
 
     attr_accessor :base_url, :verify_ssl, :username, :password, :auth_token
-    alias :verify_ssl? :verify_ssl
+    alias_method :verify_ssl?, :verify_ssl
 
     def initialize(options = {})
       @base_url = options[:base_url]
       @username = options[:username]
       @password = options[:password]
       @auth_token = options[:auth_token]
-      @verify_ssl = if options.has_key?(:verify_ssl)
+      @verify_ssl = if options.key?(:verify_ssl)
                       options[:verify_ssl]
                     else
                       true
@@ -63,7 +63,7 @@ module Vend
     def request(path, options = {})
       options = {method: :get, redirect_count: 0}.merge options
       raise RedirectionLimitExceeded if options[:redirect_count] > 10
-      url = if path.kind_of?(URI)
+      url = if path.is_a?(URI)
               path
             else
               URI.parse(base_url + path)
@@ -71,7 +71,7 @@ module Vend
       ssl = (url.scheme == 'https')
       http = get_http_connection(url.host, url.port, ssl)
 
-      # FIXME extract method
+      # FIXME: extract method
       method = ("Net::HTTP::" + options[:method].to_s.classify).constantize
       request = method.new(url.path + url_params_for(options[:url_params]))
       request.basic_auth username, password if username && password
@@ -80,16 +80,16 @@ module Vend
       request.body = options[:body] if options[:body]
       logger.debug url
       response = http.request(request)
-      if response.kind_of?(Net::HTTPRedirection)
+      if response.is_a?(Net::HTTPRedirection)
         location = URI.parse(response['location'])
         logger.debug "Following redirect to %s" % [location]
         options[:redirect_count] = options[:redirect_count] + 1
         request(location, options)
       else
-        raise Unauthorized.new(UNAUTHORIZED_MESSAGE) if response.kind_of?(Net::HTTPUnauthorized)
-        raise HTTPError.new(response) unless response.kind_of?(Net::HTTPSuccess)
+        raise Unauthorized.new(UNAUTHORIZED_MESSAGE) if response.is_a?(Net::HTTPUnauthorized)
+        raise HTTPError.new(response) unless response.is_a?(Net::HTTPSuccess)
         logger.debug response
-        JSON.parse response.body unless response.body.nil? or response.body.empty?
+        JSON.parse response.body unless response.body.nil? || response.body.empty?
       end
     end
 
@@ -102,20 +102,22 @@ module Vend
       end
     end
 
-    # Internal method to parse URL parameters.
-    # Returns an empty string from a nil argument
-    #
-    # E.g. url_params_for({field: "value"}) will return ?field=value
-    # url_params_for({field: ["value1","value2"]}) will return ?field[]=value1&field[]=value2
-    protected
+  # Internal method to parse URL parameters.
+  # Returns an empty string from a nil argument
+  #
+  # E.g. url_params_for({field: "value"}) will return ?field=value
+  # url_params_for({field: ["value1","value2"]}) will return ?field[]=value1&field[]=value2
+
+  protected
+
     def url_params_for(options)
-      ary = Array.new
+      ary = []
       if !options.nil?
-        options.each do |option,value|
+        options.each do |option, value|
           if value.class == Array
-            ary << value.collect { |key| "#{option}%5B%5D=#{CGI::escape(key.to_s)}" }.join('&')
+            ary << value.collect { |key| "#{option}%5B%5D=#{CGI.escape(key.to_s)}" }.join('&')
           else
-            ary << "#{option}=#{CGI::escape(value.to_s)}"
+            ary << "#{option}=#{CGI.escape(value.to_s)}"
           end
         end
         '?'.concat(ary.join('&'))
@@ -124,15 +126,13 @@ module Vend
       end
     end
 
-    protected
+  protected
+
     # Modifies path with the provided options
     def expand_path_with_options(path, options)
-      # FIXME - Remove from here
-      if options[:id]
-        path += "/#{options[:id]}"
-      end
-      return path
+      # FIXME: - Remove from here
+      path += "/#{options[:id]}" if options[:id]
+      path
     end
-
   end
 end

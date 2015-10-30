@@ -22,7 +22,8 @@ module Vend
       pages == page
     end
 
-    protected
+  protected
+
     def pagination
       @pagination ||= (response['pagination'] || {"pages" => 1, "page" => 1})
     end

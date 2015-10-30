@@ -24,8 +24,8 @@ describe Vend::Resource::Customer do
   end
 
   it "returns a collection of customers from a search" do
-    stub_request(:get, "https://bar:baz@foo.vendhq.com/api/customers?email=foo@example.com").
-      to_return(status: 200, body: get_mock_response('customers.find_by_email.json'))
+    stub_request(:get, "https://bar:baz@foo.vendhq.com/api/customers?email=foo@example.com")
+      .to_return(status: 200, body: get_mock_response('customers.find_by_email.json'))
 
     collection = client.Customer.find_by_email('foo@example.com')
     expect(collection.first).to be_a Vend::Resource::Customer
