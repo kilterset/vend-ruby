@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Vend::PaginationInfo do
-
   subject { described_class.new(response) }
 
   let(:response)  { double("response") }
@@ -11,7 +10,7 @@ describe Vend::PaginationInfo do
   end
 
   context "when response has pagination info" do
-    let(:response)  {
+    let(:response)  do
       {
         "pagination" => {
           "results"   => 7461,
@@ -20,7 +19,7 @@ describe Vend::PaginationInfo do
           "pages"     => 75
         }
       }
-    }
+    end
 
     specify :pages do
       expect(subject.pages).to eq 75
@@ -41,14 +40,13 @@ describe Vend::PaginationInfo do
 
       context "when page is equal to pages" do
         before do
-          subject.stub(:page => 42, :pages => 42)
+          subject.stub(page: 42, pages: 42)
         end
 
         specify :is_last_page do
           expect(subject).to be_last_page
         end
       end
-
     end
   end
 

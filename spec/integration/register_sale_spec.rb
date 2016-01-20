@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Vend::Resource::RegisterSale do
-
   let(:expected_attributes) do
     {
       'id'              => '98ce3dbf-e862-c811-fa93-10f6db3a8f66',
@@ -26,8 +25,8 @@ describe Vend::Resource::RegisterSale do
   it "register_sales are findable by state" do
     expect(client.RegisterSale).to respond_to(:find_by_state)
 
-    stub_request(:get, "https://bar:baz@foo.vendhq.com/api/register_sales?status[]=OPEN&status[]=CLOSED").
-      to_return(:status => 200, :body => get_mock_response('register_sales.find_by_state.json'))
+    stub_request(:get, "https://bar:baz@foo.vendhq.com/api/register_sales?status[]=OPEN&status[]=CLOSED")
+      .to_return(status: 200, body: get_mock_response('register_sales.find_by_state.json'))
 
     collection = client.RegisterSale.find_by_state([:OPEN, :CLOSED])
     expect(collection.first).to be_a Vend::Resource::RegisterSale

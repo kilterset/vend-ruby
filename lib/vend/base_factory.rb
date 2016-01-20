@@ -1,7 +1,5 @@
 module Vend
-
   class BaseFactory
-
     attr_reader :client, :target_class
 
     def initialize(client, target_class)
@@ -22,13 +20,11 @@ module Vend
     end
 
     ## Generates find_by_field methods which call a search on the target class
-    #def self.findable_by(field, options = {})
+    # def self.findable_by(field, options = {})
     #  url_param = options[:as] || field
     #  define_method "find_by_#{field.to_s}" do |*args|
     #    target_class.send(:search, @client, url_param, *args)
     #  end
-    #end
-
+    # end
   end
-
 end

@@ -1,8 +1,6 @@
 module Vend
   module Oauth2
-
     class Client < Vend::Client
-
       DEFAULT_OPTIONS = {}
 
       include Logable
@@ -21,11 +19,9 @@ module Vend
 
       def http_client_options
         options.merge(
-            :auth_token => @auth_token, :base_url => base_url
+          auth_token: @auth_token, base_url: base_url
         )
       end
-
     end
-
   end
 end

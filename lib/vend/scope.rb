@@ -1,6 +1,5 @@
 module Vend
   class Scope
-
     attr_reader :name
     attr_accessor :value
 
@@ -17,7 +16,7 @@ module Vend
       else
         result = value.to_s
       end
-      CGI::escape(result)
+      CGI.escape(result)
     end
 
     def to_s

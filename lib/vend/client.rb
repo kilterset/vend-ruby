@@ -1,7 +1,6 @@
 require 'forwardable'
 
 module Vend #:nodoc:
-
   # Main access point which allows resources within the Vend gem to
   # make HTTP requests to the Vend API.
   #
@@ -10,7 +9,6 @@ module Vend #:nodoc:
   #   * a valid username and password
   #
   class Client
-
     DEFAULT_OPTIONS = {}
 
     extend Forwardable
@@ -73,10 +71,8 @@ module Vend #:nodoc:
 
     def http_client_options
       options.merge(
-        :base_url => base_url, :username => username, :password => password
+        base_url: base_url, username: username, password: password
       )
     end
-
   end
-
 end

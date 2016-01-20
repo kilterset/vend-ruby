@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Vend::Oauth2::Client do
-
   subject { described_class.new('store', 'auth_token') }
 
   it_behaves_like "it has a logger"
@@ -25,23 +24,23 @@ describe Vend::Oauth2::Client do
   end
 
   describe "#http_client_options" do
-    let(:options)   { {:foo => 'bar'} }
+    let(:options)   { {foo: 'bar'} }
     let(:base_url)  { "http://foo/" }
     let(:auth_token)  { "auth_token" }
 
     before do
       subject.stub(
-        :options => options,
-        :base_url => base_url,
-        :auth_token => auth_token
+        options: options,
+        base_url: base_url,
+        auth_token: auth_token
       )
     end
 
     specify :http_client_options do
       expect(subject.http_client_options).to eq({
-        :foo => 'bar',
-        :base_url => base_url,
-        :auth_token => auth_token
+        foo: 'bar',
+        base_url: base_url,
+        auth_token: auth_token
       })
     end
   end

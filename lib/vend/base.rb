@@ -5,7 +5,6 @@ module Vend
   # Not all CRUD actions are available for every resource, and at current there
   # is no PUT endpoint and hence no update action
   class Base
-
     # Reference to the Vend::Client client object providing the HTTP interface to the
     # API
     attr_reader :client
@@ -26,6 +25,7 @@ module Vend
     def self.attribute_casts
       @attribute_casts ||= {}
     end
+
     # Returns the endpoint name for the resource, used in API urls when making
     # requests.
     def self.endpoint_name
@@ -82,7 +82,7 @@ module Vend
     #
     # And return the corresponding collection of resources
     def self.url_scope(method_name)
-      (class << self ; self ; end).instance_eval do
+      (class << self; self; end).instance_eval do
         define_method(method_name) do |client, arg|
           initialize_collection(client, collection_name).scope(method_name, arg)
         end
@@ -91,26 +91,26 @@ module Vend
     end
 
     def self.findable_by(field, options = {})
-
-      (class << self ; self ; end).instance_eval do
+      (class << self; self; end).instance_eval do
         define_method("find_by_#{field}") do |client, *args|
           search(client, options[:as] || field, *args)
         end
       end
     end
+
     # Sends a search request to the API and initializes a collection of Resources
     # from the response.
     # This method is only used internally by find_by_field methods.
     def self.search(client, field, query)
       initialize_collection(
-        client, collection_name,  :url_params => { field.to_sym => query }
+        client, collection_name,  url_params: { field.to_sym => query }
       )
     end
 
     # Builds a new instance of the described resource using the specified
     # attributes.
     def self.build(client, attrs)
-      self.new(client, :attrs => attrs)
+      self.new(client, attrs: attrs)
     end
 
     # Builds a collection of instances from a JSON response
@@ -131,7 +131,6 @@ module Vend
       ResourceCollection.new(client, self, endpoint, args)
     end
 
-
     # Attempts to pull a singular object from Vend through the singular GET
     # endpoint.
     def self.find(client, id)
@@ -150,7 +149,7 @@ module Vend
     # request.  I.e, to default to 500 items per page:
     #
     #   def default_collection_request_args
-    #     super.merge(:url_params => {:page_size => 500})
+    #     super.merge(url_params: {page_size: 500})
     #   end
     #
     def self.default_collection_request_args
@@ -169,7 +168,7 @@ module Vend
 
     # Overrides method_missing to query the attrs hash for the value stored
     # at the specified key before proxying it to the object
-    def method_missing(method_name, *args, &block)
+    def method_missing(method_name, *_args, &_block)
       if attrs.keys.include? method_name.to_s
         attribute_value_for(method_name)
       else
@@ -191,13 +190,14 @@ module Vend
     def delete!
       raise(Vend::Resource::IllegalAction,
             "#{self.class.name} has no unique ID") unless attrs['id']
-      client.request(singular_name, :method => :delete)
+      client.request(singular_name, method: :delete)
       true
     end
 
-    protected
+  protected
+
     def attribute_value_for(attribute_name)
-      if self.class.attribute_casts.has_key? attribute_name
+      if self.class.attribute_casts.key? attribute_name
         case self.class.attribute_casts[attribute_name].to_s
         when "Float"
           return attrs[attribute_name.to_s].to_f

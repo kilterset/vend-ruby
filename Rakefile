@@ -6,7 +6,7 @@ require 'rdoc/task'
 
 Dir.glob('lib/tasks/*.rake').each { |r| import r }
 
-task :default => [:spec]
+task default: [:spec]
 
 desc "Run RSpec tests"
 RSpec::Core::RakeTask.new(:spec)

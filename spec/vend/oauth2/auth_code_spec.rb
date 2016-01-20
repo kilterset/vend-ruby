@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe Vend::Oauth2::AuthCode do
-
   subject { described_class.new('store', 'client_id', 'secret', 'redirect_uri') }
 
   describe "#initialize" do
@@ -23,21 +22,20 @@ describe Vend::Oauth2::AuthCode do
     end
   end
 
-
   describe "#token_from_code" do
-    let(:store) {"store"}
+    let(:store) { "store" }
     let(:token_type) { "Bearer" }
-    let(:access_token) { "Uy4eObSRn1RwzQbAitDMEkY6thdHsDJjwdGehpgr"}
-    let(:refresh_token) {"nbCoejmJp1XZgs7as6FeQQ5QZLlUfefzaBjrxvtV"}
+    let(:access_token) { "Uy4eObSRn1RwzQbAitDMEkY6thdHsDJjwdGehpgr" }
+    let(:refresh_token) { "nbCoejmJp1XZgs7as6FeQQ5QZLlUfefzaBjrxvtV" }
 
     before do
-      stub_request(:post, "https://store.vendhq.com/api/1.0/token").
-          to_return(:status => 200, :body => {token_type: token_type,
-	                expires: 2435942384,
-                  domain_prefix: store,
-                  access_token: access_token,
-                  refresh_token: refresh_token,
-                  expires_at: 2435942383}.to_json, :headers=>{ 'Content-Type' => 'application/json' })
+      stub_request(:post, "https://store.vendhq.com/api/1.0/token")
+          .to_return(status: 200, body: {token_type: token_type,
+                                         expires: 2435942384,
+                                         domain_prefix: store,
+                                         access_token: access_token,
+                                         refresh_token: refresh_token,
+                                         expires_at: 2435942383}.to_json, headers: { 'Content-Type' => 'application/json' })
     end
 
     it "return access token" do
@@ -47,5 +45,4 @@ describe Vend::Oauth2::AuthCode do
       expect(token.refresh_token).to eq(refresh_token)
     end
   end
-
 end

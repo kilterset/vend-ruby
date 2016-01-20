@@ -12,11 +12,11 @@ describe Vend::Resource::RegisterSaleProduct do
   describe "provides an attr reader for the attributes in attrs" do
     let(:attr1) { double("attr1") }
 
-    let(:attrs) {
+    let(:attrs) do
       {
         "attr1" => attr1
       }
-    }
+    end
 
     it "responds to attr1" do
       expect(subject.send(:attr1)).to eq attr1

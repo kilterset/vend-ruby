@@ -22,7 +22,6 @@ end
 
 shared_examples_for "it has a logger" do
   describe "#logger" do
-
     let(:logger)  { double("logger") }
 
     it "defaults to a null logger" do
