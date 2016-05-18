@@ -5,7 +5,7 @@ This gem provides access to Vend's REST API.
 == Vend API Documentation
 
 At the time of writing, this is located at
-https://docs.google.com/document/pub?id=13JiV6771UcrkmawFRxzvVl3tf5PGSTBH56RYy0-5cps
+https://developers.vendhq.com/documentation
 
 == Using Vend API via Oauth 2.0
 
