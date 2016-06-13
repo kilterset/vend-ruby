@@ -59,6 +59,10 @@ module Vend #:nodoc:
       Vend::BaseFactory.new(self, Resource::User)
     end
 
+    def Supplier #:nodoc:
+      Vend::BaseFactory.new(self, Resource::Supplier)
+    end
+
     # Returns the base API url for the client.
     # E.g. for the store 'foo', it returns https://foo.vendhq.com/api/
     def base_url

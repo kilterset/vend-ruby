@@ -19,6 +19,7 @@ require 'vend/resource/register_sale'
 require 'vend/resource/register_sale_product'
 require 'vend/resource/tax'
 require 'vend/resource/user'
+require 'vend/resource/supplier'
 
 require 'vend/http_client'
 require 'vend/client'
