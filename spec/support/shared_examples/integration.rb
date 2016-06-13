@@ -27,12 +27,15 @@ shared_examples "a resource with a collection GET endpoint" do
     Vend::Client.new(store, username, password)
   end
 
-  it "gets the collection" do
-    url = "https://%s:%s@%s.vendhq.com/api/%s%s" % [
-      username, password, store, class_basename.to_s.underscore.pluralize,
-      append_to_url
-    ]
+  let(:endpoint) do
+    class_basename.to_s == 'Supplier' ? class_basename.to_s.underscore : class_basename.to_s.underscore.pluralize
+  end
 
+  it "gets the collection" do
+    url = "https://%s.vendhq.com/api/%s%s" % [
+      store, endpoint, append_to_url
+    ]
+    
     stub_request(:get, url).to_return(
       status: 200, body: get_mock_from_path(:get)
     )
