@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Vend::Resource::Supplier do
   let(:expected_attributes) do
     {
-      'id' => '6cb5c88c-3d5f-11e0-8697-4040f540b50a',
-      'name'   => 'Supplier Ben'
+      'id' => '9fc84329-2d20-11e2-8057-080027706aa2',
+      'name'   => 'Brewer Supplies Ltd.'
     }
   end
 
