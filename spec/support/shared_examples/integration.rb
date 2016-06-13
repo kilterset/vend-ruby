@@ -29,8 +29,7 @@ shared_examples "a resource with a collection GET endpoint" do
 
   it "gets the collection" do
     url = "https://%s:%s@%s.vendhq.com/api/%s%s" % [
-      username, password, store, class_basename.to_s.underscore.pluralize,
-      append_to_url
+      username, password, store, described_class.collection_name, append_to_url
     ]
 
     stub_request(:get, url).to_return(

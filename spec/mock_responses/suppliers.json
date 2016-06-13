@@ -1,0 +1,36 @@
+{
+    "suppliers": [
+        {
+            "id": "9fc84329-2d20-11e2-8057-080027706aa2",
+            "retailer_id": "9a5521c3-2d20-11e2-8057-080027706aa2",
+            "name": "Brewer Supplies Ltd.",
+            "description": "We supply all things brewed\n",
+            "source": "USER",
+            "contact": {
+                "first_name": "First",
+                "last_name": "Last",
+                "company_name": "Co co",
+                "phone": "1-234-555-1234",
+                "mobile": null,
+                "fax": null,
+                "email": "no-reply+brewer-contact@vendhq.com",
+                "twitter": null,
+                "website": "www.brewer-supplies.com",
+                "physical_address1": null,
+                "physical_address2": null,
+                "physical_suburb": null,
+                "physical_city": null,
+                "physical_postcode": null,
+                "physical_state": null,
+                "physical_country_id": null,
+                "postal_address1": "123 Street St",
+                "postal_address2": null,
+                "postal_suburb": "Suburbia",
+                "postal_city": "New York",
+                "postal_postcode": "12345",
+                "postal_state": "New York",
+                "postal_country_id": "US"
+            }
+        }
+    ]
+}
